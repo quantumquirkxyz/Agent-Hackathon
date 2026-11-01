@@ -41,8 +41,8 @@ fi
 
 echo "PASS: required fields present"
 
-GATE_CI=$(jq -r '.qualityGateResults.gateCI // "unknown"' "${ARTIFACT_FILE}")
-if [[ "${GATE_CI}" != "passed" ]]; then
+GATE_CI=$(jq -r '.qualityGateResults.gateCi // "unknown"' "${ARTIFACT_FILE}")
+if [[ "${GATE_CI}" != "pass" ]]; then
   echo "FAIL: gate-ci must pass (current: ${GATE_CI})"
   exit 1
 fi
