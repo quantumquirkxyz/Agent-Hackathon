@@ -6,7 +6,7 @@ version: "1"
 description: "Validate Skill structure, contracts, dependencies, anti-patterns, and isolated execution — use when checking a Skill before promotion."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "structural findings and, for sandbox Skills, execution evidence and a promotion recommendation."
 sideEffects:
   - write-files
 dependencies: []

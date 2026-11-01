@@ -6,7 +6,7 @@ version: "1"
 description: "Evaluate a Skill against fixed scenarios for routing, completion, and artifact validity."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "skill-dev artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Evaluate a Skill against fixed scenarios for routing, completion, and artifact validity complete; artifact saved; completion criteria checked."

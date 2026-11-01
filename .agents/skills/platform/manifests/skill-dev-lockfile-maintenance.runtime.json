@@ -2,7 +2,7 @@
   "skill": "skill-dev/lockfile-maintenance",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "2696bce977983c2e0deb752608568ad83255f72c385ae67de5a48a46674ef3a0",
+  "frontmatterHash": "b3861c98341490cdfc54ebdfc5a97823939569bcfaec281dc06f4775e2c873fa",
   "role": "workflow",
   "router": {
     "positive": [],

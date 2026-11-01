@@ -6,7 +6,7 @@ version: "1"
 description: "Summarize Skill execution duration, success rate, and available run evidence — use when measuring Skill performance from logs and records."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "sample count, explicit duration availability, average duration, success rate, and cognitive-complexity estimates."
 sideEffects: []
 dependencies: []
 stopCondition: "Summarize Skill execution duration, success rate, and available run evidence complete; artifact saved; completion criteria checked."

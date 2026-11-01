@@ -53,8 +53,8 @@ fixturesPath: ""
 diataxis: "how-to"
 tags: ["delivery", "loop", "budget", "agent-engineering"]
 compatibility: ["delivery/implement", "delivery/review-fix-loop"]
-approvalRequired: "false"
-approvalFor: []
+approvalRequired: true
+approvalFor: ["write-temp-file"]
 ---
 
 # Loop Budget

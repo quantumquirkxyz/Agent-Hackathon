@@ -6,7 +6,7 @@ version: "1"
 description: "Data versioning (DVC, lakeFS, delta tables, snapshotting, reproducibility)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "versioning strategy + branching workflow + reproducibility plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Versioning strategy saved; branching workflow defined; reproducibility plan documented."

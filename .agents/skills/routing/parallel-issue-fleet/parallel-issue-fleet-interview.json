@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "skill": "parallel-issue-fleet",
+  "date": "2026-10-20",
+  "source": "User proposal and repository viability assessment",
+  "discovery": {
+    "problem": "Sequential issue execution underuses independent DAG frontiers and local detached agents cannot govern remote resources durably.",
+    "inputs": ["TicketArtifact", "base revision", "provider configuration", "worker profile", "fleet policy"],
+    "outputs": ["FleetRunArtifact", "per-issue ImplementArtifact references"]
+  },
+  "collaborativeDesign": {
+    "selectedName": "parallel-issue-fleet",
+    "category": "routing",
+    "decisions": [
+      "Create a separate control-plane skill instead of expanding worktree-swarm monolithically.",
+      "Keep land-by-wave as the default dependency convergence strategy.",
+      "Expose local-worktree and argv-only vm-pool providers.",
+      "Keep agents, models, and environments behind a portable worker profile and a dependency-free runner; no vendor-specific default.",
+      "Never persist secret values and never clean resources without ownership tokens."
+    ]
+  },
+  "validation": {
+    "seams": ["DAG planning", "bootstrap detection", "bounded concurrency", "timeouts", "secret redaction", "worker profile resolution", "prompt delivery", "wave landing", "artifact validation"]
+  }
+}

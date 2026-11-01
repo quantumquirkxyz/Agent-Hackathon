@@ -134,7 +134,7 @@ describe('generate-agent-cards.mjs', () => {
 
   test('excludes platform infrastructure directories', () => {
     // Mirrors the generator's skip set: `platform` is bundle infrastructure
-    // (every canonical collector excludes it from the 253-skill projection),
+    // (every canonical collector excludes it from the 255-skill projection),
     // and the companion resource directories never hold a SKILL.md.
     // foundation/mcp-server is a real bundle skill and IS carded.
     const excluded = [

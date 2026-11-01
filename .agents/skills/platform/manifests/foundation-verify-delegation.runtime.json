@@ -2,7 +2,7 @@
   "skill": "foundation/verify-delegation",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "341aa071146594869c611b60c302c0b5a2cbc1e37e06f8bfb900724c4638d507",
+  "frontmatterHash": "b2ae9798a60c3cbb78b2f864d416ab00cb0f8528ebc8598e6814a2221a489e88",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -29,8 +29,10 @@
     "sideEffects": [
       "write-temp-file"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-temp-file"
+    ],
     "risk": "low",
     "trustTier": 2
   },

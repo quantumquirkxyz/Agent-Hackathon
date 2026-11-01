@@ -6,7 +6,7 @@ version: "1"
 description: "Write Product Requirement Documents (PRDs) — problem statement, goals, user stories, acceptance criteria, success metrics, timeline — with stakeholder alignment."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "PRD with problem, goals, user stories, acceptance criteria, metrics, timeline."
 sideEffects: []
 dependencies: []
 stopCondition: "PRD saved; stakeholder alignment noted; metrics defined."

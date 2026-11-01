@@ -6,7 +6,7 @@ version: "1"
 description: "Manage mathematical paper collaboration — Overleaf / GitHub / arXiv integration, citation tracking, version control, reproducible computation links, and co-author coordination."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "shared repo + collaboration rules + arXiv package."
 sideEffects: []
 dependencies: []
 stopCondition: "Source repository has version tags; collaboration rules saved; arXiv package complete."

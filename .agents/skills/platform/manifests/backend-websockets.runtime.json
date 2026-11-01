@@ -2,7 +2,7 @@
   "skill": "backend/websockets",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "5087ae957dedc44c0d4e1bd1fe713d02fcb95780bfe1eae7991975b4ed35f7fb",
+  "frontmatterHash": "d2f2ba0e1a0de6fadd4deb633cd005ae3407a7162581e3ba9eb370eca935597b",
   "role": "workflow",
   "router": {
     "positive": [],

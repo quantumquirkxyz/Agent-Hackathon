@@ -24,6 +24,7 @@ maxIterations: 4
 modelTier: router
 promptVersion: "2.0"
 artifactType: plan
+evaluators: [behavioral, regression, traceability]
 fixturesPath: .agents/skills/platform/fixtures/regression/trunk-based-workflow.json
 tags: [git, trunk-based, branching, ci, workflow]
 compatibility: [implement, publish-open-pr, gate-ci, gate-pre-commit]

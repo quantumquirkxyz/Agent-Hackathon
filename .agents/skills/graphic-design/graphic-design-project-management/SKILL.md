@@ -6,7 +6,7 @@ version: "1"
 description: "Manage graphic design projects — briefs, iterations, reviews, asset handoff, versioning, and delivery — with explicit scope, timelines, and quality gates."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "graphic design project management artifact with project plan, iteration schedule, review gates, and handoff standards."
 sideEffects: ""
 dependencies: []
 stopCondition: "Graphic design project management plan complete; scope, timeline, iterations, reviews, and handoff standards explicit."

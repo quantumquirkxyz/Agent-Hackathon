@@ -6,7 +6,7 @@ version: "1"
 description: "Design CI/CD pipelines — build, test, security scan, deploy, rollback — with reproducible steps, environment parity, and deployment gates."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pipeline definition + gate rules + rollback plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Pipeline file saved; gate rules documented; rollback plan present."

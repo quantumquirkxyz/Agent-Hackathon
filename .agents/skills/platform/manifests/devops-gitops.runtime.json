@@ -2,7 +2,7 @@
   "skill": "devops/gitops",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "23f15d3bb5de9d07df759665dadb9a540867748121653a75adfd71507ec17060",
+  "frontmatterHash": "5e23c4e1bd1e0e829edd7b67b39e70e0f204cae95a5ee53c761c6942e289ebc0",
   "role": "workflow",
   "router": {
     "positive": [],

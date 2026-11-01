@@ -2,7 +2,7 @@
   "skill": "backend/api-gateway",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "a2260c864e8ba0de27ffe451bc69dbb23ab777ced465f7c68e0d7691fb86560a",
+  "frontmatterHash": "58eb2152ffac87d94775d950b651599ba552375e8c536c1802ad4f450d1a5243",
   "role": "workflow",
   "router": {
     "positive": [],

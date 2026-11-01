@@ -2,7 +2,7 @@
   "skill": "routing/ship-subissue",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "8b391445714e9d926bcadb4284f0bd02020422378feac247718419640c98d777",
+  "frontmatterHash": "1053342861707c514d20cf17b82a6da799d55949a0f0b2e79b3fa69591244538",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -20,11 +20,7 @@
         "Grep",
         "Glob"
       ],
-      "deny": [
-        "Bash",
-        "WebFetch",
-        "WebSearch"
-      ]
+      "deny": []
     }
   },
   "guardrails": {

@@ -265,7 +265,7 @@ test('tools/call search_skills, validate_skill, explain_routing and policy work 
 
     const registry = await server.rpc('tools/call', { name: 'get_registry_info', arguments: {} });
     const registryPayload = JSON.parse(registry.result.content[0].text);
-    assert.equal(registryPayload.skills.bundle, 253);
+    assert.equal(registryPayload.skills.bundle, 255);
     assert.ok(registryPayload.compatibleAgents.length >= 1);
     assert.equal(registryPayload.server.name, 'skill-lab');
   } catch (err) {

@@ -1,0 +1,27 @@
+{
+  "skill": "worktree-swarm",
+  "mode": "manual-design-from-structured-request",
+  "source": "User-provided contract in the creation request",
+  "status": "generated",
+  "files": [
+    ".agents/skills/routing/worktree-swarm/SKILL.md",
+    ".agents/skills/routing/worktree-swarm/scripts/prepare-worktrees.mjs",
+    ".agents/skills/routing/worktree-swarm/behavioral-fixtures/README.md"
+  ],
+  "requirementsCovered": [
+    "mandatory explicit base branch with no default",
+    "GitHub issue URL and repository validation",
+    "preflight conflict detection before mutation",
+    "atomic worktree and branch creation with rollback",
+    "parallel detached local agent launch",
+    "JSON stdout and persistent manifest",
+    "explicit medium risk and side effects",
+    "no push, pull request, merge, or issue close"
+  ],
+  "validation": {
+    "structure": "passed: agentskills-compliance and validate-skills",
+    "syntax": "passed: node --check",
+    "bundleGate": "passed: check-all"
+  },
+  "nextConsumer": "worktree-swarm validation and project workflow routing"
+}

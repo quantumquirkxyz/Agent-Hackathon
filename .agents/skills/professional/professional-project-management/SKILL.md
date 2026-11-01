@@ -6,7 +6,7 @@ version: "1"
 description: "Manage professional projects — scope, milestones, risks, dependencies, and stakeholder alignment — with explicit planning and tracking artifacts."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "scope, milestones, ownership, risks, dependencies, and communication cadence."
 sideEffects: []
 dependencies: []
 stopCondition: "Scope, ownership, milestones, risks, and tracking cadence are explicit."

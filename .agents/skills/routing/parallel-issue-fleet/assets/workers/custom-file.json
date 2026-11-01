@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "name": "custom-file",
+  "description": "Template for an agent that reads its prompt from a file.",
+  "setup": [],
+  "command": ["my-agent", "--non-interactive", "--prompt-file", "{{promptFile}}", "--artifact", "{{artifact}}"],
+  "modelArgs": ["--model", "{{model}}"],
+  "promptDelivery": "file",
+  "model": "",
+  "modelEnv": "MY_AGENT_MODEL",
+  "env": ["MY_AGENT_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

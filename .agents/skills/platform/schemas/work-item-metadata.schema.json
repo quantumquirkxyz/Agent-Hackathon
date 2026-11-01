@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "work-item-metadata.schema.json",
+  "title": "GitHub work-item metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "assignees": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "labels": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "milestone": { "type": ["string", "null"] },
+    "projects": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "work_type": { "type": ["string", "null"] },
+        "repo_scope": { "type": ["string", "null"] },
+        "phase": { "type": ["string", "null"] },
+        "priority": { "type": ["string", "null"] },
+        "risk": { "type": ["string", "null"] },
+        "sprint": { "type": ["string", "null"] },
+        "release_train": { "type": ["string", "null"] }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "parent": { "type": ["integer", "null"], "minimum": 1 },
+        "subIssues": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true },
+        "blockedBy": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true },
+        "blocking": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true },
+        "related": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true }
+      }
+    },
+    "development": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "branch": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "base": { "type": "string", "minLength": 1, "default": "main" }
+          }
+        },
+        "pullRequest": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "number": { "type": "integer", "minimum": 1 },
+            "url": { "type": "string", "format": "uri" }
+          },
+          "anyOf": [
+            { "required": ["number"] },
+            { "required": ["url"] }
+          ]
+        }
+      }
+    }
+  }
+}

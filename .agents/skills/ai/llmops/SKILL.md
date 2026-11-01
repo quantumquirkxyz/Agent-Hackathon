@@ -6,7 +6,7 @@ version: "1"
 description: "LLMOps (deployment, monitoring, A/B testing, prompt management, cost optimization, evaluation pipelines)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "deployment manifest + monitoring config + A/B spec + prompt registry + evaluation pipeline."
 sideEffects: []
 dependencies: []
 stopCondition: "Deployment published; monitoring active; evaluation pipeline green."

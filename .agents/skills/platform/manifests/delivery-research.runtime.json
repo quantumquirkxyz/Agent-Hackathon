@@ -2,7 +2,7 @@
   "skill": "delivery/research",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "85eeb9fca0495f90815ff90892c1c053534566670cfeb729e55ff5e8e1ea3dc5",
+  "frontmatterHash": "9944678bcf482d7a0f6cda0a137cb4c2283768b3403531153e263c5ff1c5ee8c",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -29,8 +29,10 @@
     "sideEffects": [
       "write-docs"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-docs"
+    ],
     "risk": "low",
     "trustTier": 2
   },

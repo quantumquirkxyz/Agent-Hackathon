@@ -6,7 +6,7 @@ version: "1"
 description: "Test security posture — auth flows, authorization boundaries, injection paths, session handling, and misconfiguration checks — with adversarial scenarios."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "security test plan or findings with evidence, severity, and remediation guidance."
 sideEffects: []
 dependencies: []
 stopCondition: "Security boundaries, findings, and responsible next steps are documented."

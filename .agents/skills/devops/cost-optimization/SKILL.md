@@ -6,7 +6,7 @@ version: "1"
 description: "Design FinOps strategies — rightsizing, spot instances, committed use, budgets, showback/chargeback — with cost visibility and optimisation guardrails."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "FinOps architecture + cost visibility design + rightsizing recommendations + budget and showback plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture diagram saved; visibility design documented; rightsizing recommendations complete; budget and showback plan filled."

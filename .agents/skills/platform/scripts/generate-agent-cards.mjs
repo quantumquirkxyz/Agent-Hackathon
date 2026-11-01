@@ -11,8 +11,8 @@
 // infrastructure, not skill content, so scripts/sync-registry.mjs,
 // scripts/generate-site-data.mjs and .agents/skills/platform/validate-skills.mjs
 // all exclude it and CATALOG.md, llms.txt, .claude-plugin/marketplace.json and
-// site/src/skills.json project the 246 non-platform skills. The corpus cards
-// exactly those 246 skills.
+// site/src/skills.json projects the non-platform skills. The corpus cards
+// exactly that generated skill set.
 //
 // Signing protocol (A2A v1.0, a2a-protocol.org; the spec signs Agent Cards with a
 // JWS (RFC 7515) computed over a canonicalized form of the card using the JSON

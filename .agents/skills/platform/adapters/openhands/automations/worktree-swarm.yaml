@@ -1,0 +1,15 @@
+name: worktree-swarm
+description: Create isolated local git worktrees and launch one local coding agent per open GitHub issue in the current repository.
+trigger:
+  type: webhook
+  events: [pull_request.opened, issues.opened]
+runtime:
+  agent: claude-code
+  sandbox: docker
+steps:
+  - uses: skill/routing-worktree-swarm
+    with:
+      task: "{{ event.title }}"
+policy:
+  approvalRequired: true
+  sideEffects: [create-git-worktrees, create-git-branches, launch-local-agents]

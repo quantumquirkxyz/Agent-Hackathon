@@ -2,7 +2,7 @@
   "skill": "skill-dev/skill-diff-analyzer",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "86ec3188f4b27230d94a4c757ea4843be9b2eda517fd0a2971cd87dbbfe7204e",
+  "frontmatterHash": "65f765244ae7ad43274709ff390c7849f91140db761acc90b832129d2193938a",
   "role": "workflow",
   "router": {
     "positive": [],

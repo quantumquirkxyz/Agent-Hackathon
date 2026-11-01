@@ -6,7 +6,7 @@ version: "1"
 description: "Design internationalization (i18n) and localization (l10n) — string management, locale handling, RTL support, cultural adaptation — so the product works across languages and regions."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "cms artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design internationalization (i18n) and localization (l10n) complete; artifact saved; completion criteria checked."

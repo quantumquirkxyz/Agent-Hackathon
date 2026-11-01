@@ -6,7 +6,7 @@ version: "1"
 description: "Compliance (SOC2, ISO27001, GDPR, HIPAA, PCI DSS, audits, evidence, remediation)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "gap analysis + evidence pack + remediation roadmap + control matrix."
 sideEffects: []
 dependencies: []
 stopCondition: "Gap analysis complete; evidence pack assembled; remediation roadmap accepted."

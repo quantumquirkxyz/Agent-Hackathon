@@ -6,7 +6,7 @@ version: "1"
 description: "Corporate valuation — DCF, multiples, sum-of-parts, scenario analysis — with explicit assumptions, sensitivity, and cross-checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "finance artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Corporate valuation complete; required sections present; completion criteria checked."

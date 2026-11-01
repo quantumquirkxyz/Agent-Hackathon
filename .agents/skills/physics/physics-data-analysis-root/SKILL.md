@@ -6,7 +6,7 @@ version: "1"
 description: "Analyse experimental physics data with ROOT, pandas, uproot, NumPy — calibration, systematic errors, statistical inference, result archival — with reproducible scripts."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "analysis script + report."
 sideEffects: []
 dependencies: []
 stopCondition: "Script runs; report saved with error budget, systematic table, and plot links."

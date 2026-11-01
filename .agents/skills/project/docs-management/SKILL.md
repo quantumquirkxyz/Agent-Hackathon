@@ -6,7 +6,7 @@ version: "1"
 description: "Keep repository documentation, ADRs, and durable context aligned with the current project shape — with explicit consumer rules."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "docs guidance, ADR guidance, and context coherence notes."
 sideEffects: []
 dependencies: []
 stopCondition: "Keep repository documentation, ADRs, and durable context aligned with the current project shape complete; structured result returned; completion criteria checked."

@@ -6,7 +6,7 @@ version: "1"
 description: "A relentless interview to sharpen a plan or design."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "A relentless interview to sharpen a plan or design complete; structured result returned; completion criteria checked."

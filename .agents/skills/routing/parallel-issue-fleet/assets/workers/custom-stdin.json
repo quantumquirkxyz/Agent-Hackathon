@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "name": "custom-stdin",
+  "description": "Template for an agent that reads its prompt from standard input.",
+  "setup": [],
+  "command": ["my-agent", "--non-interactive"],
+  "modelArgs": ["--model", "{{model}}"],
+  "promptDelivery": "stdin",
+  "model": "",
+  "modelEnv": "MY_AGENT_MODEL",
+  "env": ["MY_AGENT_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

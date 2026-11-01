@@ -17,15 +17,15 @@ inputs:
 outputs:
   - type: object
     name: MemoryState
-  properties:
-    status: { type: string, enum: [recorded, recalled, reconciled] }
-    nowEntries: { type: "array", items: { type: "string" } }
-    memoryEntries: { type: "array", items: { type: "string" } }
-    promotedToArtifact: { type: "array", items: { type: "string" } }
-    staleEntries: { type: "array", items: { type: "string" } }
-    nextConsumer: { type: "string" }
-    riskRemaining: { type: "string" }
-  required: [status, nextConsumer]
+    properties:
+      status: { type: string, enum: [recorded, recalled, reconciled] }
+      nowEntries: { type: "array", items: { type: "string" } }
+      memoryEntries: { type: "array", items: { type: "string" } }
+      promotedToArtifact: { type: "array", items: { type: "string" } }
+      staleEntries: { type: "array", items: { type: "string" } }
+      nextConsumer: { type: "string" }
+      riskRemaining: { type: "string" }
+    required: [status, nextConsumer]
 sideEffects:
   - write-files
 dependencies:

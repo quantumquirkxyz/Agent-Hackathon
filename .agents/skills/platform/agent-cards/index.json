@@ -1,6 +1,6 @@
 {
-  "totalCards": 253,
-  "generatedAt": "2026-10-16T16:48:15.490Z",
+  "totalCards": 255,
+  "generatedAt": "2026-10-21T04:33:53.577Z",
   "cards": [
     {
       "name": "accessibility",
@@ -1899,7 +1899,7 @@
     },
     {
       "name": "diagnosing-bugs",
-      "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something intermittent, ambiguous, or hard to reproduce.",
+      "description": ">-",
       "url": "https://github.com/quirk/example/blob/main/.agents/skills/delivery/diagnosing-bugs/SKILL.md",
       "version": "1",
       "capabilities": {
@@ -1916,7 +1916,7 @@
         {
           "id": "delivery/diagnosing-bugs",
           "name": "diagnosing-bugs",
-          "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something intermittent, ambiguous, or hard to reproduce.",
+          "description": ">-",
           "tags": [
             "\"delivery\""
           ],
@@ -6255,7 +6255,7 @@
     },
     {
       "name": "grill",
-      "description": "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design.",
+      "description": ">-",
       "url": "https://github.com/quirk/example/blob/main/.agents/skills/routing/grill/SKILL.md",
       "version": "1",
       "capabilities": {
@@ -6272,7 +6272,7 @@
         {
           "id": "routing/grill",
           "name": "grill",
-          "description": "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design.",
+          "description": ">-",
           "tags": [
             "\"routing\""
           ],
@@ -6440,6 +6440,43 @@
       ]
     },
     {
+      "name": "parallel-issue-fleet",
+      "description": "Orchestrate a dependency-aware fleet of issue agents in isolated local worktrees or dedicated VM-pool slots, with portable worker profiles, durable checkpoints, bounded concurrency, validation, and owned-resource cleanup.",
+      "url": "https://github.com/quirk/example/blob/main/.agents/skills/routing/parallel-issue-fleet/SKILL.md",
+      "version": "2",
+      "capabilities": {
+        "skillInvocation": true,
+        "artifactProduction": true,
+        "workflowOrchestration": false
+      },
+      "authentication": {
+        "schemes": [
+          "none"
+        ]
+      },
+      "skills": [
+        {
+          "id": "routing/parallel-issue-fleet",
+          "name": "parallel-issue-fleet",
+          "description": "Orchestrate a dependency-aware fleet of issue agents in isolated local worktrees or dedicated VM-pool slots, with portable worker profiles, durable checkpoints, bounded concurrency, validation, and owned-resource cleanup.",
+          "tags": [
+            "routing",
+            "orchestration",
+            "git",
+            "worktree",
+            "vm",
+            "dag",
+            "multi-agent"
+          ],
+          "parameters": {
+            "trustTier": "4",
+            "modelTier": "reasoning",
+            "artifactType": "fleet-run"
+          }
+        }
+      ]
+    },
+    {
       "name": "publish-open-pr",
       "description": "Use when the user wants to publish a finished subissue as an open GitHub pull request from an already-prepared issue branch — with scoped, auditable publication.",
       "url": "https://github.com/quirk/example/blob/main/.agents/skills/routing/publish-open-pr/SKILL.md",
@@ -6596,6 +6633,40 @@
             "trustTier": "1",
             "modelTier": "router",
             "artifactType": "plan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "worktree-swarm",
+      "description": "Create isolated local git worktrees and launch one local coding agent per open GitHub issue in the current repository.",
+      "url": "https://github.com/quirk/example/blob/main/.agents/skills/routing/worktree-swarm/SKILL.md",
+      "version": "1",
+      "capabilities": {
+        "skillInvocation": true,
+        "artifactProduction": true,
+        "workflowOrchestration": true
+      },
+      "authentication": {
+        "schemes": [
+          "none"
+        ]
+      },
+      "skills": [
+        {
+          "id": "routing/worktree-swarm",
+          "name": "worktree-swarm",
+          "description": "Create isolated local git worktrees and launch one local coding agent per open GitHub issue in the current repository.",
+          "tags": [
+            "routing",
+            "git",
+            "github",
+            "worktree",
+            "multi-agent"
+          ],
+          "parameters": {
+            "trustTier": "3",
+            "artifactType": "orchestration"
           }
         }
       ]

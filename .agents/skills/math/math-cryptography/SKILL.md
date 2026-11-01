@@ -6,7 +6,7 @@ version: "1"
 description: "Analyse cryptographic constructions — symmetric, asymmetric, hashing, MACs, zero-knowledge — with security reductions, hardness assumptions, and attack analysis."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "math artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Analyse cryptographic constructions complete; required sections present; completion criteria checked."

@@ -1,0 +1,13 @@
+{
+  "fixtures": [
+    {
+      "id": "parallel-issue-fleet-contract",
+      "skill": "parallel-issue-fleet",
+      "type": "behavioral",
+      "expected": {
+        "outputContains": ["## Contract", "FleetRunArtifact", "worker profile", "worker-runner", "land-by-wave", "ownership token", "## Untrusted Input Handling"],
+        "frontmatterContains": ["risk: high", "trustTier: 4", "approvalRequired: true", "artifactType: fleet-run"]
+      }
+    }
+  ]
+}

@@ -6,7 +6,7 @@ version: "1"
 description: "Define how a project is built, released, and rolled back — as a safe operational seam."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a deployment seam proposal, release path, rollback guidance, and deployment safety gates."
 sideEffects: []
 dependencies: []
 stopCondition: "Define how a project is built, released, and rolled back complete; artifact saved; completion criteria checked."

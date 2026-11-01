@@ -6,7 +6,7 @@ version: "1"
 description: "Connect graphic design tools — Figma, Adobe Creative Cloud, Canva, and local production tools — to agent workflows with explicit authentication, scopes, and safety boundaries."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "graphic design tools artifact covering tool selection, authentication, use-case mapping, data flow, and safety boundaries."
 sideEffects: ""
 dependencies: []
 stopCondition: "Graphic design tools integration plan complete; tool selection, authentication, use cases, and safety boundaries explicit."

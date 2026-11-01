@@ -2,7 +2,7 @@
   "skill": "ai/ai-prompt-engineering",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "dcca65491c4bf24ac5331a309a7ffaee6b072d59c96660ac861b04aea3895cb1",
+  "frontmatterHash": "7fc301e730acf4cbc25c8a58d2b923b1811512dd91789ced9e3862583fb281d7",
   "role": "workflow",
   "router": {
     "positive": [],

@@ -3,53 +3,172 @@
   "title": "TicketArtifact",
   "description": "Durable ticket artifact emitted by the to-tickets skill. Typed, versioned, addressable.",
   "type": "object",
-  "required": ["schemaVersion", "artifactType", "id", "skill", "skillVersion", "promptVersion", "createdAt", "updatedAt", "input", "output", "provenance", "evaluation"],
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "id",
+    "skill",
+    "skillVersion",
+    "promptVersion",
+    "createdAt",
+    "updatedAt",
+    "input",
+    "output",
+    "provenance",
+    "evaluation"
+  ],
   "properties": {
-    "schemaVersion": { "type": "string", "const": "2.0" },
-    "artifactType": { "type": "string", "const": "ticket" },
-    "id": { "type": "string", "pattern": "^ticket-.+$" },
-    "skill": { "type": "string", "const": "to-tickets" },
-    "skillVersion": { "type": "string" },
-    "promptVersion": { "type": "string" },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "updatedAt": { "type": "string", "format": "date-time" },
+    "schemaVersion": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "artifactType": {
+      "type": "string",
+      "const": "ticket"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^ticket-.+$"
+    },
+    "skill": {
+      "type": "string",
+      "const": "to-tickets"
+    },
+    "skillVersion": {
+      "type": "string"
+    },
+    "promptVersion": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
     "input": {
       "type": "object",
-      "required": ["sourceRef"],
+      "required": [
+        "sourceRef"
+      ],
       "properties": {
-        "sourceRef": { "type": "string" },
-        "parentSpec": { "type": "string" },
-        "verticalSliceRules": { "type": "boolean" }
+        "sourceRef": {
+          "type": "string"
+        },
+        "parentSpec": {
+          "type": "string"
+        },
+        "verticalSliceRules": {
+          "type": "boolean"
+        }
       }
     },
     "output": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["title", "acceptanceCriteria", "validation", "blockedBy"],
+        "required": [
+          "title",
+          "acceptanceCriteria",
+          "validation",
+          "blockedBy"
+        ],
         "properties": {
-          "title": { "type": "string", "maxLength": 80 },
-          "description": { "type": "string" },
-          "acceptanceCriteria": { "type": "array", "items": { "type": "string" } },
-          "validation": { "type": "string" },
-          "blockedBy": { "type": "array", "items": { "type": "integer" } },
-          "traceId": { "type": "string" }
+          "title": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string"
+          },
+          "acceptanceCriteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "validation": {
+            "type": "string"
+          },
+          "blockedBy": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "traceId": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Canonical tracker metadata. See work-item-metadata.schema.json.",
+            "properties": {
+              "assignees": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "milestone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "fields": {
+                "type": "object"
+              },
+              "relationships": {
+                "type": "object"
+              },
+              "development": {
+                "type": "object"
+              }
+            }
+          }
         }
       }
     },
     "provenance": {
       "type": "object",
       "properties": {
-        "traceId": { "type": "string" },
-        "sourceRef": { "type": "string" },
-        "parentSpecId": { "type": "string" }
+        "traceId": {
+          "type": "string"
+        },
+        "sourceRef": {
+          "type": "string"
+        },
+        "parentSpecId": {
+          "type": "string"
+        }
       }
     },
     "evaluation": {
       "type": "object",
       "properties": {
-        "completionCriteriaMet": { "type": "boolean" },
-        "validatorNotes": { "type": "array", "items": { "type": "string" } }
+        "completionCriteriaMet": {
+          "type": "boolean"
+        },
+        "validatorNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   }

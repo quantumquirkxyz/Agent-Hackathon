@@ -6,7 +6,7 @@ version: "1"
 description: "Build a minimal fresh context pack with ordered reads and provenance — for scoped, high-signal handoff."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Build a minimal fresh context pack with ordered reads and provenance complete; structured result returned; completion criteria checked."

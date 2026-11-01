@@ -17,7 +17,7 @@ When to use: Keep context, ADRs, registry entries, and research coherent over ti
 
 ## Guardrails
 
-- risk: low; trust tier: 2; approval required: no
+- risk: low; trust tier: 2; approval required: yes
 - side effects: write-docs
 - isolation: none; model tier: router
 

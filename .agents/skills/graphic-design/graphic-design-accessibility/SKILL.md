@@ -4,6 +4,7 @@ description: "Design inclusive graphic artifacts — WCAG-compliant visuals, col
 license: "MIT"
 promptVersion: "2.0"
 artifactType: "plan"
+outputs: "accessible design specification with compliance report and remediation guidance."
 modelTier: "reasoning"
 evaluators: ["behavioral", "regression"]
 fixturesPath: ""

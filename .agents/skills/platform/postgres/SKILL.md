@@ -6,7 +6,7 @@ version: "1"
 description: "Shape PostgreSQL schema and query decisions — so the data model stays durable and reviewable."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "schema guidance, query guidance, and data durability notes."
 sideEffects: []
 dependencies: []
 stopCondition: "Shape PostgreSQL schema and query decisions complete; artifact saved; completion criteria checked."

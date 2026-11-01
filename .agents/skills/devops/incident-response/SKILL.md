@@ -6,7 +6,7 @@ version: "1"
 description: "Design incident response — runbooks, war rooms, postmortems, blameless culture — with explicit severity taxonomy, escalation paths, and communication rules."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "incident response plan + runbook library + postmortem process."
 sideEffects: []
 dependencies: []
 stopCondition: "Incident response plan complete; runbook library defined; postmortem process documented."

@@ -27,6 +27,7 @@ const REPORT_ONLY_COMMANDS = [
 const NEW_GATING_COMMANDS = [
   "['node', ['.agents/skills/platform/loop-runner.mjs', '--demo', '--json']]",
   "['node', ['.agents/skills/platform/idempotency.mjs', '--demo', '--intents-dir'",
+  "['node', ['.agents/skills/platform/evaluate-fixtures.mjs', '--json']]",
 ];
 
 function blockOf(source, marker) {

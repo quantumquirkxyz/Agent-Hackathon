@@ -131,6 +131,25 @@ describe('dag-scheduler.mjs', () => {
     assert.deepEqual(report.levels[1].tickets.map((ticket) => ticket.id), ['2']);
   });
 
+  test('TicketArtifact output array resolves blockedBy by tracker number when numbers are present', () => {
+    const dir = fs.mkdtempSync('/tmp/quirk-dag-');
+    const artifact = {
+      schemaVersion: '2.0',
+      artifactType: 'ticket',
+      output: [
+        { id: 't1', number: 41, title: 'first slice', blockedBy: [] },
+        { id: 't2', number: 42, title: 'second slice', blockedBy: [41] },
+        { id: 't3', number: 43, title: 'third slice', blockedBy: [42] },
+      ],
+    };
+    const result = run(['levels', writeDag(dir, 'tracker-numbers.json', artifact), '--json']);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    assert.deepEqual(report.levels.map((wave) => wave.count), [1, 1, 1]);
+    assert.deepEqual(report.levels[1].tickets.map((ticket) => ticket.id), ['t2']);
+    assert.deepEqual(report.levels[2].tickets.map((ticket) => ticket.id), ['t3']);
+  });
+
   test('demo prints a clean 3-wave DAG plus an over-coupled DAG', () => {
     const result = run(['--demo']);
     assert.equal(result.status, 0, result.stderr);

@@ -2,7 +2,7 @@
   "skill": "sec/zero-trust",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "f8381d9316a1b9945b654e4a824a14c34663ac4ba0236b0d9fc7043934365a65",
+  "frontmatterHash": "73e9c857b9efb3cd6219ecc7552189806385b76c4229e0a6968db620106cf322",
   "role": "workflow",
   "router": {
     "positive": [],

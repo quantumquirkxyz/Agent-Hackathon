@@ -6,7 +6,7 @@ version: "1"
 description: "Design operating system memory systems — virtual memory, paging, allocation, swapping, and protection — with explicit resource accounting and locality assumptions."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "memory-behavior analysis with protection, paging, allocation, locality, and mitigation options."
 sideEffects: []
 dependencies: []
 stopCondition: "Memory layout, resource limits, and protection/locality trade-offs are explicit."

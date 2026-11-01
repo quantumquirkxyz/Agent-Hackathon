@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FleetRunArtifact",
+  "type": "object",
+  "required": ["schemaVersion", "artifactType", "runId", "status", "source", "policy", "provider", "currentWave", "waves", "issues", "resources", "events", "implementArtifacts", "nextConsumer"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "artifactType": { "const": "fleet-run" },
+    "runId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["planned", "running", "awaiting-land", "completed", "blocked", "cleaning", "cleaned"] },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "source": {
+      "type": "object",
+      "required": ["base", "baseRevision"],
+      "properties": {
+        "ticketArtifactPath": { "type": ["string", "null"] },
+        "ticketArtifactTraceId": { "type": ["string", "null"] },
+        "base": { "type": "string" },
+        "baseRevision": { "type": "string", "minLength": 1 }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": ["concurrency", "timeoutMs", "integrationStrategy", "cleanup", "secretEnvNames"],
+      "properties": {
+        "concurrency": { "type": "integer", "minimum": 1 },
+        "timeoutMs": { "type": "integer", "minimum": 1 },
+        "integrationStrategy": { "enum": ["land-by-wave", "integration-branch"] },
+        "cleanup": { "enum": ["always", "on-failure", "manual"] },
+        "secretEnvNames": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["local-worktree", "vm-pool"] },
+        "name": { "type": "string" },
+        "pool": { "type": "string" },
+        "workspaceRoot": { "type": "string" },
+        "worker": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "profile": { "type": "string" },
+            "model": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "currentWave": { "type": "integer", "minimum": 0 },
+    "waves": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["level", "issueIds", "status", "landedIssueIds"],
+        "properties": {
+          "level": { "type": "integer", "minimum": 0 },
+          "issueIds": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["pending", "running", "validated", "landed", "integrated", "blocked"] },
+          "landedIssueIds": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "issues": { "type": "array", "items": { "type": "object", "required": ["id", "blockedBy", "wave", "status", "attempt", "resourceIds"] } },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "ownershipToken", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "enum": ["local-worktree", "vm-pool"] },
+          "ownershipToken": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["provisioning", "ready", "cleaned"] }
+        }
+      }
+    },
+    "events": { "type": "array", "items": { "type": "object", "required": ["ts", "type"] } },
+    "implementArtifacts": { "type": "array", "items": { "type": "object", "required": ["issueId", "path", "branch", "commitSha"] } },
+    "nextConsumer": { "type": "string" },
+    "riskRemaining": { "type": "string" }
+  },
+  "not": { "required": ["secretValues"] }
+}

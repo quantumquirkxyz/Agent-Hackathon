@@ -6,7 +6,7 @@ version: "1"
 description: "Run a backtest with full audit hygiene — biases, costs, out-of-sample, regime splits — and produce a verdict on whether a strategy is robust."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "backtest audit report with strategy spec, data audit, statistics, stress tests, and verdict."
 sideEffects: []
 dependencies: []
 stopCondition: "Audit report complete with strategy spec, data audit, statistics, stress tests, and verdict."

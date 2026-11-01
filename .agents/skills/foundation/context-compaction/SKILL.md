@@ -17,15 +17,15 @@ inputs:
 outputs:
   - type: object
     name: CompactionReport
-  properties:
-    status: { type: string, enum: [compacted, handed-off, deferred] }
-    summary: { type: string }
-    preservedArtifacts: { type: "array", items: { type: "string" } }
-    droppedContext: { type: "array", items: { type: "string" } }
-    reDerivable: { type: "array", items: { type: "string" } }
-    nextConsumer: { type: "string" }
-    riskRemaining: { type: "string" }
-  required: [status, summary, nextConsumer]
+    properties:
+      status: { type: string, enum: [compacted, handed-off, deferred] }
+      summary: { type: string }
+      preservedArtifacts: { type: "array", items: { type: "string" } }
+      droppedContext: { type: "array", items: { type: "string" } }
+      reDerivable: { type: "array", items: { type: "string" } }
+      nextConsumer: { type: "string" }
+      riskRemaining: { type: "string" }
+    required: [status, summary, nextConsumer]
 sideEffects:
   - write-temp-file
 dependencies:

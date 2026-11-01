@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "name": "custom-argv-prompt",
+  "description": "Template for any agent CLI that accepts the prompt as a positional argument.",
+  "setup": [],
+  "command": ["your-agent", "{{modelArgs}}", "{{prompt}}"],
+  "promptDelivery": "argv",
+  "modelArgs": ["--model", "{{model}}"],
+  "model": "",
+  "modelEnv": "YOUR_AGENT_MODEL",
+  "env": ["YOUR_AGENT_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

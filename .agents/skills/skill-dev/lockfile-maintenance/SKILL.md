@@ -6,7 +6,7 @@ version: "1"
 description: "Maintain the skills lockfile by detecting missing, stale, extra, or mismatched skill entries and updating hashes only after the corresponding SKILL.md files are resolved."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "skill-dev artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - write-files
 dependencies: ""

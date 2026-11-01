@@ -11,7 +11,14 @@ const skillsRoot = path.join(root, '.agents', 'skills');
 const registryPath = path.join(root, 'registry.yaml');
 const lockPath = path.join(root, 'skills-lock.json');
 const stdio = process.argv.includes('--stdio');
-const port = parseInt(process.argv.includes('--port') ? process.argv[process.argv.indexOf('--port') + 1] : '3000');
+const port = parseInt(process.argv.includes('--port') ? process.argv[process.argv.indexOf('--port') + 1] : '3000', 10);
+const host = process.argv.includes('--host') ? process.argv[process.argv.indexOf('--host') + 1] : '127.0.0.1';
+const MAX_REQUEST_BYTES = 1024 * 1024;
+if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid MCP port');
+if (!host || host.startsWith('--')) throw new Error('Invalid MCP host');
+if (!['127.0.0.1', 'localhost', '::1'].includes(host) && process.env.QUIRK_MCP_ALLOW_REMOTE !== '1') {
+  throw new Error('Remote MCP binding requires QUIRK_MCP_ALLOW_REMOTE=1 and independent network authentication');
+}
 
 function parseFrontmatter(text) {
   if (!text.startsWith('---')) return {};
@@ -324,8 +331,21 @@ async function main() {
   const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/mcp') {
       let body = '';
-      req.on('data', chunk => { body += chunk; });
+      let receivedBytes = 0;
+      let oversized = false;
+      req.on('data', chunk => {
+        if (oversized) return;
+        receivedBytes += Buffer.byteLength(chunk);
+        if (receivedBytes > MAX_REQUEST_BYTES) {
+          oversized = true;
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'MCP request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
       req.on('end', async () => {
+        if (oversized) return;
         try {
           const request = JSON.parse(body);
           const response = await handleJsonRpc(request);
@@ -345,8 +365,8 @@ async function main() {
     }
   });
 
-  server.listen(port, () => {
-    console.error(`[mcp-skills-server] HTTP server listening on http://localhost:${port}/mcp`);
+  server.listen(port, host, () => {
+    console.error(`[mcp-skills-server] HTTP server listening on http://${host}:${port}/mcp`);
     console.error(`[mcp-skills-server] Health check at http://localhost:${port}/health`);
   });
 

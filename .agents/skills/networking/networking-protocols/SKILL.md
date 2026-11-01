@@ -6,7 +6,7 @@ version: "1"
 description: "Analyze network protocols — packet formats, handshakes, congestion control, routing, and transport behavior — with explicit timing and failure assumptions."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "protocol explanation, state machine or flow, timing assumptions, and likely failure modes."
 sideEffects: []
 dependencies: []
 stopCondition: "Protocol state, message flow, and failure assumptions are explicit."

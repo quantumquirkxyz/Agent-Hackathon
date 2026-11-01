@@ -2,7 +2,7 @@
   "skill": "foundation/agent-card",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "49c236347cf293f97f8d0eeda382ba37a796aaa42c38ca23cd900b8e99595864",
+  "frontmatterHash": "d89d4f2aecbe3c6cf5780de6dd1d48c6a251e2bb3f24675d166456c231fb6dbf",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -32,8 +32,10 @@
     "sideEffects": [
       "write-files"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-files"
+    ],
     "risk": "low",
     "trustTier": 1
   },

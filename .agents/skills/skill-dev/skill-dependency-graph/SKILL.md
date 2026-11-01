@@ -6,7 +6,7 @@ version: "1"
 description: "Build a dependency graph that exposes central Skills, cycles, and unnecessary coupling — use when analyzing Skill modularity."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "Mermaid or JSON graph, cycle list, central Skills, and modularity findings."
 sideEffects: []
 dependencies: []
 stopCondition: "Build a dependency graph that exposes central Skills, cycles, and unnecessary coupling complete; artifact saved; completion criteria checked."

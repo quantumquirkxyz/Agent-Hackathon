@@ -2,7 +2,7 @@
   "skill": "sec/sec-security-audit",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "1f00c64db758c878b3609ca8f825830fb51134f93690bf4170974e9f7ddb7f77",
+  "frontmatterHash": "513ada18cb3ccca600a96f93d197b84c4dc3b4bdf42db2a8ff2fa94ebecd1509",
   "role": "workflow",
   "router": {
     "positive": [],

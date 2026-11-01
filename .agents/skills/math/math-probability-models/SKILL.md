@@ -6,7 +6,7 @@ version: "1"
 description: "Build probability models — distributions, stochastic processes (Markov, Brownian, Poisson), inference — with explicit assumptions and sanity checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pull-request artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Build probability models complete; required sections present; completion criteria checked."

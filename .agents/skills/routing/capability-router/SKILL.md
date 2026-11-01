@@ -6,7 +6,7 @@ version: "1"
 description: "Route work to the best matching Skill using declared capabilities and compatibility — with explicit selection rules."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "plan artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Route work to the best matching Skill using declared capabilities and compatibility complete; structured result returned; completion criteria checked."

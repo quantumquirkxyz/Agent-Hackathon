@@ -8,7 +8,7 @@ disable-model-invocation: "true"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "auxiliary artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 dependencies: []
 sideEffects: ""
 stopCondition: "The repo-specific skill configuration is written and consistent."

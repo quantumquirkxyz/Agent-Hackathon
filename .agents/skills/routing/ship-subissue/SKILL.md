@@ -6,7 +6,7 @@ version: "1"
 description: "Use when a finished subissue already has a clean PR and you need to merge it, mark it as completed, and close the linked issue — with release discipline."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - merge-pull-request
   - close-issue
@@ -39,6 +39,10 @@ clauses:
     check: "evals/behavioral/ship-subissue.json#SHIP-SUBISSUE-3"
 reloadPolicy: always
 ---
+
+## MCP Exposure
+
+This high-trust workflow is not exposed over MCP; it requires explicit local approval for merge, issue-closing, and project updates.
 
 ## Contract
 

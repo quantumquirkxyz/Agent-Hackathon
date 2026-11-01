@@ -6,7 +6,7 @@ version: "1"
 description: "Design accessible interfaces — semantics, focus management, keyboard flows, contrast, and assistive-technology compatibility — with inclusive interaction patterns."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "accessibility design guidance with barriers, remediations, validation checks, and residual risks."
 sideEffects: []
 dependencies: []
 stopCondition: "Accessibility barriers, design decisions, and validation checks are explicit."

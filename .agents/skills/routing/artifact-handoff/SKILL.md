@@ -6,7 +6,7 @@ version: "1"
 description: "Transfer structured artifacts between Skills and sessions — with explicit provenance and consumer expectations."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Transfer structured artifacts between Skills and sessions complete; structured result returned; completion criteria checked."

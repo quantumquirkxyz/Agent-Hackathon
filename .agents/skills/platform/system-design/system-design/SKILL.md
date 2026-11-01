@@ -6,7 +6,7 @@ version: "1"
 description: "Design whole systems — components, data flow, scaling, reliability, and trade-offs — with clear assumptions and failure boundaries."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "system design proposal with components, data flow, APIs, storage, trade-offs, risks, and validation plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Components, data flow, trade-offs, failure modes, and operational assumptions are explicit."

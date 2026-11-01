@@ -6,7 +6,7 @@ version: "1"
 description: "Inspect changed Skills and recommend contribution improvements across standards, docs, tests, and examples; use when eva"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "prioritized checks for contract, documentation, dependencies, tests, and examples."
 sideEffects: []
 dependencies: []
 stopCondition: "Inspect changed Skills and recommend contribution improvements across standards, docs, tests, and examples complete; structured result returned; completion criteria checked."

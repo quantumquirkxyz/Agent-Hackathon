@@ -2,7 +2,7 @@
   "skill": "skill-dev/skill-dependency-graph",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "899e55edfcde9fcbd3e1c3b066df07c1b047be8a7da18bb249d6d9dd399b9b7c",
+  "frontmatterHash": "6911bd977fd7e0a87124454b41f56f1fad86f7d6dac95c33cc4127468c5a2bc2",
   "role": "workflow",
   "router": {
     "positive": [],

@@ -6,7 +6,7 @@ version: "1"
 description: "Data lineage (end-to-end tracing, impact analysis, column-level lineage, governance)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "lineage graph + impact analysis + column-level mapping."
 sideEffects: []
 dependencies: []
 stopCondition: "Lineage graph saved; impact analysis complete; column mappings documented."

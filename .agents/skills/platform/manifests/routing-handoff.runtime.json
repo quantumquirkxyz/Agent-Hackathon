@@ -2,7 +2,7 @@
   "skill": "routing/handoff",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "461c9d4f53bed465fc08ef972e2eff4bc7aee297b53e4a778d8f379f16792711",
+  "frontmatterHash": "8a00a3515cbfac27aea0da61740b3ba59b48498c996594f7d3b844d535c8ae23",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -27,8 +27,10 @@
     "sideEffects": [
       "write-temp-file"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-temp-file"
+    ],
     "risk": "low",
     "trustTier": 2
   },

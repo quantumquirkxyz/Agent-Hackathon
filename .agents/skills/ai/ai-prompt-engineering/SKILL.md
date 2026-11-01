@@ -6,7 +6,7 @@ version: "1"
 description: "Design, evaluate, and refine prompts for LLMs (GPT-4, Claude, Llama, Mistral) with chain-of-thought, few-shot, RAG, and evaluation metrics."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "prompt library + evaluation report + recommendation."
 sideEffects: []
 dependencies: []
 stopCondition: "Best prompt identified with evaluation report; failure modes documented."

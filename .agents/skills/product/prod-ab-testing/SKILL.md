@@ -6,7 +6,7 @@ version: "1"
 description: "Design A/B tests — hypothesis, control/treatment, randomization, metrics, statistical power, duration — with valid inference and rollback rules."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "test design with power analysis and rollback rules."
 sideEffects: []
 dependencies: []
 stopCondition: "Test design saved; analysis plan saved; rollback rules defined; statistical power computed."

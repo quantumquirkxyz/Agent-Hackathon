@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "rules with source Skills, frequency, type, and application area."
 dependencies: []
 sideEffects: []
 stopCondition: "Every discovered rule is listed with its source Skill, type, and frequency."

@@ -6,7 +6,7 @@ version: "1"
 description: "Service mesh (Istio, Linkerd, Cilium, mTLS, traffic splitting, observability)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "mesh architecture with trust model, traffic policies, and observability configuration."
 sideEffects: []
 dependencies: []
 stopCondition: "Service mesh design complete; artifact saved; completion criteria checked."

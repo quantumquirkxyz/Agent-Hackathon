@@ -6,7 +6,7 @@ version: "1"
 description: "Model market/portfolio/credit risk (VaR, CVaR, drawdown, stress) with explicit distributions, assumptions, and validation against historical stress events."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "model artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Model market/portfolio/credit risk (VaR, CVaR, drawdown, stress) with explicit distributions, assumptions, and validation against historical stress events complete; required sections present; completion criteria checked."

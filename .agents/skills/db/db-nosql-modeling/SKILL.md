@@ -6,7 +6,7 @@ version: "1"
 description: "Design NoSQL data models — document, key-value, wide-column, graph, time-series — with access pattern analysis, consistency requirements, and schema evolution."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "model artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design NoSQL data models complete; required sections present; completion criteria checked."

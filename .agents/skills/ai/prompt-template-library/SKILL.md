@@ -6,7 +6,7 @@ version: "1"
 description: "Prompt template library (versioned templates, A/B testing, composition, evaluation)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "template manifest + A/B spec + composition library + evaluation suite + fallback discipline."
 sideEffects: []
 dependencies: []
 stopCondition: "Templates green on acceptance suite with evaluation and fallback."

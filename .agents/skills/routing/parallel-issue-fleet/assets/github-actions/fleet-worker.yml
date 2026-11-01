@@ -1,0 +1,227 @@
+name: fleet-worker
+
+# One workflow dispatch = one ephemeral GitHub-hosted VM.
+# Copy this file to .github/workflows/fleet-worker.yml in the target repository.
+# It must exist on the default branch before the fleet can dispatch it.
+#
+# The workflow is agent-neutral. It runs a committed worker profile through a
+# committed runner; it does not know whether the agent is OpenCode, Claude Code,
+# Codex, Gemini CLI, Aider, or a custom CLI.
+#
+# Required repository files:
+#   .github/fleet/worker-runner.mjs   (copy from assets/github-actions/)
+#   .github/fleet/worker.json         (copy one of assets/workers/*.json)
+#
+# Credentials are supplied as one FLEET_SECRETS_JSON secret (a JSON object of
+# environment name -> value). The runner injects only names listed in the
+# worker profile's env/requiredEnv arrays.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Fleet run identity
+        required: true
+        type: string
+      issue_id:
+        description: Issue identity
+        required: true
+        type: string
+      issue_title:
+        description: Issue title
+        required: true
+        type: string
+      issue_url:
+        description: Issue URL
+        required: false
+        type: string
+      branch:
+        description: Branch the runner must push
+        required: true
+        type: string
+      base_sha:
+        description: Immutable base commit
+        required: true
+        type: string
+      artifact_path:
+        description: Workspace-relative ImplementArtifact path
+        required: true
+        type: string
+      prompt:
+        description: Fully rendered worker prompt
+        required: true
+        type: string
+      worker_profile:
+        description: Repository-relative worker profile under .github/fleet/
+        required: true
+        default: .github/fleet/worker.json
+        type: string
+      model:
+        description: Optional model override; empty uses the FLEET_MODEL repository variable or profile default
+        required: false
+        default: ""
+        type: string
+
+run-name: fleet-${{ inputs.run_id }}-${{ inputs.issue_id }}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fleet-${{ inputs.run_id }}-${{ inputs.issue_id }}
+  cancel-in-progress: false
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      FLEET_RUN_ID: ${{ inputs.run_id }}
+      FLEET_ISSUE_ID: ${{ inputs.issue_id }}
+      FLEET_ISSUE_TITLE: ${{ inputs.issue_title }}
+      FLEET_ISSUE_URL: ${{ inputs.issue_url }}
+      FLEET_IMPLEMENT_ARTIFACT: ${{ inputs.artifact_path }}
+      FLEET_BRANCH: ${{ inputs.branch }}
+      FLEET_WORKER_PROFILE: ${{ inputs.worker_profile }}
+      FLEET_MODEL: ${{ inputs.model || vars.FLEET_MODEL }}
+
+    steps:
+      - name: Check out the immutable base
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.base_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Create the issue branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$FLEET_BRANCH" in
+            fleet/*) ;;
+            *) echo "fleet branch must start with fleet/" >&2; exit 1 ;;
+          esac
+          git check-ref-format --branch "$FLEET_BRANCH" >/dev/null
+          git checkout -B "$FLEET_BRANCH"
+
+      - name: Write the worker prompt
+        shell: bash
+        env:
+          PROMPT: ${{ inputs.prompt }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$PROMPT" > "$RUNNER_TEMP/fleet-prompt.txt"
+
+      - name: Bootstrap project dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f .github/fleet/bootstrap.sh ]; then
+            bash .github/fleet/bootstrap.sh
+            exit 0
+          fi
+          if [ -f bun.lockb ] || [ -f bun.lock ]; then
+            if command -v bun >/dev/null 2>&1; then bun install --frozen-lockfile; fi
+          elif [ -f pnpm-lock.yaml ]; then
+            if command -v pnpm >/dev/null 2>&1; then pnpm install --frozen-lockfile; fi
+          elif [ -f yarn.lock ]; then
+            if command -v yarn >/dev/null 2>&1; then yarn install --immutable; fi
+          elif [ -f package-lock.json ]; then
+            npm ci
+          fi
+          if [ -f uv.lock ]; then uv sync --frozen; fi
+          if [ -f poetry.lock ]; then poetry install --no-interaction; fi
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+
+      - name: Run the configured coding agent
+        shell: bash
+        env:
+          FLEET_SECRETS_JSON: ${{ secrets.FLEET_SECRETS_JSON }}
+        run: |
+          set -euo pipefail
+          case "$FLEET_IMPLEMENT_ARTIFACT" in
+            ""|/*|*..*) echo "artifact_path must be a workspace-relative path without '..'" >&2; exit 1 ;;
+          esac
+          case "$FLEET_WORKER_PROFILE" in
+            .github/fleet/*.json) ;;
+            *) echo "worker_profile must be a .json file under .github/fleet/" >&2; exit 1 ;;
+          esac
+          case "$FLEET_WORKER_PROFILE" in
+            *..*) echo "worker_profile must not contain '..'" >&2; exit 1 ;;
+          esac
+          if [ ! -f .github/fleet/worker-runner.mjs ]; then
+            echo "missing .github/fleet/worker-runner.mjs; copy it from the skill's assets/github-actions/" >&2
+            exit 1
+          fi
+          if [ ! -f "$FLEET_WORKER_PROFILE" ]; then
+            echo "missing worker profile: $FLEET_WORKER_PROFILE" >&2
+            exit 1
+          fi
+
+          args=(
+            --profile "$FLEET_WORKER_PROFILE"
+            --workspace "$GITHUB_WORKSPACE"
+            --prompt-file "$RUNNER_TEMP/fleet-prompt.txt"
+            --artifact "$FLEET_IMPLEMENT_ARTIFACT"
+            --run-id "$FLEET_RUN_ID"
+            --issue-id "$FLEET_ISSUE_ID"
+            --issue-title "$FLEET_ISSUE_TITLE"
+            --issue-url "$FLEET_ISSUE_URL"
+            --base-revision "${{ inputs.base_sha }}"
+          )
+          if [ -n "${FLEET_MODEL:-}" ]; then
+            args+=(--model "$FLEET_MODEL")
+          fi
+          node .github/fleet/worker-runner.mjs "${args[@]}"
+
+      - name: Run quality gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f .github/fleet/quality.sh ]; then
+            bash .github/fleet/quality.sh
+            exit 0
+          fi
+          if [ -f package.json ]; then
+            npm run lint --if-present
+            npm run typecheck --if-present
+            npm test --if-present
+          fi
+          if [ -f pyproject.toml ]; then
+            if command -v ruff >/dev/null 2>&1; then ruff check .; fi
+            if command -v mypy >/dev/null 2>&1; then mypy .; fi
+            if command -v pytest >/dev/null 2>&1; then pytest; fi
+          fi
+
+      - name: Require the ImplementArtifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f "$FLEET_IMPLEMENT_ARTIFACT" ]; then
+            echo "worker did not write $FLEET_IMPLEMENT_ARTIFACT" >&2
+            exit 1
+          fi
+
+      - name: Commit and push the validated branch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "fleet-worker"
+          git config user.email "fleet-worker@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "worker produced no changes"
+          else
+            git commit -m "feat(fleet): issue ${FLEET_ISSUE_ID}"
+          fi
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            "HEAD:refs/heads/${FLEET_BRANCH}"
+
+      - name: Upload the ImplementArtifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleet-artifact
+          path: ${{ inputs.artifact_path }}
+          if-no-files-found: error

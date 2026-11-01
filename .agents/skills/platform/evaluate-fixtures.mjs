@@ -75,11 +75,17 @@ async function collectSkillDirs(dir, out = []) {
   return out;
 }
 
-async function runFixture(fixture) {
+export async function runFixture(fixture) {
   fixture.type ??= 'regression';
 
   if (typeof fixture.skill !== 'string' || !fixture.skill.trim()) {
-    return { id: fixture.id, status: 'skip', skippedNoSkill: true, reason: 'no skill field (not a skill-targeted fixture)' };
+    return {
+      id: fixture.id,
+      status: 'skip',
+      skippedNoSkill: true,
+      evaluation: { kind: 'not-applicable', modelInvocation: 'none' },
+      reason: 'no skill field (not a skill-targeted fixture)',
+    };
   }
 
   const skillFile = await resolveSkillPath(fixture.skill);
@@ -114,7 +120,18 @@ async function runFixture(fixture) {
         if (!frontmatter.includes(phrase)) { passes = false; details.push(`frontmatter missing phrase: ${phrase}`); }
       }
     }
-    return { id: fixture.id, skill: fixture.skill, type: 'behavioral', status: passes ? 'pass' : 'fail', details };
+    return {
+      id: fixture.id,
+      skill: fixture.skill,
+      type: 'behavioral',
+      status: passes ? 'pass' : 'fail',
+      details,
+      evaluation: {
+        kind: 'static-content',
+        modelInvocation: 'none',
+        limitation: 'checks SKILL.md text and frontmatter; does not execute a task or agent',
+      },
+    };
   }
 
   if (fixture.type === 'regression') {
@@ -128,7 +145,14 @@ async function runFixture(fixture) {
     }
     if (expected.minLength && body.length < expected.minLength) { passes = false; details.push(`body too short: ${body.length} < ${expected.minLength}`); }
     if (expected.maxLength && body.length > expected.maxLength) { passes = false; details.push(`body too long: ${body.length} > ${expected.maxLength}`); }
-    return { id: fixture.id, skill: fixture.skill, type: 'regression', status: passes ? 'pass' : 'fail', details };
+    return {
+      id: fixture.id,
+      skill: fixture.skill,
+      type: 'regression',
+      status: passes ? 'pass' : 'fail',
+      details,
+      evaluation: { kind: 'static-content', modelInvocation: 'none' },
+    };
   }
 
   if (fixture.type === 'security') {
@@ -151,10 +175,17 @@ async function runFixture(fixture) {
       const declared = effects.length > 0;
       if (declared !== expected.declaresSideEffects) { passes = false; details.push(`sideEffects declared: expected ${expected.declaresSideEffects}, got ${declared}`); }
     }
-    return { id: fixture.id, skill: fixture.skill, type: 'security', status: passes ? 'pass' : 'fail', details };
+    return {
+      id: fixture.id,
+      skill: fixture.skill,
+      type: 'security',
+      status: passes ? 'pass' : 'fail',
+      details,
+      evaluation: { kind: 'static-content', modelInvocation: 'none' },
+    };
   }
 
-  return { id: fixture.id, status: 'skip', reason: 'unknown fixture type' };
+  return { id: fixture.id, status: 'error', reason: `unknown fixture type: ${fixture.type}` };
 }
 
 async function main() {
@@ -201,7 +232,12 @@ async function main() {
   const failed = results.filter(r => r.status === 'fail').length;
   const skipped = results.filter(r => r.status === 'skip').length;
   const skippedNoSkill = results.filter(r => r.skippedNoSkill).length;
-  const passRate = results.length > 0 ? passed / results.length : 0;
+  const applicable = results.filter(r => r.status !== 'skip');
+  const applicableCount = applicable.length;
+  const passRate = applicableCount > 0 ? passed / applicableCount : 0;
+  const status = failed === 0 && applicable.every(r => r.status === 'pass') && passRate >= threshold
+    ? 'pass'
+    : 'fail';
 
   const summary = {
     total: results.length,
@@ -209,9 +245,11 @@ async function main() {
     failed,
     skipped,
     skippedNoSkill,
+    applicable: applicableCount,
     passRate,
     threshold,
-    meetsThreshold: passRate >= threshold,
+    meetsThreshold: status === 'pass',
+    status,
     results,
   };
 
@@ -219,8 +257,8 @@ async function main() {
     console.log(JSON.stringify(summary, null, 2));
   } else {
     console.log(`\nFixture Evaluation Results`);
-    console.log(`Passed: ${passed}/${results.length} (${(passRate * 100).toFixed(1)}%)`);
-    console.log(`Threshold: ${(threshold * 100).toFixed(1)}% — ${passRate >= threshold ? 'PASS' : 'FAIL'}`);
+    console.log(`Passed: ${passed}/${applicableCount} applicable (${(passRate * 100).toFixed(1)}%)`);
+    console.log(`Threshold: ${(threshold * 100).toFixed(1)}% — ${status.toUpperCase()}`);
     if (skippedNoSkill > 0) {
       console.log(`Note: ${skippedNoSkill} fixture entr${skippedNoSkill === 1 ? 'y' : 'ies'} skipped — no resolvable skill field (not consumed by this evaluator)`);
     }
@@ -232,7 +270,7 @@ async function main() {
     }
   }
 
-  process.exit(passRate >= threshold ? 0 : 1);
+  process.exit(status === 'pass' ? 0 : 1);
 }
 
 main().catch(err => {

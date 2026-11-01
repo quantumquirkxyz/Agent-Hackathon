@@ -76,6 +76,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { performance } from 'node:perf_hooks';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { parseFrontmatter, collectSkills } from '../skill-graph.mjs';
@@ -527,9 +528,15 @@ function recordStep(phase, index, op, outcome, tailChars) {
   };
 }
 
+function elapsedSince(startedMs) {
+  // Wall clocks can step backwards; performance.now() cannot. Step durations
+  // and trace completion use this monotonic reading.
+  return Math.max(0, Math.round(performance.now() - startedMs));
+}
+
 async function applyOp(op, context) {
   const workspace = context.workspace;
-  const startedAt = Date.now();
+  const startedMs = performance.now();
 
   if (op.op === 'copy') {
     const source = resolveSource(op.from, context);
@@ -546,7 +553,7 @@ async function applyOp(op, context) {
       fs.mkdirSync(path.dirname(dest), { recursive: true });
       fs.copyFileSync(source, dest);
     }
-    return { status: 'ok', detail: `${op.from} -> ${op.to}`, durationMs: Date.now() - startedAt };
+    return { status: 'ok', detail: `${op.from} -> ${op.to}`, durationMs: elapsedSince(startedMs) };
   }
 
   if (op.op === 'write') {
@@ -557,7 +564,7 @@ async function applyOp(op, context) {
     const content = typeof op.content === 'string' ? op.content : `${JSON.stringify(op.content, null, 2)}\n`;
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, content);
-    return { status: 'ok', detail: op.path, durationMs: Date.now() - startedAt };
+    return { status: 'ok', detail: op.path, durationMs: elapsedSince(startedMs) };
   }
 
   if (op.op === 'remove') {
@@ -566,7 +573,7 @@ async function applyOp(op, context) {
       return { status: 'error', detail: op.path, message: `remove path "${op.path}" escapes the workspace` };
     }
     fs.rmSync(dest, { recursive: true, force: true });
-    return { status: 'ok', detail: op.path, durationMs: Date.now() - startedAt };
+    return { status: 'ok', detail: op.path, durationMs: elapsedSince(startedMs) };
   }
 
   if (op.op === 'run') {
@@ -576,7 +583,7 @@ async function applyOp(op, context) {
         status: 'blocked',
         detail: (op.command ?? []).join(' '),
         message: result.blocked,
-        durationMs: Date.now() - startedAt,
+        durationMs: elapsedSince(startedMs),
       };
     }
     if (result.spawnError) {
@@ -586,7 +593,7 @@ async function applyOp(op, context) {
         message: result.spawnError,
         stdout: result.stdout,
         stderr: result.stderr,
-        durationMs: Date.now() - startedAt,
+        durationMs: elapsedSince(startedMs),
       };
     }
     const expected = op.expectExit === undefined ? 0 : op.expectExit;
@@ -602,7 +609,7 @@ async function applyOp(op, context) {
       timedOut: result.timedOut,
       stdout: result.stdout,
       stderr: result.stderr,
-      durationMs: Date.now() - startedAt,
+      durationMs: elapsedSince(startedMs),
     };
   }
 
@@ -616,11 +623,11 @@ async function applyOp(op, context) {
         ? failures.map((entry) => `${entry.kind} ${entry.path ?? `step ${entry.step}`}`).join('; ')
         : null,
       stateChecks: results,
-      durationMs: Date.now() - startedAt,
+      durationMs: elapsedSince(startedMs),
     };
   }
 
-  return { status: 'error', detail: null, message: `unsupported op "${op.op}"`, durationMs: Date.now() - startedAt };
+  return { status: 'error', detail: null, message: `unsupported op "${op.op}"`, durationMs: elapsedSince(startedMs) };
 }
 
 // Aborts immediately on blocked/error at any phase. A step that fails its
@@ -865,6 +872,15 @@ function skillMetadata(task, repoRoot) {
   }
 }
 
+// A trace must never claim it completed before it started. The duration is
+// measured with performance.now(), so anchoring completedAt to startedAt plus
+// that duration keeps the pair ordered even when the wall clock steps back.
+export function completionTimestamp(startedAt, durationMs) {
+  const anchor = startedAt instanceof Date ? startedAt.getTime() : Number(startedAt);
+  const elapsed = Math.max(0, Number(durationMs) || 0);
+  return new Date(anchor + elapsed).toISOString();
+}
+
 async function recordTaskTrace(task, report, { repoRoot, startedAt }) {
   const calls = new Map();
   for (const step of report.steps) {
@@ -883,7 +899,7 @@ async function recordTaskTrace(task, report, { repoRoot, startedAt }) {
       output: { artifactType: 'task-report', sizeTokens: 0, schemaValid: false },
       execution: {
         startedAt: startedAt.toISOString(),
-        completedAt: new Date().toISOString(),
+        completedAt: completionTimestamp(startedAt, report.durationMs),
         durationMs: report.durationMs,
         iterations: Math.max(1, report.steps.length),
         retries: 0,
@@ -915,7 +931,7 @@ async function recordTaskTrace(task, report, { repoRoot, startedAt }) {
 }
 
 async function finalizeReport(report, { startedMs, startedAt, task, repoRoot, cleanup, blocked }) {
-  report.durationMs = Date.now() - startedMs;
+  report.durationMs = elapsedSince(startedMs);
   report.cleanup = cleanup;
   if (blocked) report.blocked = blocked;
   if (task?.skill) {
@@ -929,7 +945,7 @@ async function finalizeReport(report, { startedMs, startedAt, task, repoRoot, cl
 export async function runTask(task, options = {}) {
   const repoRoot = options.repoRoot ? path.resolve(options.repoRoot) : process.cwd();
   const startedAt = new Date();
-  const startedMs = Date.now();
+  const startedMs = performance.now();
   const context = {
     repoRoot,
     workspace: null,
@@ -959,7 +975,7 @@ export async function runTask(task, options = {}) {
   const shapeErrors = validateTask(task, { skills: null });
   if (shapeErrors.length) {
     report.errors = shapeErrors;
-    report.durationMs = Date.now() - startedMs;
+    report.durationMs = elapsedSince(startedMs);
     return report;
   }
 

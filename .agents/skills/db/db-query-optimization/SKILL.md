@@ -6,7 +6,7 @@ version: "1"
 description: "Optimize database queries — indexing, query plans, cardinality, joins, and execution trade-offs — with explainable reasoning and measurement."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "bottleneck analysis, recommended rewrite or index change, and validation plan."
 sideEffects: []
 dependencies: []
 stopCondition: "The bottleneck, proposed change, and validation plan are explicit."

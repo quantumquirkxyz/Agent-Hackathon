@@ -6,7 +6,7 @@ version: "1"
 description: "Solve and analyse linear algebra problems — matrix decompositions (LU, QR, SVD, eigendecomposition), linear systems, and applications in ML, graphics, and optimisation."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "math artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Solve and analyse linear algebra problems complete; required sections present; completion criteria checked."

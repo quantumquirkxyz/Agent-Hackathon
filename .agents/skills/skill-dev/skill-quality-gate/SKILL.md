@@ -6,7 +6,7 @@ version: "1"
 description: "Run and interpret the skill bundle quality gate across schema, lockfile, semantic, routing, placeholder, rule, metadata, and side-effect checks before promotion or publication."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "skill-dev artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: ""
 stopCondition: "Quality gate commands are executed or blocked with reasons, findings are separated into blockers and warnings, and release readiness is stated."

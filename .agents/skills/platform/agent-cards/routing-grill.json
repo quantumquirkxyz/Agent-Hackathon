@@ -1,6 +1,6 @@
 {
   "name": "grill",
-  "description": "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design.",
+  "description": ">-",
   "url": "https://github.com/quirk/example/blob/main/.agents/skills/routing/grill/SKILL.md",
   "version": "1",
   "capabilities": {
@@ -17,7 +17,7 @@
     {
       "id": "routing/grill",
       "name": "grill",
-      "description": "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design.",
+      "description": ">-",
       "tags": [
         "\"routing\""
       ],

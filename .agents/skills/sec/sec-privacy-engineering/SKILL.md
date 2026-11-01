@@ -6,7 +6,7 @@ version: "1"
 description: "Design privacy-protecting systems — GDPR / CCPA / HIPAA compliance, data minimisation, anonymisation, consent management, data retention, breach notification — with explicit privacy impact assessments."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "Privacy Impact Assessment + data-flow map + compliance checklist."
 sideEffects: []
 dependencies: []
 stopCondition: "PIA saved; data-flow map complete; compliance checklist filled."

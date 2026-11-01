@@ -1,9 +1,9 @@
 ---
-description: "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something intermittent, ambiguous, or hard to reproduce."
+description: ">-"
 ---
 # diagnosing-bugs
 
-When to use: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something intermittent, ambiguous, or hard to reproduce.
+When to use: >-
 
 ## Workflow
 

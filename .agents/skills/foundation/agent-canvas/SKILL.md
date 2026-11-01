@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "workspace state, session report, export package"
 sideEffects: ""
 dependencies: []
 stopCondition: "Workspace defined, session has explicit finish line, and state is recorded."

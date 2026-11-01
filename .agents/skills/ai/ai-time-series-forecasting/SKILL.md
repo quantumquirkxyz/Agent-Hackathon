@@ -6,7 +6,7 @@ version: "1"
 description: "Design and evaluate time-series forecasting — ARIMA, Prophet, NeuralProphet, LSTM, Transformer — with stationarity analysis, seasonality, exogenous variables, and backtest."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "forecast plot + comparison + recommendation."
 sideEffects: []
 dependencies: []
 stopCondition: "Forecast plot saved; backtest complete; best model recommendation made."

@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "synthesized context, index, changes, answer with attribution"
 sideEffects: []
 dependencies: []
 stopCondition: "Context retrieved, indexed, and answer provided with explicit source attribution."

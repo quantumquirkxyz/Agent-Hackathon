@@ -6,7 +6,7 @@ version: "1"
 description: "Discounted Cash Flow — forecast, WACC, terminal value, sensitivity — with explicit assumptions, cross-check against multiples, and a valuation range."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "finance artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Discounted Cash Flow complete; required sections present; completion criteria checked."

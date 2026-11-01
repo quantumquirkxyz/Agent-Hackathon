@@ -1,9 +1,9 @@
 ---
-description: "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design."
+description: ">-"
 ---
 # grill
 
-When to use: Alias for the quirk grilling flow. Use when the user says "grill" and wants a relentless interview to sharpen a plan, decision, or design.
+When to use: >-
 
 ## Workflow
 

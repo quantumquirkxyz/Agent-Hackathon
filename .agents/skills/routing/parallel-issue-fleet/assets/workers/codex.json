@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "name": "codex",
+  "description": "OpenAI Codex CLI in non-interactive exec mode.",
+  "setup": [
+    ["npm", "install", "-g", "@openai/codex"]
+  ],
+  "command": ["codex", "exec"],
+  "modelArgs": ["--model", "{{model}}"],
+  "promptDelivery": "argv",
+  "model": "",
+  "modelEnv": "OPENAI_MODEL",
+  "env": ["OPENAI_API_KEY", "CODEX_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

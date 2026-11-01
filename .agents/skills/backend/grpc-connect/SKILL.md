@@ -6,7 +6,7 @@ version: "1"
 description: "gRPC and Connect (protobuf, ConnectRPC, grpc-gateway, streaming, code generation)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "service contract design with proto definitions, streaming plan, and gateway configuration."
 sideEffects: []
 dependencies: []
 stopCondition: "gRPC/Connect design complete; artifact saved; completion criteria checked."

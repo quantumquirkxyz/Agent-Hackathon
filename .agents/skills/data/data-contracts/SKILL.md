@@ -6,7 +6,7 @@ version: "1"
 description: "Design data contracts — schema evolution, producer-consumer agreements, schema registry, breaking change detection — with explicit compatibility rules and versioning."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "data contract specification + schema evolution policy + registry configuration."
 sideEffects: []
 dependencies: []
 stopCondition: "Contract specification saved; evolution policy defined; registry configuration documented."

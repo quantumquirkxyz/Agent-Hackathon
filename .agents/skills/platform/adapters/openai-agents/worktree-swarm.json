@@ -1,0 +1,16 @@
+{
+  "name": "worktree-swarm",
+  "instructions": "Create isolated local git worktrees and launch one local coding agent per open GitHub issue in the current repository.\n\nCapabilities:\n- validate GitHub issue URLs and repository scope\n- create isolated issue worktrees atomically\n- launch local agents in parallel\n- emit a machine-readable worktree manifest\n\nCanonical skill: .agents/skills/routing/worktree-swarm/SKILL.md",
+  "model": "gpt-5",
+  "tools": [],
+  "handoff_description": "All valid issues have isolated worktrees and local agents, a manifest is written, or validation/creation fails with safe rollback.",
+  "runtime": {
+    "role": "workflow",
+    "maxTurns": 1,
+    "isolation": "none"
+  },
+  "guardrails": {
+    "input": [],
+    "output": []
+  }
+}

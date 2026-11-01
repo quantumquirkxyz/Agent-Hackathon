@@ -6,7 +6,7 @@ version: "1"
 description: "Design operating system process management — scheduling, signals, process states, concurrency, and inter-process communication — with explicit isolation boundaries."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "process-state analysis, scheduling/IPC design, and failure or race-condition notes."
 sideEffects: []
 dependencies: []
 stopCondition: "Process states, scheduling assumptions, IPC, and failure behavior are explicit."

@@ -43,7 +43,8 @@ async function collectSkills(dir, out = []) {
       const fm = parseFrontmatter(text);
       out.push({
         name: entry.name,
-        path: path.relative(root, child),
+        path: path.relative(root, child).split(path.sep).join('/'),
+        id: path.relative(root, child).split(path.sep).join('/'),
         category: fm.category || 'uncategorized',
         dependencies: Array.isArray(fm.dependencies) ? fm.dependencies : [],
         sideEffects: Array.isArray(fm.sideEffects) ? fm.sideEffects : [],
@@ -58,7 +59,7 @@ async function collectSkills(dir, out = []) {
 }
 
 function detectCycles(skills) {
-  const nameToSkills = new Map(skills.map(s => [s.name, s]));
+  const indexes = buildIndexes(skills);
   const cycles = [];
 
   function dfs(node, visited, recStack, path) {
@@ -66,9 +67,9 @@ function detectCycles(skills) {
     recStack.add(node);
     path.push(node);
 
-    const skill = nameToSkills.get(node);
+    const skill = indexes.byId.get(node);
     if (skill) {
-      for (const dep of skill.dependencies) {
+      for (const dep of skill.resolvedDependencies) {
         if (!visited.has(dep)) {
           dfs(dep, visited, recStack, path);
         } else if (recStack.has(dep)) {
@@ -84,39 +85,71 @@ function detectCycles(skills) {
 
   const visited = new Set();
   for (const skill of skills) {
-    if (!visited.has(skill.name)) {
-      dfs(skill.name, visited, new Set(), []);
+    if (!visited.has(skill.id)) {
+      dfs(skill.id, visited, new Set(), []);
     }
   }
 
   return cycles;
 }
 
+function buildIndexes(skills) {
+  const byId = new Map(skills.map((skill) => [skill.id, skill]));
+  const byName = new Map();
+  for (const skill of skills) {
+    const entries = byName.get(skill.name) ?? [];
+    entries.push(skill);
+    byName.set(skill.name, entries);
+  }
+  return { byId, byName };
+}
+
+function resolveDependency(reference, indexes) {
+  const normalized = String(reference).replaceAll('\\', '/').replace(/^\.\//, '');
+  if (indexes.byId.has(normalized)) return normalized;
+  const matches = indexes.byName.get(normalized) ?? [];
+  return matches.length === 1 ? matches[0].id : null;
+}
+
+function resolveDependencies(skills) {
+  const indexes = buildIndexes(skills);
+  for (const skill of skills) {
+    skill.resolvedDependencies = [];
+    skill.unresolvedDependencies = [];
+    for (const dependency of skill.dependencies) {
+      const resolved = resolveDependency(dependency, indexes);
+      if (resolved) skill.resolvedDependencies.push(resolved);
+      else skill.unresolvedDependencies.push(dependency);
+    }
+  }
+  return indexes;
+}
+
 function findCentralSkills(skills, topN = 10) {
   const inDegree = new Map();
   const outDegree = new Map();
-  const nameToSkills = new Map(skills.map(s => [s.name, s]));
 
   for (const s of skills) {
-    inDegree.set(s.name, 0);
-    outDegree.set(s.name, 0);
+    inDegree.set(s.id, 0);
+    outDegree.set(s.id, 0);
   }
 
   for (const s of skills) {
-    for (const dep of s.dependencies) {
-      if (nameToSkills.has(dep)) {
-        outDegree.set(s.name, (outDegree.get(s.name) || 0) + 1);
+    for (const dep of s.resolvedDependencies) {
+      if (inDegree.has(dep)) {
+        outDegree.set(s.id, (outDegree.get(s.id) || 0) + 1);
         inDegree.set(dep, (inDegree.get(dep) || 0) + 1);
       }
     }
   }
 
   const scored = skills.map(s => ({
+    id: s.id,
     name: s.name,
     category: s.category,
-    inDegree: inDegree.get(s.name) || 0,
-    outDegree: outDegree.get(s.name) || 0,
-    centrality: (inDegree.get(s.name) || 0) + (outDegree.get(s.name) || 0),
+    inDegree: inDegree.get(s.id) || 0,
+    outDegree: outDegree.get(s.id) || 0,
+    centrality: (inDegree.get(s.id) || 0) + (outDegree.get(s.id) || 0),
   }));
 
   scored.sort((a, b) => b.centrality - a.centrality);
@@ -125,12 +158,13 @@ function findCentralSkills(skills, topN = 10) {
 
 function generateMermaid(skills) {
   const lines = ['graph TD'];
+  const nodeId = (id) => `n${Buffer.from(id).toString('base64url').replaceAll('-', '_')}`;
   for (const s of skills) {
-    if (s.dependencies.length === 0) {
-      lines.push(`  ${s.name}[${s.name}]`);
+    if (s.resolvedDependencies.length === 0) {
+      lines.push(`  ${nodeId(s.id)}[${s.name}]`);
     } else {
-      for (const dep of s.dependencies) {
-        lines.push(`  ${dep} --> ${s.name}`);
+      for (const dep of s.resolvedDependencies) {
+        lines.push(`  ${nodeId(dep)} --> ${nodeId(s.id)}`);
       }
     }
   }
@@ -139,10 +173,11 @@ function generateMermaid(skills) {
 
 function generateDot(skills) {
   const lines = ['digraph skills {', '  rankdir=LR;'];
+  const nodeId = (id) => `n${Buffer.from(id).toString('base64url')}`;
   for (const s of skills) {
-    lines.push(`  "${s.name}" [label="${s.name}\\n${s.category}"];`);
-    for (const dep of s.dependencies) {
-      lines.push(`  "${dep}" -> "${s.name}";`);
+    lines.push(`  "${nodeId(s.id)}" [label="${s.name}\\n${s.category}"];`);
+    for (const dep of s.resolvedDependencies) {
+      lines.push(`  "${nodeId(dep)}" -> "${nodeId(s.id)}";`);
     }
   }
   lines.push('}');
@@ -154,15 +189,31 @@ async function main() {
   const asJson = process.argv.includes('--json');
 
   const skills = await collectSkills(skillsRoot);
+  const indexes = resolveDependencies(skills);
   console.log(`[dependency-graph] Analyzing ${skills.length} skills...`);
 
   const cycles = detectCycles(skills);
   const central = findCentralSkills(skills);
-  const orphans = skills.filter(s => s.dependencies.length === 0 && !skills.some(other => other.dependencies.includes(s.name)));
+  const incoming = new Set(skills.flatMap((skill) => skill.resolvedDependencies));
+  const orphans = skills.filter(s => s.resolvedDependencies.length === 0 && !incoming.has(s.id));
 
   const result = {
     totalSkills: skills.length,
     totalDependencies: skills.reduce((sum, s) => sum + s.dependencies.length, 0),
+    duplicateNames: [...indexes.byName.entries()]
+      .filter(([, matches]) => matches.length > 1)
+      .map(([name, matches]) => ({ name, ids: matches.map((skill) => skill.id) })),
+    unresolvedDependencies: skills.flatMap((skill) => skill.unresolvedDependencies.map((dependency) => ({
+      skill: skill.id,
+      dependency,
+    }))),
+    nodes: skills.map((skill) => ({
+      id: skill.id,
+      name: skill.name,
+      path: skill.path,
+      dependencies: skill.resolvedDependencies,
+      unresolvedDependencies: skill.unresolvedDependencies,
+    })),
     cycles: cycles.map(c => ({ path: c, length: c.length })),
     centralSkills: central,
     orphans: orphans.map(s => s.name),

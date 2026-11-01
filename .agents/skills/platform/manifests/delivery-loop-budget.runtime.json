@@ -2,7 +2,7 @@
   "skill": "delivery/loop-budget",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "1bce57aca1b2b0dd26afc08ed62588cd1b43d9739f54dad9cd7594abc544874a",
+  "frontmatterHash": "0ef4c63f159c6ccacf6b591e70b0def5a692ae2c867572be13d2a803f28beeae",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -27,8 +27,10 @@
     "sideEffects": [
       "write-temp-file"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-temp-file"
+    ],
     "risk": "low",
     "trustTier": 2
   },

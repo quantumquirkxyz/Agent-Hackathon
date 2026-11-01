@@ -116,12 +116,12 @@ function resolveArtifactSchema(artifactType, schemasDir) {
   return null;
 }
 
-export function deriveTools(haystack, sideEffects, risk) {
+export function deriveTools(haystack, sideEffects, risk, approvalRequired = false) {
   const allow = [...BASE_TOOLS];
   if (EXECUTION_MENTION.test(haystack)) allow.push('Bash');
   if (sideEffects.includes('write-code') || sideEffects.includes('write-files')) allow.push('Edit', 'Write');
   if (WEB_MENTION.test(haystack)) allow.push('WebFetch', 'WebSearch');
-  const deny = risk === 'high' ? [...HIGH_RISK_DENY] : [];
+  const deny = risk === 'high' && !approvalRequired ? [...HIGH_RISK_DENY] : [];
   return { allow, deny };
 }
 
@@ -145,6 +145,7 @@ export function buildRuntimeManifest(frontmatter, options = {}) {
   const sideEffects = toList(fm.sideEffects);
   const risk = normalizeRisk(fm.risk);
   const trustTier = normalizeTrustTier(fm.trustTier);
+  const approvalRequired = normalizeApprovalRequired(fm.approvalRequired);
   const artifactType = typeof fm.artifactType === 'string' ? fm.artifactType.trim() : '';
   const inputs = toList(fm.inputs);
   const mutating = sideEffects.some((effect) => MUTATING_SIDE_EFFECTS.has(effect));
@@ -161,11 +162,11 @@ export function buildRuntimeManifest(frontmatter, options = {}) {
       isolation: mutating ? 'worktree' : 'none',
       maxTurns: normalizeMaxTurns(fm.maxIterations),
       modelTier: normalizeModelTier(fm.modelTier),
-      tools: deriveTools(haystack, sideEffects, risk),
+      tools: deriveTools(haystack, sideEffects, risk, approvalRequired),
     },
     guardrails: {
       sideEffects,
-      approvalRequired: normalizeApprovalRequired(fm.approvalRequired),
+      approvalRequired,
       approvalFor: toList(fm.approvalFor),
       risk,
       trustTier,

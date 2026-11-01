@@ -6,7 +6,7 @@ version: "1"
 description: "Design and configure Kubernetes orchestration — cluster architecture, deployment strategies, service mesh, observability, auto-scaling, security policies — with reproducible infrastructure."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "Kubernetes manifests + architecture documentation + monitoring rules."
 sideEffects: []
 dependencies: []
 stopCondition: "Manifests saved; architecture documented; monitoring rules defined."

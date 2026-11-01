@@ -6,7 +6,7 @@ version: "1"
 description: "Design content management systems — content models, editorial workflows, publishing pipelines, localization — with schema evolution and multi-channel delivery."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "cms artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design content management systems complete; artifact saved; completion criteria checked."

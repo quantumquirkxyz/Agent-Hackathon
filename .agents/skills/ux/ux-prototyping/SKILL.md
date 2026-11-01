@@ -6,7 +6,7 @@ version: "1"
 description: "Prototype user experiences — wireframes, interactive mockups, and rapid validation — with explicit experiment goals and iteration criteria."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "prototype plan with fidelity, tasks, feedback method, success criteria, and iteration plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Prototype goal, fidelity, validation method, and iteration criteria are explicit."

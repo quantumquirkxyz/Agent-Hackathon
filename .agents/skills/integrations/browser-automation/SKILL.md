@@ -17,16 +17,16 @@ inputs:
 outputs:
   - type: object
     name: BrowserTaskReport
-  properties:
-    status: { type: string, enum: [completed, blocked, approval-required, failed] }
-    objective: { type: string }
-    steps: { type: "array", items: { type: "string" } }
-    evidence: { type: "array", items: { type: "string" } }
-    actionsTaken: { type: "array", items: { type: "string" } }
-    approvalGates: { type: "array", items: { type: "string" } }
-    nextConsumer: { type: "string" }
-    riskRemaining: { type: "string" }
-  required: [status, objective, nextConsumer]
+    properties:
+      status: { type: string, enum: [completed, blocked, approval-required, failed] }
+      objective: { type: string }
+      steps: { type: "array", items: { type: "string" } }
+      evidence: { type: "array", items: { type: "string" } }
+      actionsTaken: { type: "array", items: { type: "string" } }
+      approvalGates: { type: "array", items: { type: "string" } }
+      nextConsumer: { type: "string" }
+      riskRemaining: { type: "string" }
+    required: [status, objective, nextConsumer]
 sideEffects:
   - network
   - write-files

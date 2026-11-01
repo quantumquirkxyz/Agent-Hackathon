@@ -2,7 +2,7 @@
   "skill": "backend/serverless",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "2633933729e8b2825333e815487241c324e1c15a72ededf04b71d81a1ac79d90",
+  "frontmatterHash": "2a05b786388b0c603c041c85f667406f17308417407c8fc5bce3e2294139749e",
   "role": "workflow",
   "router": {
     "positive": [],

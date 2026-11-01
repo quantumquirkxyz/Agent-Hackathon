@@ -6,7 +6,7 @@ version: "1"
 description: "Measure and improve system performance — latency, throughput, resource usage, bottlenecks, and capacity planning — with reproducible profiling."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "performance hypothesis, profiling plan, bottleneck analysis, remediation options, and validation criteria."
 sideEffects: []
 dependencies: []
 stopCondition: "Performance target, measurements, bottleneck, and validation plan are explicit."

@@ -2,7 +2,7 @@
   "skill": "ai/mlops",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "f32d570d47d07927168f51b6e0b547d557f2cc9e8b8860b967b2f866acaab09c",
+  "frontmatterHash": "94817642fc399a7e3b8b91a389c7f365f210ab2772c3549e2b84af94c25cad39",
   "role": "workflow",
   "router": {
     "positive": [],

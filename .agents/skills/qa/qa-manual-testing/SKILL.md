@@ -6,7 +6,7 @@ version: "1"
 description: "Perform manual test sessions — exploratory checks, edge cases, accessibility, and user-visible regressions — with explicit reproduction notes."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "test charter, executed paths, findings, reproduction notes, and residual risk."
 sideEffects: []
 dependencies: []
 stopCondition: "Tested paths, environment, findings, and residual risks are documented."

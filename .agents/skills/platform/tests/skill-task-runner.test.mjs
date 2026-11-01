@@ -19,6 +19,7 @@ import {
   snapshotForbidden,
   resolveCommand,
   runTask,
+  completionTimestamp,
 } from '../scripts/run-skill-task.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -87,6 +88,14 @@ test('listTasks reports every task file', () => {
     assert.equal(entry.parseError, null);
   }
   assert.ok(tasks.map((entry) => entry.id).includes(SIMPLEST_TASK));
+});
+
+test('completionTimestamp never places completedAt before startedAt', () => {
+  const startedAt = new Date('2026-10-20T04:28:04.527Z');
+  assert.equal(completionTimestamp(startedAt, -5000), startedAt.toISOString());
+  assert.equal(completionTimestamp(startedAt, 0), startedAt.toISOString());
+  assert.equal(completionTimestamp(startedAt.getTime(), 2500), '2026-10-20T04:28:07.027Z');
+  assert.equal(completionTimestamp(startedAt, Number.NaN), startedAt.toISOString());
 });
 
 test('validateTask rejects a malformed task', () => {
@@ -293,6 +302,30 @@ test('the simplest task passes end to end in an empty sandbox and cleans up', as
   assert.equal(report.steps.filter((step) => step.phase === 'action').length, task.actions.length);
   assert.ok(report.stateChecks.every((check) => check.ok));
   assert.deepStrictEqual(report.forbiddenViolations, []);
+});
+
+test('every shipped task passes end to end in a sandbox', async () => {
+  const files = fs.readdirSync(TASKS_DIR).filter((name) => name.endsWith('.json')).sort();
+  assert.ok(files.length >= 3, `expected shipped tasks, found ${files.length}`);
+
+  for (const file of files) {
+    const taskFile = path.join(TASKS_DIR, file);
+    const { task } = loadTask(taskFile);
+    const report = await runTask(task, { sandbox: 'tmpdir', repoRoot: REPO_ROOT, taskFile });
+
+    assert.equal(
+      report.status,
+      'pass',
+      `${task.id} ended ${report.status}: ${JSON.stringify({
+        checks: report.stateChecks.filter((check) => !check.ok),
+        errors: report.errors,
+        blocked: report.blocked,
+      })}`
+    );
+    assert.equal(report.cleanup, 'removed', `${task.id} left its workspace behind`);
+    assert.equal(fs.existsSync(report.workspace), false, `${task.id} workspace still exists`);
+    assert.deepStrictEqual(report.forbiddenViolations, [], `${task.id} touched a forbidden path`);
+  }
 });
 
 test('a failing state check is a fail, never an error', async () => {

@@ -6,7 +6,7 @@ version: "1"
 description: "Test compilers and interpreters — parser tests, semantic tests, IR validation, golden tests, and regression checks — with explicit oracle design."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "test matrix with fixture types, expected oracles, golden strategy, and regression checks."
 sideEffects: []
 dependencies: []
 stopCondition: "Test oracles, fixture classes, and regression checks are explicit."

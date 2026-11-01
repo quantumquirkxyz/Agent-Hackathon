@@ -2,7 +2,7 @@
   "skill": "routing/capability-router",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "177b73029d524385304f2893eb8932dcc888c8816ddae56d576523f99a1518e0",
+  "frontmatterHash": "cab6428f684bd0a99f7a9292bb793df3d5f0d17e627c01512fbd22da082a1fe9",
   "role": "workflow",
   "router": {
     "positive": [],

@@ -35,7 +35,8 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { parseFrontmatter, collectSkills, buildGraphFromSkills, rank, tokenize } from '../skill-graph.mjs';
+import { parseFrontmatter, collectSkills, tokenize } from '../skill-graph.mjs';
+import { createSkillGraphIndex } from '../skill-graph-index.mjs';
 import { bm25Scores } from '../scripts/build-skill-index.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -119,6 +120,7 @@ const context = {
   skillsByName: new Map(),
   allSkillNames: new Set(),
   graph: null,
+  graphIndex: null,
   index: null,
   lock: {},
   registry: null,
@@ -158,7 +160,9 @@ function loadContext() {
     if (!context.skillsByName.has(skill.name)) context.skillsByName.set(skill.name, skill);
   }
   context.allSkillNames = collectAllSkillNames(SKILLS_ROOT);
-  context.graph = buildGraphFromSkills(context.skills);
+  context.graphIndex = createSkillGraphIndex({ root: REPO_ROOT, fresh: true });
+  context.graphIndex.refresh();
+  context.graph = null;
   context.index = readJsonFile(INDEX_FILE);
   const lock = readJsonFile(LOCK_FILE);
   context.lock = lock?.skills ?? {};
@@ -402,7 +406,7 @@ const TOOLS = {
       const task = String(args.task ?? '');
       if (!task.trim()) throw new RpcError(-32602, 'invalid params: "task" must be a non-empty string');
       const limit = clampLimit(args.limit, 3, 10);
-      const ranked = rank(context.graph, task, { limit: Math.max(limit * 5, 25) });
+      const ranked = context.graphIndex.find(task, { limit: Math.max(limit * 5, 25) });
       const excluded = args.allowHighTrust === true ? new Set() : new Set(highTrustNames());
       const results = [];
       for (const candidate of ranked.candidates) {
@@ -566,7 +570,7 @@ const TOOLS = {
       if (!task.trim()) throw new RpcError(-32602, 'invalid params: "task" must be a non-empty string');
       const limit = clampLimit(args.limit, 5, 10);
       const tokens = tokenize(task);
-      const ranked = rank(context.graph, task, { limit: Math.max(limit * 5, 25) });
+      const ranked = context.graphIndex.find(task, { limit: Math.max(limit * 5, 25) });
       const excluded = args.allowHighTrust === true ? new Set() : new Set(highTrustNames());
       const explanations = [];
       for (const candidate of ranked.candidates) {

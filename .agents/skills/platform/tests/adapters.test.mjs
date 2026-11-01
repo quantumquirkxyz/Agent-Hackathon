@@ -192,10 +192,10 @@ describe('generateAdapters (pure projection)', () => {
     assert.equal(models['epsilon-router'], 'sonnet');
   });
 
-  test('claude agent denies Bash for risk high skills', () => {
+  test('claude agent does not deny Bash for approval-gated high-risk skills', () => {
     const entry = findEntry(generated, 'claude', 'test-gamma-critical.md');
     const fm = parseFrontmatter(entry.content);
-    assert.equal(fm.disallowedTools, 'Bash');
+    assert.equal(fm.disallowedTools, undefined);
   });
 
   test('claude agent sets permissionMode default for mutating side effects', () => {

@@ -15,7 +15,7 @@ When to use: Investigate a question against high-trust primary sources and captu
 
 ## Guardrails
 
-- risk: low; trust tier: 2; approval required: no
+- risk: low; trust tier: 2; approval required: yes
 - side effects: write-docs
 - isolation: none; model tier: fast
 

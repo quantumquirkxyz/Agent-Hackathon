@@ -106,6 +106,26 @@ describe('record-execution.mjs trace defaults', () => {
     assert.deepEqual(validateTrace(trace), []);
   });
 
+  test('raw artifact and arbitrary secret payloads are not persisted', async () => {
+    const { recordExecution } = await import(RECORD_PATH);
+    const secret = 'sk-test-super-secret-token';
+    const runPath = await recordExecution({
+      repoRoot: scratch,
+      skill: 'telemetry-redaction',
+      input: { artifactType: 'prompt', content: secret, contextRefs: ['issue-1'], apiToken: secret },
+      output: { artifactType: 'code', text: secret, schemaValid: true, outputRef: 'artifact.md', password: secret },
+      tools: [{ name: 'Bash', calls: 1, token: secret }],
+      extra: { authorization: secret },
+    });
+    const persistedText = await fs.promises.readFile(runPath, 'utf8');
+    assert.ok(!persistedText.includes(secret), 'trace must not contain raw secret-bearing payload text');
+    const trace = await readTraceLine(runPath);
+    assert.deepEqual(trace.input, { artifactType: 'prompt', sizeTokens: Math.ceil(secret.length / 4), contextRefs: ['issue-1'] });
+    assert.deepEqual(trace.output, { artifactType: 'code', sizeTokens: Math.ceil(secret.length / 4), schemaValid: true, outputRef: 'artifact.md' });
+    assert.deepEqual(trace.tools, [{ name: 'Bash', calls: 1 }]);
+    assert.equal(Object.hasOwn(trace, 'extra'), false);
+  });
+
   test('a trace with no optional fields still succeeds with durationMs computed', async () => {
     const { recordExecution, validateTrace } = await import(RECORD_PATH);
     const runPath = await recordExecution({

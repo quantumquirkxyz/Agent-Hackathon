@@ -6,7 +6,7 @@ version: "1"
 description: "Design embedded/IoT systems — firmware, sensors, edge computing, device connectivity, OTA updates — with reliability, security, and constrained resource awareness."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "iot artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design embedded/IoT systems complete; artifact saved; completion criteria checked."

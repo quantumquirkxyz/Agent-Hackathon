@@ -6,7 +6,7 @@ version: "1"
 description: "Model credit risk — PD, LGD, EAD, expected loss, loss distribution, credit VaR — with default correlation and portfolio-level risk aggregation."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "quant artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Model credit risk complete; required sections present; completion criteria checked."

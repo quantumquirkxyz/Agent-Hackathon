@@ -4,6 +4,7 @@ description: "Design physical packaging — dielines, structure, materials, regu
 license: "MIT"
 promptVersion: "2.0"
 artifactType: "plan"
+outputs: "a structured artifact or guidance aligned to the skill's declared outputs."
 modelTier: "reasoning"
 evaluators: ["behavioral", "regression"]
 fixturesPath: ""

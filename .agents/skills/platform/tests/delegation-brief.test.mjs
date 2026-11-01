@@ -246,7 +246,10 @@ test('an empty criteria array fails', () => {
 // repointed `fixturesPath` on subagent-swarm to the canonical fixture file. Those
 // keys are the sanctioned exception; every other frontmatter field must stay
 // byte-identical.
-const frontmatterExceptions = ['clauses', 'reloadPolicy', 'license', 'fixturesPath'];
+// `outputs` joined the exception set when the bundle-wide artifact-output debt
+// was paid: subagent-swarm now declares the output already promised by its
+// Contract. The historical guard still protects every unrelated field.
+const frontmatterExceptions = ['clauses', 'reloadPolicy', 'license', 'fixturesPath', 'outputs'];
 
 // A key line plus its block: the "key:" line and every indented continuation or
 // list item that belongs to it, up to the next top-level frontmatter key.

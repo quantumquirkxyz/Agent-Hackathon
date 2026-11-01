@@ -6,7 +6,7 @@ version: "1"
 description: "Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "skill-dev artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Reference for writing and editing skills well complete; artifact saved; completion criteria checked."

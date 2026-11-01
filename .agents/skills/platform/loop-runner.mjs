@@ -102,6 +102,18 @@ function normalizeBudget(budget) {
       normalized[key] = BUDGET_DEFAULTS[key];
     }
   }
+  for (const key of ['stepLimit', 'maxConsecutiveFormatErrors', 'repeatThreshold', 'repeatWindow', 'pingPongWindow']) {
+    const n = normalized[key];
+    if (!(n === Infinity && key === 'stepLimit') && (!Number.isSafeInteger(n) || n < (key === 'repeatThreshold' ? 2 : key === 'stepLimit' ? 0 : 1))) {
+      throw new RangeError('Invalid loop budget: ' + key);
+    }
+  }
+  for (const key of ['costLimit', 'wallTimeLimitMs']) {
+    const n = normalized[key];
+    if (!(n === Infinity || (typeof n === 'number' && Number.isFinite(n) && n >= 0))) {
+      throw new RangeError('Invalid loop budget: ' + key);
+    }
+  }
   return normalized;
 }
 
@@ -203,11 +215,42 @@ function detectPingPong(budget, history, emitNudge) {
   return false;
 }
 
+async function nextWithSignal(iterator, signal) {
+  if (!signal) return { cancelled: false, next: await iterator.next() };
+  if (signal.aborted) return { cancelled: true, next: null };
+  return await new Promise((resolve, reject) => {
+    let settled = false;
+    const cleanup = () => signal.removeEventListener('abort', onAbort);
+    const onAbort = () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve({ cancelled: true, next: null });
+    };
+    signal.addEventListener('abort', onAbort, { once: true });
+    Promise.resolve(iterator.next()).then(
+      next => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve({ cancelled: false, next });
+      },
+      error => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(error);
+      },
+    );
+  });
+}
+
 export async function runLoop(options = {}) {
-  const { steps, onNudge, exemptActions = [], loopId = null } = options;
+  const { steps, onNudge, exemptActions = [], loopId = null, strictLedger = false, signal = null } = options;
   const iterator = toIterator(steps);
   const budget = normalizeBudget(options.budget);
   const ledgerPath = options.ledgerPath === undefined ? DEFAULT_LEDGER_PATH : options.ledgerPath;
+  if (strictLedger && !ledgerPath) throw new Error('Strict ledger mode requires a ledgerPath');
   const exempt = new Set(Array.isArray(exemptActions) ? exemptActions : [exemptActions]);
 
   const nudges = [];
@@ -224,7 +267,9 @@ export async function runLoop(options = {}) {
     if (!ledgerPath) return;
     try {
       appendFileSync(ledgerPath, `${JSON.stringify(line)}\n`);
-    } catch {}
+    } catch (error) {
+      if (strictLedger) throw error;
+    }
   };
 
   const startedAt = Date.now();
@@ -241,7 +286,9 @@ export async function runLoop(options = {}) {
   if (ledgerPath) {
     try {
       mkdirSync(dirname(resolve(ledgerPath)), { recursive: true });
-    } catch {}
+    } catch (error) {
+      if (strictLedger) throw error;
+    }
   }
 
   const finish = (status) => {
@@ -271,7 +318,12 @@ export async function runLoop(options = {}) {
       let iteratorReturn = null;
 
       try {
-        const next = await iterator.next();
+        const pulled = await nextWithSignal(iterator, signal);
+        if (pulled.cancelled) {
+          try { if (typeof iterator.return === 'function') await iterator.return(); } catch {}
+          return finish('cancelled');
+        }
+        const next = pulled.next;
         if (next.done) {
           done = true;
           iteratorReturn = next.value ?? null;
@@ -287,18 +339,20 @@ export async function runLoop(options = {}) {
         return finish('completed');
       }
 
-      const stepCost = verdict && Number.isFinite(verdict.cost) ? verdict.cost : DEFAULT_COST_PER_STEP;
+      const invalidCost = verdict && verdict.cost !== undefined && (!Number.isFinite(verdict.cost) || verdict.cost < 0);
+      const stepCost = verdict && !invalidCost && Number.isFinite(verdict.cost) ? verdict.cost : DEFAULT_COST_PER_STEP;
       stepsSpent += 1;
       costSpent += stepCost;
       const stepWallTimeMs = Date.now() - stepStartedAt;
 
-      const errored = stepError !== null || (verdict !== null && verdict.error !== undefined && verdict.error !== null);
+      const errored = stepError !== null || Boolean(invalidCost) || (verdict !== null && verdict.error !== undefined && verdict.error !== null);
+      const reportedError = stepError ? errorText(stepError) : invalidCost ? 'invalid step cost' : String(verdict?.error);
       const action = verdict && typeof verdict.action === 'string' && verdict.action !== ''
         ? verdict.action
         : '__step__';
       const argsHash = hashArgs(verdict ? verdict.args : undefined);
       const resultSignature = errored
-        ? signatureOf({ error: stepError ? errorText(stepError) : String(verdict.error) })
+        ? signatureOf({ error: reportedError })
         : signatureOf(verdict ? verdict.result : undefined);
       const stepHash = stepHashOf(action, argsHash, resultSignature);
 
@@ -317,7 +371,7 @@ export async function runLoop(options = {}) {
         wallTimeMs: stepWallTimeMs,
       };
       if (errored) {
-        record.error = stepError ? errorText(stepError) : String(verdict.error);
+        record.error = reportedError;
       }
 
       try {

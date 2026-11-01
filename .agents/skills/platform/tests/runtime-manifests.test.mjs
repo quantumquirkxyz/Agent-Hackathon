@@ -146,14 +146,14 @@ test('manifests derived from real fixture frontmatter carry the required fields 
 
 test('manifest coverage over the real bundle is complete and exact', () => {
   const inputs = collectManifestInputs(REPO_ROOT);
-  assert.equal(inputs.length, 253);
+  assert.equal(inputs.length, 255);
 
   const coverage = manifestCoverage(
     inputs.map((input) => ({ skill: input.skill })),
     inputs.map((input) => input.manifest),
   );
-  assert.equal(coverage.skills, 253);
-  assert.equal(coverage.manifests, 253);
+  assert.equal(coverage.skills, 255);
+  assert.equal(coverage.manifests, 255);
   assert.deepEqual(coverage.missing, []);
   assert.deepEqual(coverage.extra, []);
   assert.equal(coverage.complete, true);
@@ -285,12 +285,9 @@ test('tool and guardrail derivation follows the documented rules', () => {
     { ...REVIEW_PR_FRONTMATTER, risk: 'high', trustTier: '4', sideEffects: [] },
     { skill: 'routing/ship-subissue', body: 'Fetch the issue tracker data before merging.', schemasDir: emptySchemasDir() },
   );
-  assert.deepEqual(risky.execution.tools.deny, ['Bash', 'WebFetch', 'WebSearch']);
+  assert.deepEqual(risky.execution.tools.deny, []);
   assert.ok(risky.execution.tools.allow.includes('WebFetch'));
-  assert.ok(
-    manifestInconsistencies(risky, risky).some((issue) => issue.includes('allow and deny lists share')),
-    'a self comparison must flag the allow/deny overlap',
-  );
+  assert.deepEqual(manifestInconsistencies(risky, risky), [], 'approval-gated high-risk tools stay usable without allow/deny overlap');
 
   const normalized = buildRuntimeManifest(
     { ...REVIEW_PR_FRONTMATTER, modelTier: 'code' },

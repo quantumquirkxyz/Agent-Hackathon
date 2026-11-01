@@ -6,7 +6,7 @@ version: "1"
 description: "Use when you need to resolve a conflicted or blocked branch state: in-progress git merge/rebase conflicts, PR branch corrections, or other branch-state blockers that need deliberate resolution."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "delivery artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - write-code
   - commit-git

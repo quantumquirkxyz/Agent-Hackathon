@@ -4,6 +4,7 @@ description: "Design editorial layouts — magazines, books, reports, long-form 
 license: "MIT"
 promptVersion: "2.0"
 artifactType: "plan"
+outputs: "paginated layout specification with grid system, typography hierarchy, and image treatment."
 modelTier: "reasoning"
 evaluators: ["behavioral", "regression"]
 fixturesPath: ""

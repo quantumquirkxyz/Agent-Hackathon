@@ -20,7 +20,7 @@ When to use: Generates and maintains Agent Cards for A2A (Agent-to-Agent) discov
 
 ## Guardrails
 
-- risk: low; trust tier: 1; approval required: no
+- risk: low; trust tier: 1; approval required: yes
 - side effects: write-files
 - isolation: worktree; model tier: router
 

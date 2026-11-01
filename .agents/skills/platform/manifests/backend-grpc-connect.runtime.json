@@ -2,7 +2,7 @@
   "skill": "backend/grpc-connect",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "e0f3b282cde51b7414c204e3f464059f513976fa6b10705998014c3c4fe705b7",
+  "frontmatterHash": "39d838652171a57185f88b281cebf282fe7af70c8aad28f309a2530499bdc6b6",
   "role": "workflow",
   "router": {
     "positive": [],

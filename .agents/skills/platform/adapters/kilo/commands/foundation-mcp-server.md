@@ -15,7 +15,7 @@ When to use: Define an MCP server that exposes quirk Skills as tools, resources,
 
 ## Guardrails
 
-- risk: low; trust tier: 1; approval required: no
+- risk: low; trust tier: 1; approval required: yes
 - side effects: write-files
 - isolation: worktree; model tier: router
 

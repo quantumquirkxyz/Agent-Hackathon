@@ -44,7 +44,7 @@ const ADAPTERS_REL_DIR = '.agents/skills/platform/adapters';
 const MANIFESTS_REL_DIR = '.agents/skills/platform/manifests';
 const MANIFEST_SUFFIX = '.runtime.json';
 const README_NAME = 'README.md';
-const BUNDLE_SKILL_COUNT = 246;
+const BUNDLE_SKILL_COUNT = 255;
 
 export const RUNTIMES = ['claude', 'kilo', 'openai-agents', 'langgraph', 'openhands', 'cursor', 'mcp'];
 export const DESCRIPTION_LIMIT = 200;
@@ -311,7 +311,7 @@ function renderClaudeAgent(plan) {
   lines.push(`tools: ${plan.tools.join(', ')}`);
   lines.push(`model: ${plan.claudeModel}`);
   if (plan.mutating) lines.push('permissionMode: default');
-  if (plan.risk === 'high') lines.push('disallowedTools: Bash');
+  if (plan.risk === 'high' && !plan.approvalRequired) lines.push('disallowedTools: Bash');
   lines.push('---');
   lines.push(`You are the ${plan.name} skill (${plan.domain} domain) from the quirk skills bundle. Read ${plan.skillMdPath} before acting and follow its Process.`);
   lines.push('');

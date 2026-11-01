@@ -6,7 +6,7 @@ version: "1"
 description: "Design and grade math problem sets and exams — difficulty progression, rubric, anti-cheating variants, accessibility, and LaTeX layout."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "LaTeX problem set + rubric + variants."
 sideEffects: []
 dependencies: []
 stopCondition: "Problem-set + rubric + variants saved; difficulty progression documented."

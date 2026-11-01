@@ -6,7 +6,7 @@ version: "1"
 description: "Design OKR cycles — Objectives, Key Results, initiatives — with measurable outcomes, quarterly cadences, and team alignment."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "team OKR document + initiative mapping."
 sideEffects: []
 dependencies: []
 stopCondition: "OKR document saved; initiatives mapped to KRs; progress tracker template ready."

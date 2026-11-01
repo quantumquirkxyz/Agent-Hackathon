@@ -3,7 +3,7 @@ name: "project-viability"
 description: "Evaluate whether a project is viable, functional, and scalable by analyzing its codebase against CONTEXT.md and ADRs. Use when the user wants a structured assessment of project health, architectural soundness, and growth boundaries before committing to further work."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "one Markdown report under `.reports/` and one JSON artifact under `.reports/`, both with layered findings and a prompt for the user."
 sideEffects: ""
 dependencies: []
 stopCondition: "Pre-flight checks resolved; automated baseline completed; three parallel sub-agents executed; quality gate passed; Viability Assessment saved to .reports/; JSON structured result returned; completion criteria verified; user asked how to proceed."

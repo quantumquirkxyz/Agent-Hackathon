@@ -2,7 +2,7 @@
   "skill": "backend/rate-limiting",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "084e689329ff0b7f4aceeba084377d98aa4fda3697de1efb9b9fa37ecb265042",
+  "frontmatterHash": "da2669f3f259347b50b18f3661fde39d6519d5c7e34efdd2e6d33ea6488b0197",
   "role": "workflow",
   "router": {
     "positive": [],

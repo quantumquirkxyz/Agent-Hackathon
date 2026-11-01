@@ -6,7 +6,7 @@ version: "1"
 description: "Design RAG pipelines — retrieval, chunking, embedding, reranking, generation — with explicit data flow, latency budgets, and evaluation seams."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "RAG architecture + chunking config + reranking config + evaluation plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture documented; chunking and embedding config defined; evaluation plan complete."

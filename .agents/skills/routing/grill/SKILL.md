@@ -3,10 +3,12 @@ name: "grill"
 category: "routing"
 maturity: "stable"
 version: "1"
-description: "Alias for the quirk grilling flow. Use when the user says "grill" and wants a relentless interview to sharpen a plan, decision, or design."
+description: >-
+  Alias for the quirk grilling flow. Use when the user says "grill" and wants a relentless
+  interview to sharpen a plan, decision, or design.
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Alias for the quirk grilling flow complete; structured result returned; completion criteria checked."

@@ -6,7 +6,7 @@ version: "1"
 description: "Write physics papers using RevTeX / APS / IOP / AIP formatting, with figure conventions, citation styles, and submission package preparation."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "compiled PDF + source package + figure checklist."
 sideEffects: []
 dependencies: []
 stopCondition: "PDF compiled in journal format; figure checklist complete; submission package ready."

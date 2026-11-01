@@ -6,7 +6,7 @@ version: "1"
 description: "Model thermodynamic systems — first and second law, heat engines, entropy, phase transitions — with energy accounting and efficiency bounds."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "physics artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Model thermodynamic systems complete; required sections present; completion criteria checked."

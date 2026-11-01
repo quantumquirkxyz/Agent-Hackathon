@@ -2,7 +2,7 @@
   "skill": "routing/triage",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "bea717741ffec53461948a55b91784758d010286da4d830d37a8860d12099a28",
+  "frontmatterHash": "6cc947a4ce78c926f502c5dca9dbc2d82f38a45393e92e113fa60e4f742d8401",
   "role": "workflow",
   "router": {
     "positive": [],

@@ -6,7 +6,7 @@ version: "1"
 description: "Maintain experimental physics lab notebooks — measurements, calibration, error analysis, FAIR data principles, reproducibility — with digital and physical structure."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "digital notebook entry + FAIR checklist."
 sideEffects: []
 dependencies: []
 stopCondition: "Notebook entry saved with all sections; calibration and error analysis complete; FAIR checklist filled."

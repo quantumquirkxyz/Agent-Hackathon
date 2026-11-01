@@ -6,7 +6,7 @@ version: "1"
 description: "Design accessible UX — keyboard navigation, focus order, semantics, contrast, and assistive-technology support — with inclusive interaction patterns."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "flow-level accessibility guidance with barriers, interaction changes, and validation criteria."
 sideEffects: []
 dependencies: []
 stopCondition: "Task-level accessibility barriers and flow-level remediations are explicit."

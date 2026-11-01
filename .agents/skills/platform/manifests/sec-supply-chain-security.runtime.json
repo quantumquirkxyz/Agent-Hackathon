@@ -2,7 +2,7 @@
   "skill": "sec/supply-chain-security",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "3d0c21eda59194aadd803a5492ddd202adf84ac89f1ed5fef04a8280b8c3de8f",
+  "frontmatterHash": "8ecd19bebabd51f812ad6c3735c36c54c2d24248498e09b7e0196642ecaf3a67",
   "role": "workflow",
   "router": {
     "positive": [],

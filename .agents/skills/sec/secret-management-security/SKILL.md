@@ -6,7 +6,7 @@ version: "1"
 description: "Secrets management (Vault, KMS, rotation, injection, external secrets operator)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "secrets management architecture + rotation schedule + injection design + audit findings."
 sideEffects: []
 dependencies: []
 stopCondition: "Secrets architecture saved; rotation schedule defined; injection design documented; audit complete."

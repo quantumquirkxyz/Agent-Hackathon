@@ -6,7 +6,7 @@ version: "1"
 description: "Create, test, and iterate on experimental skills in an isolated environment without affecting the canonical skills bundle."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "experimental skill directory, test results, validation report, and promotion recommendation"
 sideEffects: []
 dependencies: []
 stopCondition: "Create, test, and iterate on experimental skills in an isolated environment without affecting the canonical skills bundle complete; artifact saved; completion criteria checked."

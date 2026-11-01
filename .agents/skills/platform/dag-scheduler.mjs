@@ -71,17 +71,24 @@ export function normalizeInput(payload) {
     if (!raw || typeof raw !== 'object') throw new Error(`ticket at position ${index + 1} is not an object`);
     const rawBlockers = raw.blockedBy ?? raw.blockers ?? raw.blocked_by ?? [];
     if (!Array.isArray(rawBlockers)) throw new Error(`ticket ${ticketId(raw, index)}: blockedBy must be an array`);
+    const number = raw.number ?? raw.issueNumber ?? raw.issue_number ?? null;
     return {
       id: ticketId(raw, index),
       title: String(raw.title ?? raw.name ?? raw.id ?? `ticket ${index + 1}`),
       blockedBy: rawBlockers.map((value) => String(value)),
+      number: number === null || number === undefined || number === '' ? null : String(number),
     };
   });
 }
 
 export function resolveBlockers(tickets) {
   const byId = new Map(tickets.map((ticket) => [ticket.id, ticket]));
-  const byNumber = new Map(tickets.map((ticket, index) => [String(index + 1), ticket]));
+  const byNumber = new Map();
+  if (tickets.some((ticket) => ticket.number != null)) {
+    for (const ticket of tickets) if (ticket.number != null) byNumber.set(ticket.number, ticket);
+  } else {
+    tickets.forEach((ticket, index) => byNumber.set(String(index + 1), ticket));
+  }
   const byTitle = new Map();
   for (const ticket of tickets) {
     const key = ticket.title.trim().toLowerCase();

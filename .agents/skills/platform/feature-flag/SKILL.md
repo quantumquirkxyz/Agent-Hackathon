@@ -7,7 +7,7 @@ artifactType: "feature-flag"
 modelTier: "router"
 tags: ["platform"]
 compatibility: []
-outputs: ""
+outputs: "FeatureFlagArtifact in JSON and Markdown."
 stopCondition: "Feature flag design and management complete; FeatureFlagArtifact emitted; completion criteria checked."
 risk: "low"
 trustTier: "1"

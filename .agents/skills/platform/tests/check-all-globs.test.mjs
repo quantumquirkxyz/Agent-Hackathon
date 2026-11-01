@@ -70,9 +70,14 @@ describe('spawned node --test on expanded subsets exits 0', () => {
     assert.equal(result.status, 0, `platform subset failed (status ${result.status}):\n${result.stderr}\n${result.stdout}`);
   });
 
-  test('the expanded root tests (both files) run and pass', () => {
+  test('the expanded root test suite includes every current root test file', () => {
     const rootFiles = listTestFiles(ROOT_TESTS_DIR);
-    assert.equal(rootFiles.length, 2, 'the root tests/ directory should expose both root test files');
+    const expected = fs.readdirSync(path.join(REPO_ROOT, ROOT_TESTS_DIR))
+      .filter((name) => name.endsWith('.test.mjs'))
+      .sort()
+      .map((name) => path.join(ROOT_TESTS_DIR, name));
+    assert.ok(expected.length >= 2, 'root tests must not silently disappear');
+    assert.deepStrictEqual(rootFiles, expected, 'the expander must discover every root test');
     const result = spawnSync('node', ['--test', ...rootFiles], { cwd: REPO_ROOT, encoding: 'utf8' });
     assert.equal(result.status, 0, `root tests failed (status ${result.status}):\n${result.stderr}\n${result.stdout}`);
   });

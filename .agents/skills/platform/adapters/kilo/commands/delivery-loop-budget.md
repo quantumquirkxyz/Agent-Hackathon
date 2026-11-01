@@ -19,7 +19,7 @@ When to use: Keep an agent loop inside its declared budget and end it with a typ
 
 ## Guardrails
 
-- risk: low; trust tier: 2; approval required: no
+- risk: low; trust tier: 2; approval required: yes
 - side effects: write-temp-file
 - isolation: none; model tier: reasoning
 

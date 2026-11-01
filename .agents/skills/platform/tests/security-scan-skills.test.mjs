@@ -218,35 +218,46 @@ test('DEFAULT_PATH targets the .agents root so AGENTS.md and the skills tree are
 // `--deep` widens the scan into skill-bundled working directories, which are the
 // bundle's own test files. Those tests deliberately plant the patterns the rules
 // are written to catch (a private-key block, a vulnerable pin, injection phrases),
-// so `--deep` reports them as true positives. The scanner has no inline
-// suppression or exemption mechanism, so they cannot be annotated away; instead
-// the contract is pinned here: default mode (and --strict, which is the gating
-// mode) stays clean, while --deep reports exactly these known test-fixture
-// findings and only reports them (it is never wired into the gate).
+// so `--deep` reports them as true positives. Governed production exceptions
+// are emitted separately; active deep findings must remain confined to test
+// fixtures. The exact number may grow as security tests add deliberate payloads,
+// so the contract pins scope and rule classes instead of a brittle count.
 test('--deep reports the known test-fixture true positives as report-only output', () => {
   const deep = runScanner(['--deep', '--json']);
   const payload = JSON.parse(deep.stdout);
   assert.equal(deep.status, 0, `--deep is a report-only mode and must not exit non-zero\n${deep.stderr}`);
 
+  assert.ok(Array.isArray(payload.suppressedFindings), 'deep JSON output must expose governed suppressions');
+  assert.equal(payload.suppressedFindings.length, 1, `expected one governed platform suppression\n${deep.stdout}`);
+  assert.equal(payload.suppressedFindings[0].finding.rule, 'credential-path-access');
+  assert.match(payload.suppressedFindings[0].finding.file, /tool-risk-guard\.mjs$/);
+  assert.match(payload.suppressedFindings[0].exception.reason, /HMAC-signed/);
+
   const high = payload.findings.filter((f) => BLOCKING_SEVERITIES.has(f.severity));
-  assert.equal(high.length, 5, `expected the 5 documented test-fixture findings, got ${high.length}\n${deep.stdout}`);
+  assert.ok(high.length >= 17, `deep scan unexpectedly lost documented security fixtures\n${deep.stdout}`);
+
+  const testsRoot = path.join(PLATFORM_DIR, 'tests') + path.sep;
+  const outsideTests = high.filter((f) => !f.file.startsWith(testsRoot));
+  assert.deepEqual(
+    outsideTests.map((f) => `${f.file}:${f.line} ${f.rule}`),
+    [],
+    `active --deep blocking findings must remain confined to platform test fixtures\n${deep.stdout}`,
+  );
 
   const files = new Set(high.map((f) => f.file));
-  const expectedFiles = [
+  for (const file of [
     path.join(PLATFORM_DIR, 'tests', 'agent-cards-signing.test.mjs'),
+    path.join(PLATFORM_DIR, 'tests', 'parallel-issue-fleet.test.mjs'),
     path.join(PLATFORM_DIR, 'tests', 'security-scan-skills.test.mjs'),
-  ];
-  for (const file of expectedFiles) {
-    assert.ok(files.has(file), `expected a known test-fixture finding in ${file}\n${deep.stdout}`);
+    path.join(PLATFORM_DIR, 'tests', 'worker-runner.test.mjs'),
+  ]) {
+    assert.ok(files.has(file), `expected documented fixture coverage in ${file}\n${deep.stdout}`);
   }
-  assert.equal(files.size, expectedFiles.length, `every --deep high finding must live in a platform test file\n${deep.stdout}`);
 
   const rules = new Set(high.map((f) => f.rule));
-  assert.deepEqual(
-    [...rules].sort(),
-    ['credential-path-access', 'prompt-injection-override', 'vulnerable-pinned-dependency'],
-    'only the rules whose patterns the test files deliberately plant may fire',
-  );
+  for (const rule of ['credential-path-access', 'prompt-injection-override', 'vulnerable-pinned-dependency']) {
+    assert.ok(rules.has(rule), `expected deep fixture coverage for ${rule}\n${deep.stdout}`);
+  }
 
   // The exact same scan in the gating mode is clean, which is why the gate passes.
   const strict = runScanner(['--strict']);

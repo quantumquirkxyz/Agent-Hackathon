@@ -6,7 +6,7 @@ version: "1"
 description: "Event-driven architecture (Kafka, NATS, EventBridge, choreography vs orchestration)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "event architecture with topic/stream design, schema registry plan, and flow diagrams."
 sideEffects: []
 dependencies: []
 stopCondition: "Event-driven architecture design complete; artifact saved; completion criteria checked."

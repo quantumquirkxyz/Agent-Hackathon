@@ -1,6 +1,6 @@
 ---
 name: grill
-description: "Alias for the quirk grilling flow. Use when the user says \"grill\" and wants a relentless interview to sharpen a plan, decision, or design."
+description: ">-"
 tools: Read, Grep, Glob
 model: sonnet
 ---

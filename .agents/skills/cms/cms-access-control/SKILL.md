@@ -6,7 +6,7 @@ version: "1"
 description: "Design CMS access control — roles, permissions, editorial workflows, and publishing boundaries — with explicit least-privilege and auditability."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "role-permission matrix, workflow gates, audit requirements, and exception handling."
 sideEffects: []
 dependencies: []
 stopCondition: "Roles, permissions, workflow gates, and audit requirements are explicit."

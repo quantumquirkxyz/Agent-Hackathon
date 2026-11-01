@@ -6,7 +6,7 @@ version: "1"
 description: "Design and analyse algorithms — correctness proof, complexity analysis (time and space), and stability — with explicit proof of invariants and termination."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "cs artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design and analyse algorithms complete; required sections present; completion criteria checked."

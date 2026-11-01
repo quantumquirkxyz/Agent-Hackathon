@@ -2,7 +2,7 @@
   "skill": "ai/ai-time-series-forecasting",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "bbfdffdfc83486c6816df1422dd8f3e41e2789cefa34ca5f55508e359d4cbf8d",
+  "frontmatterHash": "c9338cb40ca9e32eaafaed891469668354f797766adef2f55fe70d7123d7dd59",
   "role": "workflow",
   "router": {
     "positive": [],

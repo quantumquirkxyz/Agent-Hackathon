@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "name": "gemini-cli",
+  "description": "Google Gemini CLI in non-interactive prompt mode.",
+  "setup": [
+    ["npm", "install", "-g", "@google/gemini-cli"]
+  ],
+  "command": ["gemini", "-p"],
+  "modelArgs": ["-m", "{{model}}"],
+  "promptDelivery": "argv",
+  "model": "",
+  "modelEnv": "GEMINI_MODEL",
+  "env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

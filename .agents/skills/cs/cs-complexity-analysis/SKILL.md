@@ -6,7 +6,7 @@ version: "1"
 description: "Analyze algorithmic complexity — time, space, amortized cost, and lower bounds — with explicit assumptions and proof sketches."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "time and space bounds with assumptions, proof sketch, and meaningful constants or bottlenecks when relevant."
 sideEffects: []
 dependencies: []
 stopCondition: "Complexity bounds are stated, justified, and tied to the chosen input model."

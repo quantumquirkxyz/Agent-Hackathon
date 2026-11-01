@@ -6,7 +6,7 @@ version: "1"
 description: "Design ETL / ELT pipelines — extraction, transformation, load — with reproducible steps, schema evolution, quality checks, and observability."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pipeline architecture + quality rules + schema evolution."
 sideEffects: []
 dependencies: []
 stopCondition: "Pipeline architecture saved; quality rules defined; schema evolution plan present."

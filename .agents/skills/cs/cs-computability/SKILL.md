@@ -6,7 +6,7 @@ version: "1"
 description: "Analyze computability questions — decidability, reductions, recognizability, and undecidability proofs — with formal problem transformations."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "classification, reduction or recognizer construction, and proof sketch."
 sideEffects: []
 dependencies: []
 stopCondition: "The problem class, proof strategy, and reduction obligations are explicit and checked."

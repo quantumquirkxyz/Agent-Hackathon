@@ -6,7 +6,7 @@ version: "1"
 description: "Construct and optimise portfolios — mean-variance, Black-Litterman, risk-parity, factor — with explicit objectives, constraints, and robustness checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "quant artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Construct and optimise portfolios complete; required sections present; completion criteria checked."

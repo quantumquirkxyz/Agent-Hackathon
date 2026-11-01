@@ -6,7 +6,7 @@ version: "1"
 description: "Design and implement compilers and interpreters — lexer, parser, AST, type checking, code generation, optimization — with correctness and modularity."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "compilers artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design and implement compilers and interpreters complete; artifact saved; completion criteria checked."

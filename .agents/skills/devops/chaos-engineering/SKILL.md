@@ -6,7 +6,7 @@ version: "1"
 description: "Design chaos engineering — fault injection, GameDays, resilience validation — with explicit steady-state hypotheses, blast radius controls, and safety rails."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "chaos experiment plan + fault injection config + resilience report."
 sideEffects: []
 dependencies: []
 stopCondition: "Experiment plan defined; fault injection config documented; resilience report produced."

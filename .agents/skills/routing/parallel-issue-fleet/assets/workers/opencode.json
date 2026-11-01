@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "name": "opencode",
+  "description": "OpenCode CLI. Install the CLI in the image or let setup install it from npm.",
+  "setup": [
+    ["npm", "install", "-g", "opencode-ai"]
+  ],
+  "command": ["opencode", "run", "--standalone", "--auto"],
+  "modelArgs": ["-m", "{{model}}"],
+  "promptDelivery": "argv",
+  "model": "",
+  "modelEnv": "OPENCODE_MODEL",
+  "env": ["OPENCODE_API_KEY"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

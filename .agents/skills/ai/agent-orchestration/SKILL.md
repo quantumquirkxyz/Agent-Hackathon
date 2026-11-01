@@ -6,7 +6,7 @@ version: "1"
 description: "Design agent orchestration — multi-agent patterns, tool use, memory, handoffs, evaluation — with explicit coordination boundaries and observability."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "orchestration architecture + capability matrix + handoff contracts + evaluation rubric."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture diagram saved; capability matrix complete; handoff contracts defined; evaluation rubric present."

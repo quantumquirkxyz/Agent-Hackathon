@@ -6,7 +6,7 @@ version: "1"
 description: "Design brand identity systems — logo, color, typography, imagery, iconography, voice, and usage rules — with explicit consistency, scalability, and governance."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "brand identity artifact covering strategy, logo system, color, typography, imagery, iconography, and usage governance."
 sideEffects: []
 dependencies: []
 stopCondition: "Brand identity design complete; strategy, visual system, and usage rules explicit; governance named."

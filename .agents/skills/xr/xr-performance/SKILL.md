@@ -6,7 +6,7 @@ version: "1"
 description: "Optimize XR performance — frame rate, motion-to-photon latency, asset budgets, and thermal constraints — with comfort-aware trade-offs."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "XR performance budget, bottleneck analysis, optimization plan, and comfort validation checks."
 sideEffects: []
 dependencies: []
 stopCondition: "XR performance targets, profiling evidence, and comfort trade-offs are explicit."

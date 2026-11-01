@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "name": "claude-code",
+  "description": "Claude Code non-interactive mode.",
+  "setup": [
+    ["npm", "install", "-g", "@anthropic-ai/claude-code"]
+  ],
+  "command": ["claude", "-p", "--dangerously-skip-permissions"],
+  "modelArgs": ["--model", "{{model}}"],
+  "promptDelivery": "argv",
+  "model": "",
+  "modelEnv": "ANTHROPIC_MODEL",
+  "env": ["ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"],
+  "requiredEnv": [],
+  "timeoutMs": 1800000
+}

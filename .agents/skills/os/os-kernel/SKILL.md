@@ -6,7 +6,7 @@ version: "1"
 description: "Design and analyze operating system internals — process management, memory management, file systems, scheduling, system calls, concurrency — with explicit resource accounting and failure boundaries."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "os artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Design and analyze operating system internals complete; artifact saved; completion criteria checked."

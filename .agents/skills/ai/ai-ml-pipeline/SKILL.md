@@ -6,7 +6,7 @@ version: "1"
 description: "Design ML pipelines — data ingestion, preprocessing, training, evaluation, deployment, monitoring — with reproducibility, fairness, and version control."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pipeline architecture + training report + deployment checklist."
 sideEffects: []
 dependencies: []
 stopCondition: "Pipeline architecture saved; training report complete; deployment checklist filled."

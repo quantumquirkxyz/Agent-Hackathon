@@ -6,7 +6,7 @@ version: "1"
 description: "Design analytical warehouse schemas — star / snowflake / OBT — with dimension, fact, and bridge tables; partitioning; indexing; and query optimization."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "warehouse schema design + query optimisation notes."
 sideEffects: []
 dependencies: []
 stopCondition: "Schema design saved; dimensions and facts defined; optimisation notes present."

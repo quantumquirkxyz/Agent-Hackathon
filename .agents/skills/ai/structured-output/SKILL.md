@@ -6,7 +6,7 @@ version: "1"
 description: "Structured output for LLMs (JSON mode, function calling, constrained decoding, validation)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "output schema + prompt + validation harness + retry discipline."
 sideEffects: []
 dependencies: []
 stopCondition: "Structured output green on acceptance suite with validation harness."

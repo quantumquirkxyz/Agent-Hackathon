@@ -6,7 +6,7 @@ version: "1"
 description: "Audit the Skills bundle, lockfile, symlink parity, and contract drift — with actionable maintenance output."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a concise audit report with warnings and errors ranked by impact."
 sideEffects:
   - write-files
 dependencies: []

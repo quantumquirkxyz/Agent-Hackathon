@@ -1,0 +1,53 @@
+{
+  "skill": "routing/worktree-swarm",
+  "version": 1,
+  "generatedFrom": "frontmatter",
+  "frontmatterHash": "32d0a0fbaf004362688be7ad93a77eca2743da40f3c12fa3e8bf90d93c40f74b",
+  "role": "workflow",
+  "router": {
+    "positive": [],
+    "negative": [],
+    "requiredSignals": []
+  },
+  "execution": {
+    "defaultAgent": "general",
+    "isolation": "none",
+    "maxTurns": 1,
+    "modelTier": "reasoning",
+    "tools": {
+      "allow": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash"
+      ],
+      "deny": []
+    }
+  },
+  "guardrails": {
+    "sideEffects": [
+      "create-git-worktrees",
+      "create-git-branches",
+      "launch-local-agents"
+    ],
+    "approvalRequired": true,
+    "approvalFor": [
+      "create-git-worktrees",
+      "create-git-branches",
+      "launch-local-agents"
+    ],
+    "risk": "medium",
+    "trustTier": 3
+  },
+  "verification": {
+    "commands": [],
+    "artifactSchema": null
+  },
+  "observability": {
+    "traceEvents": [
+      "skill.route",
+      "skill.execute",
+      "skill.verify"
+    ]
+  }
+}

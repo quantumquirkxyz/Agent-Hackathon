@@ -91,12 +91,22 @@ function runTask(taskPath, sandbox) {
       resolve({
         exitCode: code,
         durationMs,
-        status: report?.status ?? (code === 0 ? 'pass' : 'error'),
+        status: classifyTaskRun({ exitCode: code, report }),
         report,
         stderr: stderr.trim(),
       });
     });
   });
+}
+
+// A zero exit code without a valid task report is a runner failure, never a
+// successful task. This keeps malformed/crashed evaluators out of pass rates.
+export function classifyTaskRun({ exitCode, report }) {
+  const knownStatuses = new Set(['pass', 'fail', 'blocked', 'error']);
+  if (report && knownStatuses.has(report.status)) return report.status;
+  if (report === null || report === undefined) return 'runner-error';
+  if (exitCode !== 0) return 'runner-error';
+  return 'runner-error';
 }
 
 function percentile(values, p) {
@@ -150,6 +160,9 @@ async function main() {
 
   const totalRuns = results.reduce((sum, r) => sum + r.repeats.length, 0);
   const totalPasses = results.reduce((sum, r) => sum + r.passCount, 0);
+  const runnerErrors = results.reduce((sum, result) => sum + result.repeats.filter((repeat) => repeat.status === 'runner-error').length, 0);
+  const blockedRuns = results.reduce((sum, result) => sum + result.repeats.filter((repeat) => repeat.status === 'blocked').length, 0);
+  const failedRuns = results.reduce((sum, result) => sum + result.repeats.filter((repeat) => repeat.status === 'fail').length, 0);
   const suite = {
     generatedAt: new Date().toISOString(),
     repeats: flags.repeats,
@@ -158,6 +171,9 @@ async function main() {
     runs: totalRuns,
     passes: totalPasses,
     passRate: totalRuns ? Number((totalPasses / totalRuns).toFixed(3)) : 0,
+    runnerErrors,
+    blockedRuns,
+    failedRuns,
     verdict: results.every((r) => r.status === 'pass') ? 'pass' : 'fail',
     results,
   };
@@ -174,6 +190,9 @@ async function main() {
       runs: suite.runs,
       passes: suite.passes,
       passRate: suite.passRate,
+      runnerErrors: suite.runnerErrors,
+      blockedRuns: suite.blockedRuns,
+      failedRuns: suite.failedRuns,
       verdict: suite.verdict,
       perTask: results.map((r) => ({ task: r.task, passRate: r.passRate, medianMs: r.medianMs, p95Ms: r.p95Ms, status: r.status })),
     };

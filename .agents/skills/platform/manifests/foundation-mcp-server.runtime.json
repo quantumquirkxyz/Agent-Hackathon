@@ -2,7 +2,7 @@
   "skill": "foundation/mcp-server",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "448ae1523f516dc5800c8bedef237e6ba24965bfe916bffaccd50a87e2d293d3",
+  "frontmatterHash": "5c835e7902f96f966f6f69a9e75a2d8830c92c1281a6e15ba2c8c443e7969216",
   "role": "workflow",
   "router": {
     "positive": [],
@@ -29,8 +29,10 @@
     "sideEffects": [
       "write-files"
     ],
-    "approvalRequired": false,
-    "approvalFor": [],
+    "approvalRequired": true,
+    "approvalFor": [
+      "write-files"
+    ],
     "risk": "low",
     "trustTier": 1
   },

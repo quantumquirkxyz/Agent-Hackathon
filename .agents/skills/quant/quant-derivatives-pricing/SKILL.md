@@ -6,7 +6,7 @@ version: "1"
 description: "Price and calibrate derivatives (options, exotics, structured products) — Black-Scholes, trees, Monte Carlo — with Greeks, model risk, and calibration validation."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pull-request artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Price and calibrate derivatives (options, exotics, structured products) complete; required sections present; completion criteria checked."

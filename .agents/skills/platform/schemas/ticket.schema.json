@@ -3,14 +3,57 @@
   "title": "quirk Ticket Artifact",
   "type": "object",
   "additionalProperties": false,
-  "required": ["parent", "metadata", "outcome", "acceptanceCriteria", "validation", "blockedBy"],
+  "required": [
+    "parent",
+    "metadata",
+    "outcome",
+    "acceptanceCriteria",
+    "validation",
+    "blockedBy"
+  ],
   "properties": {
-    "parent": { "type": ["string", "null"] },
-    "metadata": { "type": "object" },
-    "outcome": { "type": "string", "minLength": 1 },
-    "acceptanceCriteria": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1 },
-    "validation": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1 },
-    "blockedBy": { "type": "array", "items": { "type": "string" } },
-    "notes": { "type": "array", "items": { "type": "string" } }
+    "parent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Canonical work-item metadata; validate detailed fields against work-item-metadata.schema.json."
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acceptanceCriteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "blockedBy": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   }
 }

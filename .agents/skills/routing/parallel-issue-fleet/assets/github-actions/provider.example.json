@@ -1,0 +1,57 @@
+{
+  "type": "vm-pool",
+  "name": "github-actions",
+  "pool": "ubuntu-latest",
+  "repo": "/absolute/path/to/target/repository",
+  "artifactPath": ".agents/skills/platform/artifacts/implement/{{issue.id}}.json",
+  "worker": {
+    "name": "claude-code",
+    "profile": ".github/fleet/worker.json",
+    "model": ""
+  },
+  "commands": {
+    "provision": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "provision",
+      "--repo", "owner/repository",
+      "--state-dir", "{{state.dir}}",
+      "--run-id", "{{run.id}}",
+      "--issue-id", "{{issue.id}}",
+      "--base-sha", "{{base.revision}}",
+      "--branch", "{{branch}}",
+      "--ownership-token", "{{resource.ownershipToken}}",
+      "--worker-profile", "{{worker.profile}}",
+      "--model", "{{worker.model}}",
+      "--artifact-path", "{{artifact.path}}"
+    ],
+    "status": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "status",
+      "--state-dir", "{{state.dir}}",
+      "--resource-id", "{{resource.id}}"
+    ],
+    "bootstrap": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "bootstrap"
+    ],
+    "execute": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "execute",
+      "--state-dir", "{{state.dir}}",
+      "--resource-id", "{{resource.id}}"
+    ],
+    "validate": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "validate",
+      "--state-dir", "{{state.dir}}",
+      "--resource-id", "{{resource.id}}"
+    ],
+    "collect": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "collect",
+      "--state-dir", "{{state.dir}}",
+      "--resource-id", "{{resource.id}}",
+      "--dest", "{{state.dir}}/collected"
+    ],
+    "cleanup": [
+      "node", ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs", "cleanup",
+      "--state-dir", "{{state.dir}}",
+      "--resource-id", "{{resource.id}}",
+      "--ownership-token", "{{resource.ownershipToken}}"
+    ]
+  }
+}

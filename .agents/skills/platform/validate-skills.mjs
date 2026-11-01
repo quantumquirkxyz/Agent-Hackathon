@@ -94,9 +94,28 @@ async function main() {
   const skillDirs = await collectSkillDirs(agentsSkillsDir);
   const errors = [];
   const warnings = [];
+  const artifactOutputDebt = [];
   const lock = JSON.parse(await fs.readFile(lockPath, 'utf8'));
   const lockSkills = new Set(Object.keys(lock.skills ?? {}));
   const skillNames = new Set(skillDirs.map((dir) => path.basename(dir)));
+
+  // Lockfile provenance shape (docs/how-to/release.md#lockfile-provenance):
+  // authored skills are pinned by hash and declare their local origin; imported
+  // skills must name the upstream revision they came from.
+  const allowedSourceTypes = new Set(['local', 'upstream']);
+  for (const [lockName, entry] of Object.entries(lock.skills ?? {})) {
+    if (!/^[a-f0-9]{64}$/.test(String(entry?.hash ?? ''))) {
+      errors.push(`${lockName}: skills-lock.json hash must be 64 hex characters`);
+    }
+    if (!allowedSourceTypes.has(entry?.sourceType)) {
+      errors.push(`${lockName}: skills-lock.json sourceType must be local|upstream (${entry?.sourceType})`);
+    }
+    if (typeof entry?.revision !== 'string' || entry.revision.trim() === '') {
+      errors.push(`${lockName}: skills-lock.json revision must be a non-empty string`);
+    } else if (entry.sourceType === 'local' && entry.revision !== 'working-tree') {
+      errors.push(`${lockName}: local skills-lock.json entries must use revision "working-tree"`);
+    }
+  }
 
   for (const skillDir of skillDirs) {
     const relDir = path.relative(agentsSkillsDir, skillDir);
@@ -149,6 +168,19 @@ async function main() {
       }
     }
 
+    // ADR-001 contract: a skill that declares an artifactType must say what it
+    // emits. Empty `outputs` is schema-legal, so the bundle-wide debt is reported
+    // as structured data (artifactOutputDebt) rather than warning noise that would
+    // break the documented `totalWarnings: 0` release invariant. --strict promotes
+    // the debt to errors once the core skills are backfilled.
+    const declaredArtifactType = typeof fm.artifactType === 'string' ? fm.artifactType.trim() : '';
+    const declaredOutputs = (Array.isArray(fm.outputs) ? fm.outputs : [fm.outputs])
+      .map((value) => String(value ?? '').trim())
+      .filter(Boolean);
+    if (declaredArtifactType && declaredOutputs.length === 0) {
+      artifactOutputDebt.push(`${name}: artifactType "${declaredArtifactType}" declared but outputs is empty`);
+    }
+
     for (const dependency of fm.dependencies ?? []) {
       if (!skillNames.has(dependency)) errors.push(`${name}: dependency missing ${dependency}`);
     }
@@ -199,6 +231,8 @@ async function main() {
     }
   }
 
+  if (strictMode) errors.push(...artifactOutputDebt);
+
   const runPath = await recordExecution({
     repoRoot,
     skill: 'skill-audit',
@@ -214,6 +248,10 @@ async function main() {
     skills: skillDirs.length,
     warnings,
     errors,
+    artifactOutputDebt: {
+      count: artifactOutputDebt.length,
+      examples: artifactOutputDebt.slice(0, 5)
+    },
     status: errors.length ? 'fail' : 'pass',
     executionRecord: path.relative(repoRoot, runPath)
   }, null, 2));

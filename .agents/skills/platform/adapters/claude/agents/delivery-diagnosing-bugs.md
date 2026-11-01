@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something intermittent, ambiguous, or hard to reproduce."
+description: ">-"
 tools: Read, Grep, Glob
 model: opus
 ---

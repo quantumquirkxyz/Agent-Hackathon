@@ -6,7 +6,7 @@ version: "1"
 description: "Compare Skill versions and explain contract, dependency, and behavior impact — use when assessing changes between two Skills."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "frontmatter changes, content additions/removals, dependency impact, and review recommendation."
 sideEffects: []
 dependencies: []
 stopCondition: "Compare Skill versions and explain contract, dependency, and behavior impact complete; artifact saved; completion criteria checked."

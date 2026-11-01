@@ -6,7 +6,7 @@ version: "1"
 description: "Orchestrate the PR repair loop: run review-pr, use plan-review-fixes when findings exist, use implement-review-fixes to apply them, and repeat until the PR is clean or blocked. This skill coordinates the loop only."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "either a clean review state or a blocked repair loop with a documented cause."
 sideEffects:
   - write-code
   - post-pr-comment

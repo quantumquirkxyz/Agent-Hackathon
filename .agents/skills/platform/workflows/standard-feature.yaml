@@ -48,7 +48,37 @@ states:
     artifactType: tickets
     transitions:
       APPROVED: frontier
+      FLEET_APPROVED: dispatch-mode
       NEEDS_SPLIT: to-tickets
+      BLOCKED: escalate
+
+  dispatch-mode:
+    type: router
+    description: Choose sequential implementation or an explicitly approved parallel issue fleet
+    transitions:
+      SEQUENTIAL: frontier
+      PARALLEL_FLEET: parallel-issue-fleet
+      BLOCKED: escalate
+
+  parallel-issue-fleet:
+    type: orchestrator
+    description: Dispatch the claimable DAG wave with isolated workers, durable checkpoints, bounded concurrency, and cleanup
+    artifactType: fleet-run
+    transitions:
+      WAVE_VALIDATED: fleet-wave-publication
+      COMPLETED: publish-open-pr
+      BLOCKED: escalate
+
+  fleet-wave-publication:
+    type: orchestrator
+    description: Publish, review, and land every validated branch before dependent waves start
+    loop:
+      - publish-open-pr
+      - review-pr
+      - ship-subissue
+    transitions:
+      WAVE_LANDED: parallel-issue-fleet
+      ALL_DONE: done
       BLOCKED: escalate
 
   frontier:

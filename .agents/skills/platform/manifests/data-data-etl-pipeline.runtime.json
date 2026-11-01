@@ -2,7 +2,7 @@
   "skill": "data/data-etl-pipeline",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "8c58b3fe8364486c857202adda6149e52c048c82357a8bd5c666936ae2046c98",
+  "frontmatterHash": "a1088974e4698f1724a72ec0adb4f11d4dd879187be0fa656fc935b8c37c7bac",
   "role": "workflow",
   "router": {
     "positive": [],

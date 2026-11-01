@@ -6,7 +6,7 @@ version: "1"
 description: "Design and document threat models for software / systems — assets, threats, vulnerabilities, mitigations — using STRIDE or ATT&CK frameworks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "threat model document + risk register."
 sideEffects: []
 dependencies: []
 stopCondition: "Threat model saved; all assets mapped; risk register complete."

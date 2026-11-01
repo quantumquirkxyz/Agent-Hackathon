@@ -6,7 +6,7 @@ version: "1"
 description: "Plan database migrations — schema changes, backfills, compatibility windows, and rollback strategy — with explicit application and data safety checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "phased migration plan with forward/backward compatibility, validation queries, and rollback posture."
 sideEffects: []
 dependencies: []
 stopCondition: "The migration sequence, compatibility window, validation, and rollback posture are explicit."

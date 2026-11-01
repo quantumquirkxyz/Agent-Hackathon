@@ -6,7 +6,7 @@ version: "1"
 description: "Write and verify pure-math proofs (number theory, algebra, analysis, combinatorics) with rigorous step-by-step reasoning and explicit proof strategies."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a Markdown proof artifact saved to the repo, with statement, strategy, steps, verification, and theorem citations."
 sideEffects: []
 dependencies: []
 stopCondition: "Markdown artifact exists with all five sections (statement, strategy, steps, verification, cited theorems); every proof step is justified with a named rule."

@@ -2,7 +2,7 @@
   "skill": "routing/grilling",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "df9c6102915e909ee0e399acece5a00895907f61084e89ffe5855bc5ff81dc32",
+  "frontmatterHash": "38cffcec507dadf5219cdea70c6f3fcb4475543c0586959f718d27302980a2bc",
   "role": "workflow",
   "router": {
     "positive": [],

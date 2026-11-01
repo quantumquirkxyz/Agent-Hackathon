@@ -11,7 +11,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PLATFORM_DIR = path.resolve(HERE, '..');
 const REPO_ROOT = path.resolve(PLATFORM_DIR, '..', '..', '..');
 const VALIDATOR = path.join(PLATFORM_DIR, 'validate-spec-compliance.mjs');
-const BUNDLE_SKILLS = 265; // 253 bundle skills + 12 platform skills
+const BUNDLE_SKILLS = 267; // 255 bundle skills + 12 platform skills
 
 function runValidator(args) {
   return spawnSync('node', [VALIDATOR, ...args], { encoding: 'utf8', cwd: REPO_ROOT });

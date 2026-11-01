@@ -6,7 +6,7 @@ version: "1"
 description: "Container security (Docker, Kubernetes, image scanning, runtime security, pod security policies)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "container security baseline + image scan policy + runtime rules + K8s security policies."
 sideEffects: []
 dependencies: []
 stopCondition: "Container baseline saved; image scan policy defined; runtime rules documented; K8s security policies complete."

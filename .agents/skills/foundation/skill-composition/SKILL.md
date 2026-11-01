@@ -17,15 +17,15 @@ inputs:
 outputs:
   - type: object
     name: SkillChainReport
-  properties:
-    status: { type: string, enum: [completed, blocked, budget-exceeded, partial] }
-    chain: { type: "array", items: { type: "string" } }
-    edges: { type: "array", items: { type: "object" } }
-    artifacts: { type: "array", items: { type: "string" } }
-    budgetSpent: { type: "object" }
-    nextConsumer: { type: "string" }
-    riskRemaining: { type: "string" }
-  required: [status, chain, nextConsumer]
+    properties:
+      status: { type: string, enum: [completed, blocked, budget-exceeded, partial] }
+      chain: { type: "array", items: { type: "string" } }
+      edges: { type: "array", items: { type: "object" } }
+      artifacts: { type: "array", items: { type: "string" } }
+      budgetSpent: { type: "object" }
+      nextConsumer: { type: "string" }
+      riskRemaining: { type: "string" }
+    required: [status, chain, nextConsumer]
 sideEffects:
   - orchestration
 dependencies:

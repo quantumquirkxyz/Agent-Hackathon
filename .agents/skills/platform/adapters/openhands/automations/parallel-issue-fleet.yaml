@@ -1,0 +1,15 @@
+name: parallel-issue-fleet
+description: "Orchestrate a dependency-aware fleet of issue agents in isolated local worktrees or dedicated VM-pool slots, with portable worker profiles, durable checkpoints, bounded concurrency, validation, and owned-resource cleanup."
+trigger:
+  type: webhook
+  events: [pull_request.opened, issues.opened]
+runtime:
+  agent: claude-code
+  sandbox: docker
+steps:
+  - uses: skill/routing-parallel-issue-fleet
+    with:
+      task: "{{ event.title }}"
+policy:
+  approvalRequired: true
+  sideEffects: [write-files, create-git-worktrees, create-git-branches, launch-local-agents, provision-infrastructure, inject-ephemeral-secrets, terminate-processes, cleanup-owned-resources]

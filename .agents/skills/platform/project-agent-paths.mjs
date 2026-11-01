@@ -12,7 +12,8 @@
 //   OpenCode      .opencode/skills/
 //   Windsurf      .windsurf/skills/
 //
-// Each view is a flat symlink farm: one link per canonical skill,
+// Native views are generated on demand and intentionally untracked. Each view
+// is a flat symlink farm: one link per canonical skill,
 // named by skill, pointing at the canonical directory with a
 // relative path so the views stay portable across checkouts
 // (absolute links break on clone - the same defect this script
@@ -116,18 +117,18 @@ function isInside(root, candidate) {
   return candidate === root || candidate.startsWith(root + path.sep);
 }
 
-function projectView(viewName, viewDir, skills) {
-  const report = { view: viewName, root: path.relative(repoRoot, viewDir), scanned: 0, created: 0, fixed: 0, removed: 0, skipped: 0, missing: 0, actions: [], errors: [] };
+function projectView(viewName, viewDir, skills, createAbsent = false) {
+  const report = { view: viewName, root: path.relative(repoRoot, viewDir), present: fs.existsSync(viewDir), scanned: 0, created: 0, fixed: 0, removed: 0, skipped: 0, missing: 0, actions: [], errors: [] };
 
   // Dry-run must be side-effect free. The write path creates the
   // projection directory before applying its planned links.
-  if (!fs.existsSync(viewDir)) {
+  if (!report.present && !createAbsent) {
     return report;
   }
 
   // Existing first-level entries: repair or skip.
   const existing = new Set();
-  for (const entry of fs.readdirSync(viewDir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+  for (const entry of report.present ? fs.readdirSync(viewDir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name)) : []) {
     const linkPath = path.join(viewDir, entry.name);
     existing.add(entry.name);
     report.scanned += 1;
@@ -189,12 +190,14 @@ function finalize(report, write) {
   const pending = report.actions.filter((action) => !action.applied).length;
   let status = 'clean';
   if (report.errors.length) status = 'error';
+  else if (!report.present && !write) status = 'absent';
   else if (pending > 0) status = 'drift';
   else status = write ? 'projected' : 'clean';
   return {
     mode: write ? 'write' : 'dry-run',
     view: report.view,
     root: report.root,
+    present: report.present,
     scanned: report.scanned,
     created: report.created,
     fixed: report.fixed,
@@ -218,8 +221,11 @@ async function main() {
   const reports = [];
   for (const viewName of views) {
     const viewDir = path.join(repoRoot, VIEWS[viewName]);
-    const report = projectView(viewName, viewDir, skills);
-    if (flags.write) apply(report, viewDir);
+    const report = projectView(viewName, viewDir, skills, flags.write);
+    if (flags.write) {
+      apply(report, viewDir);
+      report.present = fs.existsSync(viewDir);
+    }
     reports.push(finalize(report, flags.write));
   }
 

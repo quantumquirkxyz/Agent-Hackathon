@@ -437,6 +437,41 @@ describe('SkillRunSession', () => {
     assertSinkUnchanged();
   });
 
+  test('the memory sink is a no-op, not a file named memory', async () => {
+    const scratch = makeScratch('memory-sink');
+    const session = createSession({ repoRoot: scratch, sink: 'memory', skill: 'platform/skill-run-test' });
+    await session.start('platform/skill-run-test');
+    await session.emit('tool.called', { tools: [{ name: 'Read', durationMs: 1 }] });
+    const summary = await session.finish('pass');
+    assert.equal(summary.runPath, null);
+    assert.equal(fs.existsSync(path.join(scratch, 'memory')), false);
+  });
+
+  test('session timestamps stay monotonic when the wall clock steps backwards', async () => {
+    const scratch = makeScratch('clock');
+    const base = Date.parse('2026-10-20T04:27:41.000Z');
+    // 41.700 -> 41.710 -> 49.600 -> 41.800 -> 49.700: the clock jumps forward,
+    // then backwards, as an NTP correction can do mid-session.
+    const ticks = [700, 710, 8600, 800, 8700].map((offset) => base + offset);
+    let cursor = 0;
+    const clock = () => ticks[Math.min(cursor++, ticks.length - 1)];
+
+    const session = createSession({ repoRoot: scratch, sink: 'memory', clock });
+    await session.start('platform/skill-run-test');
+    await session.emit('route.selected', { evidence: ['ranked first'] });
+    await session.emit('tool.called', { tools: [{ name: 'Read', durationMs: 4 }] });
+    const summary = await session.finish('pass');
+
+    const timestamps = summary.records.map((entry) => Date.parse(entry.ts));
+    for (let index = 1; index < timestamps.length; index += 1) {
+      assert.ok(
+        timestamps[index] >= timestamps[index - 1],
+        `event ${index} (${summary.records[index].ts}) precedes event ${index - 1} (${summary.records[index - 1].ts})`,
+      );
+    }
+    assert.deepEqual(analyzeIntegrity(summary.records).findings, []);
+  });
+
   test('finish is idempotent and appends run.completed exactly once', async () => {
     const scratch = makeScratch('finish');
     const sinkFile = path.join(scratch, 'skill-runs.jsonl');

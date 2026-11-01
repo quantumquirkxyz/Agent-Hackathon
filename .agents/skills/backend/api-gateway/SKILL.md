@@ -6,7 +6,7 @@ version: "1"
 description: "API gateway (Kong, Envoy, AWS API Gateway, rate limiting, auth, routing)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "gateway architecture with route rules, policies, auth configuration, and observability plan."
 sideEffects: []
 dependencies: []
 stopCondition: "API gateway design complete; artifact saved; completion criteria checked."

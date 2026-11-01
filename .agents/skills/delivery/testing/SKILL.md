@@ -6,7 +6,7 @@ version: "1"
 description: "Shape the test strategy for a project so behavior is verified at the right seams and at the right level."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a test strategy, seam guidance, and coverage boundaries."
 sideEffects: []
 dependencies: []
 stopCondition: "Shape the test strategy for a project so behavior is verified at the right seams and at the right level complete; structured result returned; completion criteria checked."

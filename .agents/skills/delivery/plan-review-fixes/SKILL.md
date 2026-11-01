@@ -6,7 +6,7 @@ version: "1"
 description: "Convert review-pr findings on a GitHub PR into a concrete remediation plan and post that plan as PR comments. Use after"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "review artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - post-pr-comment
 

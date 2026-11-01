@@ -17,30 +17,37 @@
 //   - requiresApproval: true               -> ask
 //   - irreversible local-mutating tool     -> ask
 //   - network or orchestration tier        -> ask
-//   - policy file missing or malformed     -> allow with a
-//     stderr note (a missing policy must not brick the
-//     session; the guard degrades to no-op)
+//   - policy file missing or malformed     -> deny (fail closed)
 //
 // Direct testing without an agent runtime:
 //   echo '{"tool_name":"Bash"}' | node hooks/tool-risk-guard.mjs
 //   node hooks/tool-risk-guard.mjs --tool Bash
 //
-// Exit codes: 0 decision emitted, 1 guard crashed (the
-// runtime treats a crashed hook as allow, so the guard logs
-// the crash to stderr instead of exiting non-zero on purpose).
+// Exit codes: 0 when a decision is emitted, including explicit deny.
+// A crash must emit deny because runtimes may ignore failing hooks.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readToolRiskPolicy, defaultPolicyPath, PolicyParseError } from '../scripts/parse-tool-risk-policy.mjs';
+import { verifyApproval } from '../approval-token.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Tiers whose calls need explicit user approval.
 const ASK_TIERS = new Set(['network', 'orchestration']);
 
+function findTool(toolName, policy) {
+  const exact = policy.tools.find((tool) => tool.name === toolName);
+  if (exact) return exact;
+  return policy.tools.find((tool) => {
+    if (!tool.isPattern || !tool.name.endsWith("*")) return false;
+    return toolName.startsWith(tool.name.slice(0, -1));
+  });
+}
+
 function decide(toolName, policy) {
-  const entry = policy.tools.find((tool) => tool.name === toolName);
+  const entry = findTool(toolName, policy);
   if (!entry) {
     return {
       permissionDecision: 'deny',
@@ -95,6 +102,7 @@ async function loadPolicy() {
 async function main() {
   const args = process.argv.slice(2);
   let toolName = null;
+  let hookPayload = {};
 
   // Direct-test mode: --tool <name> skips stdin.
   const toolFlag = args.indexOf('--tool');
@@ -117,27 +125,44 @@ async function main() {
     }
     try {
       const payload = JSON.parse(raw);
-      toolName = payload?.tool_name ?? payload?.toolName ?? null;
+      hookPayload = payload && typeof payload === 'object' ? payload : {};
+      toolName = hookPayload?.tool_name ?? hookPayload?.toolName ?? null;
     } catch {
       toolName = null;
     }
   }
 
   if (!toolName) {
-    // No tool to judge: allow silently. An empty payload is not
-    // a policy violation.
-    emit({ permissionDecision: 'allow', permissionDecisionReason: 'no tool_name in hook payload; allowing' });
+    // A PreToolUse invocation must identify the tool to evaluate.
+    emit({ permissionDecision: 'deny', permissionDecisionReason: 'missing tool_name in PreToolUse payload' });
     return 0;
   }
 
   const { policy, error } = await loadPolicy();
   if (!policy) {
-    process.stderr.write(`[tool-risk-guard] policy/tool-risk.yaml unavailable (${error}); guard degrades to allow\n`);
-    emit({ permissionDecision: 'allow', permissionDecisionReason: 'tool risk policy not loaded; install policy/tool-risk.yaml to enforce tool risk' });
+    process.stderr.write(`[tool-risk-guard] policy/tool-risk.yaml unavailable (${error}); guard denies action\n`);
+    emit({ permissionDecision: 'deny', permissionDecisionReason: 'tool risk policy unavailable; execution denied until a valid policy is installed' });
     return 0;
   }
 
-  emit(decide(toolName, policy));
+  const decision = decide(toolName, policy);
+  if (decision.permissionDecision === 'ask' && hookPayload?.approval_token) {
+    const secret = process.env.QUIRK_APPROVAL_SECRET;
+    if (!secret) {
+      emit({ permissionDecision: 'deny', permissionDecisionReason: 'approval token supplied but QUIRK_APPROVAL_SECRET is unavailable' });
+      return 0;
+    }
+    const resource = typeof hookPayload?.resource === 'string' ? hookPayload.resource : null;
+    const verified = verifyApproval(hookPayload.approval_token, { tool: toolName, resource }, secret);
+    if (!verified.ok) {
+      emit({ permissionDecision: 'deny', permissionDecisionReason: 'approval token rejected: ' + verified.reason });
+      return 0;
+    }
+    emit({ permissionDecision: 'allow', permissionDecisionReason: 'signed approval ' + verified.approvalId + ' authorized this exact tool/resource request' });
+    return 0;
+  }
+
+  emit(decision);
   return 0;
 }
 
@@ -150,7 +175,7 @@ if (invokedDirectly) {
       // A crashing hook is treated as allow by the runtime; log
       // the crash so it is visible in the transcript.
       process.stderr.write(`[tool-risk-guard] crashed: ${error?.stack ?? error}\n`);
-      emit({ permissionDecision: 'allow', permissionDecisionReason: `tool-risk-guard crashed: ${error?.message ?? error}` });
+      emit({ permissionDecision: 'deny', permissionDecisionReason: 'tool-risk-guard crashed; execution denied' });
       process.exit(0);
     },
   );

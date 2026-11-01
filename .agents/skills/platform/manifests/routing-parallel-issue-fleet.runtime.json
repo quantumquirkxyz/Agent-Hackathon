@@ -1,0 +1,63 @@
+{
+  "skill": "routing/parallel-issue-fleet",
+  "version": 1,
+  "generatedFrom": "frontmatter",
+  "frontmatterHash": "2b0f825b379f6374d56de4382109983601b85616c810ce0bfeec033b92a649c5",
+  "role": "workflow",
+  "router": {
+    "positive": [],
+    "negative": [],
+    "requiredSignals": []
+  },
+  "execution": {
+    "defaultAgent": "general",
+    "isolation": "worktree",
+    "maxTurns": 6,
+    "modelTier": "reasoning",
+    "tools": {
+      "allow": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Edit",
+        "Write"
+      ],
+      "deny": []
+    }
+  },
+  "guardrails": {
+    "sideEffects": [
+      "write-files",
+      "create-git-worktrees",
+      "create-git-branches",
+      "launch-local-agents",
+      "provision-infrastructure",
+      "inject-ephemeral-secrets",
+      "terminate-processes",
+      "cleanup-owned-resources"
+    ],
+    "approvalRequired": true,
+    "approvalFor": [
+      "create-git-worktrees",
+      "create-git-branches",
+      "launch-local-agents",
+      "provision-infrastructure",
+      "inject-ephemeral-secrets",
+      "cleanup-owned-resources"
+    ],
+    "risk": "high",
+    "trustTier": 4
+  },
+  "verification": {
+    "commands": [],
+    "artifactSchema": ".agents/skills/platform/schemas/fleet-run-schema.json"
+  },
+  "observability": {
+    "traceEvents": [
+      "skill.route",
+      "skill.execute",
+      "skill.verify"
+    ]
+  }
+}

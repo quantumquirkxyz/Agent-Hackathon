@@ -6,7 +6,7 @@ version: "1"
 description: "Plan the release train, CI handoff, and rollback posture for a project — so shipping stays controlled."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "release train guidance, CI handoff guidance, rollback posture, and a release decision record."
 sideEffects: []
 dependencies: []
 stopCondition: "Plan the release train, CI handoff, and rollback posture for a project complete; artifact saved; completion criteria checked."

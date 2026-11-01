@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "swarm plan, subagent evidence, merged output, conflict resolution"
 sideEffects: []
 dependencies: []
 stopCondition: "All roles completed with valid evidence, conflicts resolved, and merged output validated."

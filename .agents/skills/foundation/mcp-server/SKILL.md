@@ -62,8 +62,8 @@ tags:
   - agent-discovery
 compatibility:
   - all skills
-approvalRequired: false
-approvalFor: []
+approvalRequired: true
+approvalFor: ["write-files"]
 ---
 
 # MCP Server

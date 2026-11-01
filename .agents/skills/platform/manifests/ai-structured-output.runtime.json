@@ -2,7 +2,7 @@
   "skill": "ai/structured-output",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "4b2fed61e25bc52bb573b0f9e351001cc4dddc60884b9f43f7f8364d831b940e",
+  "frontmatterHash": "7a638917550b3daa6e280665e31265a558f8e77f04d67d986259bd958b9225c8",
   "role": "workflow",
   "router": {
     "positive": [],

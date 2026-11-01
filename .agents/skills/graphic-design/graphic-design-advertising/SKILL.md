@@ -4,6 +4,7 @@ description: "Design advertising creatives — social ads, display ads, email ba
 license: "MIT"
 promptVersion: "2.0"
 artifactType: "plan"
+outputs: "creative layout specification with brand-consistent design, copy hierarchy, and platform-compliant dimensions."
 modelTier: "reasoning"
 evaluators: ["behavioral", "regression"]
 fixturesPath: ""

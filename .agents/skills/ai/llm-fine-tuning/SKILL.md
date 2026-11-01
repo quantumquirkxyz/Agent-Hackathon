@@ -6,7 +6,7 @@ version: "1"
 description: "Fine-tune LLMs — LoRA, QLoRA, full fine-tuning, data preparation, evaluation, deployment — with reproducibility, efficiency, and safety controls."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "fine-tuning plan + dataset curation report + evaluation report + deployment manifest."
 sideEffects: []
 dependencies: []
 stopCondition: "Fine-tuning plan saved; dataset report complete; evaluation report generated; deployment manifest filled."

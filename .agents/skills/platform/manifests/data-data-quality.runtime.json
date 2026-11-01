@@ -2,7 +2,7 @@
   "skill": "data/data-quality",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "1bded6c9dde0514c96bb8d833ff9b20dde9e669c80ee396d815da3b77b68e227",
+  "frontmatterHash": "544efab9542e8e374de835cb9174dd32b92a30bb6b546bf13e716abe8241021a",
   "role": "workflow",
   "router": {
     "positive": [],

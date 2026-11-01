@@ -2,7 +2,7 @@
   "skill": "integrations/pr-operations",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "005ce623a6c587b1c8362ba9025b5c229e3bda725629e671272e3a911b3d25e1",
+  "frontmatterHash": "645c3555767887f706408d93689333af5fa78cb3fd48e440bae7425dcff24815",
   "role": "workflow",
   "router": {
     "positive": [],

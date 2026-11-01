@@ -17,10 +17,14 @@
 // left to do and reports a clean view.
 //
 // Rules applied to every first-level entry of the view:
-//   - symlink whose destination resolves inside the repository -> relative
-//     rewrite when the link is absolute, otherwise left intact
+//   - symlink whose name is not a canonical skill name -> proposed for removal
+//     (domain aliases and other stale entries do not belong in a flat view)
 //   - symlink whose destination does not resolve, or resolves outside the
 //     repository -> proposed for removal
+//   - symlink whose name is canonical but whose destination is not that skill's
+//     directory (for example a direct SKILL.md link) -> retargeted
+//   - symlink whose destination is correct but absolute -> relative rewrite
+//   - canonical skill with no entry in the view -> created
 //   - anything that is not a symlink -> left intact and counted as skipped
 //
 // Usage:
@@ -34,10 +38,10 @@
 //             2 = usage error. Dry-run never fails on drift: it only reports.
 //
 // Report fields: scanned counts first-level entries; skipped counts the entries
-// left intact (resolving relative links and non-symlinks); fixed and removed
-// count APPLIED repairs, so both are 0 in dry-run; pending counts the repairs
-// still to apply; dangling and absolute list the offending link names; actions
-// carries every proposed or applied repair with its from/to pair.
+// left intact (correct relative links and non-symlinks); created, fixed and
+// removed count APPLIED repairs, so all are 0 in dry-run; pending counts the
+// repairs still to apply; dangling and absolute list the offending link names;
+// actions carries every proposed or applied repair with its from/to pair.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,7 +52,7 @@ const viewDir = path.join(repoRoot, '.claude', 'skills');
 
 const HELP = `fix-compatibility-view options:
   (no flags)   dry-run: report the repairs the view needs, change nothing
-  --write      apply the repairs (rewrite absolute links, remove dangling ones)
+  --write      apply the repairs (create missing links, retarget wrong or absolute links, remove stale ones)
   --json       emit the machine-readable report instead of the summary
   --help       show this help`;
 
@@ -82,10 +86,27 @@ function isInside(root, candidate) {
   return candidate === root || candidate.startsWith(root + path.sep);
 }
 
-function scan(viewDirReal, repoRootReal) {
+function collectCanonicalSkills(dir, out = new Map()) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const full = path.join(dir, entry.name);
+    if (fs.existsSync(path.join(full, 'SKILL.md'))) {
+      if (out.has(entry.name)) {
+        throw new Error(`duplicate canonical skill name: ${entry.name}`);
+      }
+      out.set(entry.name, fs.realpathSync(full));
+    } else {
+      collectCanonicalSkills(full, out);
+    }
+  }
+  return out;
+}
+
+function scan(viewDirReal, repoRootReal, canonicalSkills) {
   const report = {
     root: path.relative(repoRoot, viewDir),
     scanned: 0,
+    created: 0,
     fixed: 0,
     removed: 0,
     skipped: 0,
@@ -98,9 +119,12 @@ function scan(viewDirReal, repoRootReal) {
   const entries = fs.readdirSync(viewDirReal, { withFileTypes: true })
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const seen = new Set();
+
   for (const entry of entries) {
     const linkPath = path.join(viewDirReal, entry.name);
     report.scanned += 1;
+    seen.add(entry.name);
 
     if (!entry.isSymbolicLink()) {
       report.skipped += 1;
@@ -110,8 +134,21 @@ function scan(viewDirReal, repoRootReal) {
     const raw = fs.readlinkSync(linkPath);
     const absolute = path.isAbsolute(raw);
     const destination = resolveDestination(viewDirReal, raw);
+    const canonical = canonicalSkills.get(entry.name);
 
     if (absolute) report.absolute.push(entry.name);
+
+    if (!canonical) {
+      report.actions.push({
+        name: entry.name,
+        action: 'remove',
+        from: raw,
+        to: null,
+        reason: 'entry does not name a canonical skill',
+        applied: false,
+      });
+      continue;
+    }
 
     if (destination === null) {
       report.dangling.push(entry.name);
@@ -139,17 +176,42 @@ function scan(viewDirReal, repoRootReal) {
       continue;
     }
 
-    if (!absolute) {
-      report.skipped += 1;
+    const expected = path.relative(viewDirReal, canonical);
+    if (destination !== canonical) {
+      report.actions.push({
+        name: entry.name,
+        action: 'rewrite',
+        from: raw,
+        to: expected,
+        reason: 'target is not the canonical skill directory',
+        applied: false,
+      });
       continue;
     }
 
+    if (absolute) {
+      report.actions.push({
+        name: entry.name,
+        action: 'rewrite',
+        from: raw,
+        to: expected,
+        reason: 'absolute link retargeted to the canonical bundle path',
+        applied: false,
+      });
+      continue;
+    }
+
+    report.skipped += 1;
+  }
+
+  for (const [name, canonical] of canonicalSkills) {
+    if (seen.has(name)) continue;
     report.actions.push({
-      name: entry.name,
-      action: 'rewrite',
-      from: raw,
-      to: path.relative(viewDirReal, destination),
-      reason: 'absolute link retargeted to the canonical bundle path',
+      name,
+      action: 'create',
+      from: null,
+      to: path.relative(viewDirReal, canonical),
+      reason: 'canonical skill has no compatibility-view entry',
       applied: false,
     });
   }
@@ -161,11 +223,18 @@ function apply(report, viewDirReal) {
   for (const action of report.actions) {
     const linkPath = path.join(viewDirReal, action.name);
     try {
-      fs.unlinkSync(linkPath);
-      if (action.action === 'rewrite') fs.symlinkSync(action.to, linkPath);
+      if (action.action === 'remove') {
+        fs.unlinkSync(linkPath);
+        report.removed += 1;
+      } else if (action.action === 'create') {
+        fs.symlinkSync(action.to, linkPath);
+        report.created += 1;
+      } else {
+        fs.unlinkSync(linkPath);
+        fs.symlinkSync(action.to, linkPath);
+        report.fixed += 1;
+      }
       action.applied = true;
-      if (action.action === 'rewrite') report.fixed += 1;
-      else report.removed += 1;
     } catch (error) {
       action.error = error?.message ?? String(error);
       report.errors.push(`${action.name}: ${action.error}`);
@@ -185,6 +254,7 @@ function finalize(report, write) {
     mode: write ? 'write' : 'dry-run',
     root: report.root,
     scanned: report.scanned,
+    created: report.created,
     fixed: report.fixed,
     removed: report.removed,
     skipped: report.skipped,
@@ -199,7 +269,7 @@ function finalize(report, write) {
 
 function printSummary(summary) {
   console.log(`[fix-compatibility-view] mode: ${summary.mode}`);
-  console.log(`[fix-compatibility-view] view: ${summary.root} (${summary.scanned} entries, ${summary.skipped} intact)`);
+  console.log(`[fix-compatibility-view] view: ${summary.root} (${summary.scanned} entries, ${summary.skipped} intact, ${summary.created} created)`);
   for (const action of summary.actions) {
     const verb = action.applied ? 'applied' : 'propose';
     const target = action.to === null ? '(remove)' : action.to;
@@ -222,8 +292,9 @@ async function main() {
   // written below stay correct however the caller reached the repository.
   const viewDirReal = fs.realpathSync(viewDir);
   const repoRootReal = fs.realpathSync(repoRoot);
+  const canonicalSkills = collectCanonicalSkills(path.join(repoRootReal, '.agents', 'skills'));
 
-  const report = scan(viewDirReal, repoRootReal);
+  const report = scan(viewDirReal, repoRootReal, canonicalSkills);
   if (flags.write) apply(report, viewDirReal);
 
   const summary = finalize(report, flags.write);

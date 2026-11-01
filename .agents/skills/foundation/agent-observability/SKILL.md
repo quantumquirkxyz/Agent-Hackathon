@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "redacted execution record, structured analysis data, and traceability links"
 sideEffects: ""
 dependencies: []
 stopCondition: "Trace recorded, signals captured, and report generated with explicit evidence."

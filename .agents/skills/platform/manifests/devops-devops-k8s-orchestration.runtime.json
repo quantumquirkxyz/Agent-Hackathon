@@ -2,7 +2,7 @@
   "skill": "devops/devops-k8s-orchestration",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "3e8fb20acb5729c71c0b10655677658ef5afb44c01575197a8aa263739f2889a",
+  "frontmatterHash": "5bbd9c89a77170427dee414060ae5046715563ccdccaf60de9f67397d3b41b88",
   "role": "workflow",
   "router": {
     "positive": [],

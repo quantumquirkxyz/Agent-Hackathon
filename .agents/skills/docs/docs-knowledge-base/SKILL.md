@@ -6,7 +6,7 @@ version: "1"
 description: "Maintain a repository knowledge base — glossary, durable references, indexed guidance, and consumer-oriented navigation — with explicit update rules."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "information architecture, index entries, glossary rules, and maintenance plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Knowledge-base entries are findable, scoped, owned, and linked to durable sources."

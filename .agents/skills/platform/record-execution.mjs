@@ -114,16 +114,28 @@ async function readArtifactText(ref) {
   }
 }
 
-async function normalizeArtifact(artifact, fallback) {
-  const base = isPlainObject(artifact) ? { ...artifact } : {};
-  let sizeTokens = explicitSizeTokens(base);
+async function normalizeArtifact(artifact, fallback, kind) {
+  const source = isPlainObject(artifact) ? artifact : {};
+  let sizeTokens = explicitSizeTokens(source);
   if (sizeTokens === null) {
-    const ref = base.outputRef ?? base.ref ?? base.path;
+    const ref = source.outputRef ?? source.ref ?? source.path;
     const text = await readArtifactText(ref);
     sizeTokens = text === null ? (typeof fallback === 'number' ? fallback : 0) : estimateTokens(text);
   }
-  base.sizeTokens = sizeTokens;
-  return base;
+  const artifactType = typeof source.artifactType === 'string' && source.artifactType ? source.artifactType : 'unknown';
+  if (kind === 'input') {
+    return {
+      artifactType,
+      sizeTokens,
+      contextRefs: Array.isArray(source.contextRefs) ? source.contextRefs.filter(value => typeof value === 'string') : [],
+    };
+  }
+  return {
+    artifactType,
+    sizeTokens,
+    schemaValid: source.schemaValid === true,
+    ...(typeof source.outputRef === 'string' && source.outputRef ? { outputRef: source.outputRef } : {}),
+  };
 }
 
 function normalizeExecution(execution) {
@@ -139,6 +151,16 @@ function normalizeExecution(execution) {
   base.iterations = Number.isFinite(base.iterations) ? Math.max(1, Math.round(base.iterations)) : 1;
   base.retries = Number.isFinite(base.retries) ? Math.max(0, Math.round(base.retries)) : 0;
   return base;
+}
+
+function normalizeTools(tools) {
+  if (!Array.isArray(tools)) return [];
+  return tools
+    .filter(tool => isPlainObject(tool) && typeof tool.name === 'string' && tool.name)
+    .map(tool => ({
+      name: tool.name,
+      calls: Number.isFinite(tool.calls) ? Math.max(0, Math.round(tool.calls)) : 0,
+    }));
 }
 
 function normalizeQuality(quality) {
@@ -269,11 +291,11 @@ export async function recordExecution({
   let normalizedQuality = normalizeQuality(quality);
 
   try {
-    normalizedInput = await normalizeArtifact(input, 0);
-    normalizedOutput = await normalizeArtifact(output, 0);
+    normalizedInput = await normalizeArtifact(input, 0, 'input');
+    normalizedOutput = await normalizeArtifact(output, 0, 'output');
   } catch {
-    normalizedInput = input;
-    normalizedOutput = output;
+    normalizedInput = { artifactType: 'unknown', sizeTokens: 0, contextRefs: [] };
+    normalizedOutput = { artifactType: 'unknown', sizeTokens: 0, schemaValid: false };
   }
 
   if (scoreArtifact) {
@@ -304,12 +326,11 @@ export async function recordExecution({
     input: normalizedInput,
     output: normalizedOutput,
     execution: normalizedExecution,
-    tools,
+    tools: normalizeTools(tools),
     quality: normalizedQuality,
     result,
     blockedBy,
     nextConsumer,
-    ...extra,
   };
   const tracesDir = path.join(repoRoot, '.agents', 'skills', 'platform', 'traces');
   const dateStr = new Date(normalizedExecution.startedAt).toISOString().slice(0, 10);

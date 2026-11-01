@@ -1,0 +1,16 @@
+{
+  "name": "parallel-issue-fleet",
+  "instructions": "Orchestrate a dependency-aware fleet of issue agents in isolated local worktrees or dedicated VM-pool slots, with portable worker profiles, durable checkpoints, bounded concurrency, validation, and owned-resource cleanup.\n\nCapabilities:\n- consume TicketArtifact dependency graphs and dispatch topological waves\n- isolate one implementation agent per issue through provider adapters\n- run any argv-based coding agent and model through a portable worker profile\n- bootstrap dependencies from project lockfiles before implementation\n- checkpoint and resume fleet runs without duplicating completed effects\n- fence concurrent runs with expiring per-issue claims\n- verify landed ancestry before advancing a wave\n- enforce concurrency limits timeouts ephemeral secrets and owned-resource cleanup\n- emit a validated FleetRunArtifact with per-issue ImplementArtifact references\n\nCanonical skill: .agents/skills/routing/parallel-issue-fleet/SKILL.md",
+  "model": "gpt-5",
+  "tools": [],
+  "handoff_description": "Every issue in the eligible DAG frontier has a validated implementation artifact and the fleet is completed or awaiting an explicit land-by-wave handoff, or the run is durably blocked with cleanup evidence.",
+  "runtime": {
+    "role": "workflow",
+    "maxTurns": 6,
+    "isolation": "worktree"
+  },
+  "guardrails": {
+    "input": [],
+    "output": []
+  }
+}

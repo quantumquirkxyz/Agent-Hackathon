@@ -6,7 +6,7 @@ version: "1"
 description: "Generate an interactive, contract-complete Skill template in the sandbox — use when starting a new Skill with the lab's scaffolding."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a non-overwriting sandbox Skill, completed frontmatter, and validation command."
 sideEffects:
   - write-files
 
@@ -23,8 +23,8 @@ fixturesPath: ""
 diataxis: "how-to"
 tags: ["skill-dev"]
 compatibility: []
-approvalRequired: "false"
-approvalFor: []
+approvalRequired: true
+approvalFor: ["write-files"]
 ---
 
 ## Contract

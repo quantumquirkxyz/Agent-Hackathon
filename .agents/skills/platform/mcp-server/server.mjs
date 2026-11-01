@@ -9,7 +9,7 @@ const skillsRoot = path.join(root, '.agents', 'skills');
 const schemasDir = path.join(root, '.agents', 'skills', 'platform', 'schemas');
 const agentCardsDir = path.join(root, '.agents', 'skills', 'platform', 'agent-cards');
 
-const EXCLUDED = new Set(['platform', 'prompts', 'agent-cards', 'node_modules', '.git', '.generated-notes.md']);
+const EXCLUDED = new Set(['platform', 'prompts', 'agent-cards', 'node_modules', '.git']);
 
 function parseFrontmatter(text) {
   if (!text.startsWith('---')) return {};

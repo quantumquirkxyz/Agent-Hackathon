@@ -6,7 +6,7 @@ version: "1"
 description: "Design a semantic layer — dbt, Cube, metrics, dimensions, measures, self-service analytics — with explicit business logic, governance, and query optimization."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "semantic layer specification + dbt/Cube structure + governance documentation."
 sideEffects: []
 dependencies: []
 stopCondition: "Semantic layer specification saved; dbt/Cube structure defined; governance rules documented."

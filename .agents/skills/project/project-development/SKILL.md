@@ -6,7 +6,7 @@ version: "1"
 description: "Evaluate a project's shape, agent fit, and architectural starting point — before the main workflow begins."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "a project fit assessment, a project shape classification, and an initial flow recommendation."
 sideEffects: []
 dependencies: []
 stopCondition: "Evaluate a project's shape, agent fit, and architectural starting point complete; structured result returned; completion criteria checked."

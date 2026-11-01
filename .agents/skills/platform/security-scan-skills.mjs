@@ -40,6 +40,8 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 // AGENTS.md instruction path (OWASP AST02) plus the whole skills tree.
 const DEFAULT_PATH = path.resolve(HERE, '..', '..');
 const SELF_PATH = fileURLToPath(import.meta.url);
+const REPO_ROOT = path.resolve(HERE, '..', '..', '..');
+const EXCEPTIONS_PATH = path.join(REPO_ROOT, 'policy', 'security-scan-exceptions.json');
 
 const SEVERITY_ORDER = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
 
@@ -449,6 +451,38 @@ export async function scanFile(absFile) {
   return scanText(text, absFile);
 }
 
+async function loadExceptions() {
+  let parsed;
+  try { parsed = JSON.parse(await fsPromises.readFile(EXCEPTIONS_PATH, 'utf8')); }
+  catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw new Error('invalid security scan exceptions file: ' + error.message);
+  }
+  if (parsed?.schemaVersion !== 1 || !Array.isArray(parsed.exceptions)) {
+    throw new Error('security scan exceptions must use schemaVersion 1 and an exceptions array');
+  }
+  return parsed.exceptions.map((entry, index) => {
+    if (!entry || typeof entry !== 'object') throw new Error('security exception ' + index + ' must be an object');
+    if (typeof entry.rule !== 'string' || !entry.rule) throw new Error('security exception ' + index + ' requires rule');
+    if (typeof entry.path !== 'string' || !entry.path || path.isAbsolute(entry.path) || entry.path.includes('..')) throw new Error('security exception ' + index + ' requires a safe repo-relative path');
+    if (typeof entry.reason !== 'string' || entry.reason.trim().length < 20) throw new Error('security exception ' + index + ' requires a substantive reason');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.expires) || Number.isNaN(Date.parse(entry.expires + 'T00:00:00Z'))) throw new Error('security exception ' + index + ' requires expires YYYY-MM-DD');
+    return { ...entry, path: entry.path.split('/').join(path.sep) };
+  });
+}
+
+function applyExceptions(findings, exceptions, today = new Date().toISOString().slice(0, 10)) {
+  const active = [];
+  const suppressed = [];
+  for (const finding of findings) {
+    const relative = path.relative(REPO_ROOT, finding.file);
+    const exception = exceptions.find(entry => entry.rule === finding.rule && entry.path === relative && entry.expires >= today);
+    if (exception) suppressed.push({ finding, exception: { rule: exception.rule, path: exception.path.split(path.sep).join('/'), reason: exception.reason, expires: exception.expires } });
+    else active.push(finding);
+  }
+  return { active, suppressed };
+}
+
 export function summarize(findings) {
   const summary = { critical: 0, high: 0, medium: 0, low: 0, info: 0, total: 0 };
   for (const f of findings) {
@@ -512,11 +546,18 @@ export async function main(argv = process.argv.slice(2)) {
     const got = await scanFile(f.abs);
     if (got.length) allFindings.push(...got);
   }
-  const summary = summarize(allFindings);
+  let exceptions;
+  try { exceptions = await loadExceptions(); }
+  catch (error) {
+    console.error('security-scan-skills: ' + error.message);
+    return 2;
+  }
+  const { active: findings, suppressed: suppressedFindings } = applyExceptions(allFindings, exceptions);
+  const summary = summarize(findings);
 
   if (args.json) {
     const byRule = {};
-    for (const f of allFindings) {
+    for (const f of findings) {
       (byRule[f.rule] ??= { severity: f.severity, count: 0 });
       byRule[f.rule].count++;
     }
@@ -525,13 +566,15 @@ export async function main(argv = process.argv.slice(2)) {
       root,
       deep: args.deep,
       scannedFiles: files.length,
-      findings: allFindings,
+      findings,
+      suppressedFindings,
       byRule,
       summary,
       status: summary.critical > 0 || summary.high > 0 ? 'block' : 'pass',
     }, null, 2));
   } else {
-    printReport(allFindings, summary, root);
+    printReport(findings, summary, root);
+    if (suppressedFindings.length) console.log(`suppressed findings: ${suppressedFindings.length} via ${path.relative(REPO_ROOT, EXCEPTIONS_PATH)}`);
   }
 
   if (args.strict && (summary.critical > 0 || summary.high > 0)) return 1;

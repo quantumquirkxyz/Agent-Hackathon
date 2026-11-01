@@ -6,7 +6,7 @@ version: "1"
 description: "Design supply chain security — SBOM, Sigstore, SLSA, provenance, signing — with explicit trust tiers, artifact verification, and incident response for compromised dependencies."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "SBOM policy + signing policy + SLSA target + vulnerability response runbook."
 sideEffects: []
 dependencies: []
 stopCondition: "SBOM policy defined; signing policy defined; SLSA target and attestation documented."

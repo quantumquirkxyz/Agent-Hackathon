@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactType": "skill-creator",
+  "skill": "parallel-issue-fleet",
+  "createdAt": "2026-10-20",
+  "source": "User proposal and viability assessment",
+  "generatedFiles": [
+    ".agents/skills/routing/parallel-issue-fleet/SKILL.md",
+    ".agents/skills/routing/parallel-issue-fleet/scripts/fleet-controller.mjs",
+    ".agents/skills/routing/parallel-issue-fleet/references/provider-contract.md",
+    ".agents/skills/routing/parallel-issue-fleet/adrs/0001-control-plane-boundaries.md",
+    ".agents/skills/routing/parallel-issue-fleet/parallel-issue-fleet-interview.json",
+    ".agents/skills/routing/parallel-issue-fleet/behavioral-fixtures/fleet.json",
+    ".agents/skills/platform/schemas/fleet-run-schema.json",
+    ".agents/skills/platform/tests/parallel-issue-fleet.test.mjs",
+    ".agents/skills/routing/parallel-issue-fleet/scripts/github-actions-provider.mjs",
+    ".agents/skills/routing/parallel-issue-fleet/references/github-actions.md",
+    ".agents/skills/routing/parallel-issue-fleet/assets/github-actions/fleet-worker.yml",
+    ".agents/skills/routing/parallel-issue-fleet/assets/github-actions/provider.example.json"
+  ],
+  "decisions": [
+    "Preserve worktree-swarm as the one-shot local compatibility utility.",
+    "Use land-by-wave as the safe default and integration-branch as explicit opt-in.",
+    "Require argv-only provider commands, ephemeral environment secrets, and ownership-token cleanup.",
+    "Use GitHub Actions ubuntu-latest runners as the recommended free VM provider; local VMs do not fit a 4 GB workstation.",
+    "Derive the worker body from the canonical TicketArtifact description, acceptanceCriteria, and validation fields, and keep tracker number and URL explicit.",
+    "Verify every landed issue commit is an ancestor of the new base before advancing a wave; squash merges are rejected.",
+    "Fence concurrent runs with expiring per-issue claims and make GitHub Actions dispatch find-or-dispatch idempotent."
+  ],
+  "validation": {
+    "packageSkill": "pass (scripts/skill-creator/package_skill.py)",
+    "focusedTests": "pass (23 fleet tests plus 10 DAG scheduler tests, including ticket normalization, claims, ancestry verification, local-worktree, vm-pool, integration-branch, and GitHub Actions provider units)",
+    "bundleGate": "pass (node .agents/skills/platform/check-all.mjs: 22/22 checks, 0 warnings, 0 errors)",
+    "rootTests": "pass (node --test tests/*.test.mjs)"
+  },
+  "nextConsumer": "parallel-issue-fleet validation and Core Flow routing",
+  "riskRemaining": "GitHub Actions requires the workflow on the default branch, a repository secret for the model provider, and the gh workflow scope. No live workflow dispatch was executed in this environment. Claims are local to the state root, and land-by-wave requires merge or rebase commits rather than squash merges."
+}

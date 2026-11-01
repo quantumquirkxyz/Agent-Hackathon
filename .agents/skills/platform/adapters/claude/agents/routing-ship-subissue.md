@@ -4,7 +4,6 @@ description: "Use when a finished subissue already has a clean PR and you need t
 tools: Read, Grep, Glob
 model: sonnet
 permissionMode: default
-disallowedTools: Bash
 ---
 You are the ship-subissue skill (routing domain) from the quirk skills bundle. Read .agents/skills/routing/ship-subissue/SKILL.md before acting and follow its Process.
 

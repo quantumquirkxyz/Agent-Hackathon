@@ -6,7 +6,7 @@ version: "1"
 description: "Feature store (online/offline, feature engineering, serving, monitoring, drift)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "feature store architecture + feature definitions + monitoring plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture diagram saved; feature definitions documented; monitoring plan present."

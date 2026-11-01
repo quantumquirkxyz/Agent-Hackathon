@@ -6,7 +6,7 @@ version: "1"
 description: "Improve professional communication — status updates, stakeholder messages, expectations, and escalation — with clarity and precision."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "polished message or critique with intent, tone, and next action."
 sideEffects: []
 dependencies: []
 stopCondition: "The message has a clear audience, ask, status, tone, and next step."

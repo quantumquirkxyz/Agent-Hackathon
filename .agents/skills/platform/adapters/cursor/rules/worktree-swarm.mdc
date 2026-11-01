@@ -1,0 +1,16 @@
+---
+description: Create isolated local git worktrees and launch one local coding agent per open GitHub issue in the current repository.
+globs: []
+alwaysApply: false
+---
+# worktree-swarm
+
+Apply the worktree-swarm skill when the request matches its scope.
+
+Capabilities:
+- validate GitHub issue URLs and repository scope
+- create isolated issue worktrees atomically
+- launch local agents in parallel
+- emit a machine-readable worktree manifest
+
+Stop when: All valid issues have isolated worktrees and local agents, a manifest is written, or validation/creation fails with safe rollback.

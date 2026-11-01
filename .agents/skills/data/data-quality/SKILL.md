@@ -6,7 +6,7 @@ version: "1"
 description: "Design data quality frameworks — Great Expectations, Soda, checks, observability, contracts — with explicit SLAs, freshness rules, and incident response for bad data."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "data quality framework + check suite + observability + data contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Framework defined; check suite configured; observability and contract rules documented."

@@ -6,7 +6,7 @@ version: "1"
 description: "Rate limiting and throttling (token bucket, sliding window, distributed rate limiting, API protection)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "rate limiting design with algorithm selection, limit tiers, distributed coordination, API protection rules, graceful degradation, and monitoring."
 sideEffects: []
 dependencies: []
 stopCondition: "Rate limiting algorithms, limit tiers, distributed coordination, and API protection rules are explicit."

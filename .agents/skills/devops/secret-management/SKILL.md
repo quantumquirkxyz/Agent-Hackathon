@@ -6,7 +6,7 @@ version: "1"
 description: "Design secret management — Vault, SOPS, SealedSecrets, rotation, external secrets — with encryption, access control, and auditability."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "secret management architecture + access policy + rotation runbook + integration plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture diagram saved; access policy documented; rotation runbook complete; integration plan filled."

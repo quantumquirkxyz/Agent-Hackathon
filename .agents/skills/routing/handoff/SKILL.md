@@ -6,7 +6,7 @@ version: "1"
 description: "Compact the current conversation into a handoff document for another agent to pick up — with explicit continuity and ownership notes."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "routing artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - write-temp-file
 
@@ -23,8 +23,8 @@ fixturesPath: ""
 diataxis: "how-to"
 tags: ["routing"]
 compatibility: []
-approvalRequired: "false"
-approvalFor: []
+approvalRequired: true
+approvalFor: ["write-temp-file"]
 ---
 
 ## Contract

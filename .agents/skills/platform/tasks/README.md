@@ -147,7 +147,7 @@ tasks/                                 this directory
 
 The mini repository lives at the repository root, outside `.agents/skills/`, on
 purpose. Anything named `SKILL.md` under `.agents/skills/` is counted as a
-bundle skill by the repo tooling, and the audit that pins the 253 bundle / 265
+bundle skill by the repo tooling, and the audit that pins the 254 bundle / 265
 repo counts would treat a fixture skill as a real one. Keeping the fixture
 outside the skills tree keeps those counts honest while still letting the
 lockfile, contract, and view scenarios hash real skill content.

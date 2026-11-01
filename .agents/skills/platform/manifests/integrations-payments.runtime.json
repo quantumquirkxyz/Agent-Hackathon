@@ -2,7 +2,7 @@
   "skill": "integrations/payments",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "96f0a871a9f91807926a928017780ca11a782f3d10db1f95c287ee8a609507d8",
+  "frontmatterHash": "3bb1c31d76f8dfb7ae3588e3ae4a746830659f68d6b0c4b0a6780af39a5c6fc4",
   "role": "workflow",
   "router": {
     "positive": [],

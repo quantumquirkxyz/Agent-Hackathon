@@ -6,7 +6,7 @@ version: "1"
 description: "Cloud security (AWS, GCP, Azure, IAM, KMS, security groups, compliance, posture management)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "cloud security architecture + IAM review + compliance matrix + CSPM runbook."
 sideEffects: []
 dependencies: []
 stopCondition: "Security architecture saved; IAM reviewed; compliance matrix complete; posture runbook documented."

@@ -6,7 +6,7 @@ version: "1"
 description: "Define, test, and stress-test a quantitative factor (momentum, value, carry, quality) with explicit universe, signal, weighting, and statistical checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "Markdown backtest artifact."
 sideEffects: []
 dependencies: []
 stopCondition: "Artifact present with all six sections; verdict is honest and grounded."

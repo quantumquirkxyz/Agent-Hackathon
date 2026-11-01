@@ -6,7 +6,7 @@ version: "1"
 description: "A relentless interview to sharpen a plan or design, while creating docs (ADRs and glossary) as we go."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "adr artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects:
   - write-docs
 
@@ -23,8 +23,8 @@ fixturesPath: ""
 diataxis: "how-to"
 tags: ["routing"]
 compatibility: []
-approvalRequired: "false"
-approvalFor: []
+approvalRequired: true
+approvalFor: ["write-docs"]
 ---
 
 ## Contract

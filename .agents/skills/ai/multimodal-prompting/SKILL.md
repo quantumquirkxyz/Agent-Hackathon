@@ -6,7 +6,7 @@ version: "1"
 description: "Multimodal prompting (vision, audio, video, image generation, vision-language models)"
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "prompt library + generation contract + validation suite + fallback discipline."
 sideEffects: []
 dependencies: []
 stopCondition: "Each modality green on acceptance suite with validation and fallback."

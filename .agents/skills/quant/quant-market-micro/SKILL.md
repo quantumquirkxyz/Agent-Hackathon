@@ -6,7 +6,7 @@ version: "1"
 description: "Analyse market microstructure — order book dynamics, price formation, execution costs (slippage, spread, impact), and optimal execution strategies."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "quant artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Analyse market microstructure complete; required sections present; completion criteria checked."

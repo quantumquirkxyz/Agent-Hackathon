@@ -7,7 +7,7 @@ license: "MIT"
 version: "1"
 capabilities: ""
 inputs: ""
-outputs: ""
+outputs: "learning goals, exercise, expected outputs, checkpoint, and response space."
 dependencies: ""
 sideEffects: []
 stopCondition: "The learner has a runnable exercise and a checkable checkpoint derived from the target Skill contract."

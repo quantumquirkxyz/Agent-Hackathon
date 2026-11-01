@@ -57,4 +57,4 @@ Expose `trustTier >= 4` skills in the MCP manifest (off by default):
 ## Coverage
 
 Every bundle skill gets exactly one adapter per runtime. The platform domain is
-infrastructure and is not projected, so the corpus covers 246 skills.
+infrastructure and is not projected, so the corpus covers 255 skills.

@@ -6,7 +6,7 @@ version: "1"
 description: "Design zero trust architecture — identity, per-request auth, microsegmentation, policy — with explicit trust tiers, continuous verification, and least-privilege enforcement."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "zero trust architecture + identity model + segmentation policy + policy rules."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture documented; identity model defined; segmentation and policy rules documented."

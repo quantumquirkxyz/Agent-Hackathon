@@ -6,7 +6,7 @@ version: "1"
 description: "Modern Portfolio Theory — efficient frontier, CAPM, APT, risk attribution, and performance measurement — with explicit assumptions and regime analysis."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "finance artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Modern Portfolio Theory complete; required sections present; completion criteria checked."

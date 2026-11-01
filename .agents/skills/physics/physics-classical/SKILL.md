@@ -6,7 +6,7 @@ version: "1"
 description: "Solve classical mechanics problems — Newton's laws, Lagrangian, Hamiltonian, rigid body, orbital — with free-body diagrams, energy accounting, and dimensional checks."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "physics artifact containing the scoped result, supporting evidence, validation status, and residual risks required by this skill's contract."
 sideEffects: []
 dependencies: []
 stopCondition: "Solve classical mechanics problems complete; required sections present; completion criteria checked."

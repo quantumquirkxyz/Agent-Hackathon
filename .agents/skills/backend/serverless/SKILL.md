@@ -6,7 +6,7 @@ version: "1"
 description: "Serverless architecture (Lambda, Functions, FaaS, event-driven, cold starts, scaling, cost)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "serverless architecture with function boundaries, event source mapping, cold start strategy, scaling policy, cost model, and failure handling."
 sideEffects: []
 dependencies: []
 stopCondition: "Serverless architecture, event sources, scaling behavior, and cost model are explicit."

@@ -6,7 +6,7 @@ version: "1"
 description: "Design network security — segmentation, firewalls, VPNs, TLS, authentication, and threat boundaries — with explicit trust zones."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "trust-zone model, allowed/blocked flows, control recommendations, and residual risk."
 sideEffects: []
 dependencies: []
 stopCondition: "Trust zones, allowed flows, controls, and residual risks are explicit."

@@ -6,7 +6,7 @@ version: "1"
 description: "Solve numerical and symbolic math problems (root finding, integration, ODEs, symbolic manipulation) with stable algorithms and explicit error analysis."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "Markdown artifact with algorithm choice, error analysis, computation, and verification."
 sideEffects: []
 dependencies: []
 stopCondition: "Artifact contains algorithm, error bounds, verification, and final answer; solution is reproducible from the code shown."

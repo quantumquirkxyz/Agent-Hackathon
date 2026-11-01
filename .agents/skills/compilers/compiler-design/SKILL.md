@@ -6,7 +6,7 @@ version: "1"
 description: "Design compiler pipelines — lexing, parsing, ASTs, type checking, IR, optimization, and code generation — with correctness and modularity."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "pipeline design with stages, representations, invariants, diagnostics, and validation plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Pipeline stages, representations, invariants, and validation strategy are explicit."

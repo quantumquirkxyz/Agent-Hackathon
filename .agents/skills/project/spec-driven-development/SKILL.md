@@ -18,16 +18,16 @@ inputs:
 outputs:
   - type: object
     name: SpecDrivenArtifacts
-  properties:
-    status: { type: string, enum: [specified, planned, tasked, implemented, blocked] }
-    constitution: { type: "string" }
-    spec: { type: "string" }
-    plan: { type: "string" }
-    tasks: { type: "array", items: { type: "string" } }
-    verification: { type: "object" }
-    nextConsumer: { type: "string" }
-    riskRemaining: { type: "string" }
-  required: [status, nextConsumer]
+    properties:
+      status: { type: string, enum: [specified, planned, tasked, implemented, blocked] }
+      constitution: { type: "string" }
+      spec: { type: "string" }
+      plan: { type: "string" }
+      tasks: { type: "array", items: { type: "string" } }
+      verification: { type: "object" }
+      nextConsumer: { type: "string" }
+      riskRemaining: { type: "string" }
+    required: [status, nextConsumer]
 sideEffects:
   - write-docs
   - write-files

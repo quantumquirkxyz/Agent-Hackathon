@@ -6,7 +6,7 @@ version: "1"
 description: "Stream processing (Flink, Kafka Streams, RisingWave, windowing, state, exactly-once)."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "stream topology + windowing design + exactly-once plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Topology diagram saved; windowing strategy defined; exactly-once plan documented."

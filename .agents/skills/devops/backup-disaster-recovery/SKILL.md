@@ -6,7 +6,7 @@ version: "1"
 description: "Design backup and disaster recovery — RPO/RTO, backup strategies, restore testing, cross-region — with explicit recovery objectives and validation."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "backup and DR architecture + recovery objectives matrix + backup strategy + restore testing plan."
 sideEffects: []
 dependencies: []
 stopCondition: "Architecture diagram saved; recovery objectives matrix complete; backup strategy documented; restore testing plan filled."

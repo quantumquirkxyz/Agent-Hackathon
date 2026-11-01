@@ -2,7 +2,7 @@
   "skill": "foundation/subagent-swarm",
   "version": 1,
   "generatedFrom": "frontmatter",
-  "frontmatterHash": "e96e5bd7eb0bc1cb4a3819646020f5551a50efcfaa9bded502123b9b17c1233c",
+  "frontmatterHash": "d3b213d4e3451e156cd0454ed7a7fd7633aaabae928d16434615b6484356ad54",
   "role": "workflow",
   "router": {
     "positive": [],

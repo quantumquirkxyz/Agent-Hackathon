@@ -6,7 +6,7 @@ version: "1"
 description: "Design infrastructure as code — Terraform / Pulumi / CloudFormation — for reproducible, version-controlled, auditable cloud infrastructure."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "IAC module definitions + state rules + policy checklist."
 sideEffects: []
 dependencies: []
 stopCondition: "Module definitions saved; state rules saved; policy checklist filled."

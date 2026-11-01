@@ -11,5 +11,5 @@ steps:
     with:
       task: "{{ event.title }}"
 policy:
-  approvalRequired: false
+  approvalRequired: true
   sideEffects: [write-docs]

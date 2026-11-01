@@ -6,7 +6,7 @@ version: "1"
 description: "Design LLM evaluation harnesses — benchmark design, model comparison, automated evals — with reproducible scoring, confidence intervals, and regression detection."
 license: "MIT"
 capabilities: ""
-outputs: ""
+outputs: "benchmark suite + comparison report + harness configuration."
 sideEffects: []
 dependencies: []
 stopCondition: "Benchmark suite defined; comparison protocol documented; harness configuration complete."
