@@ -1,0 +1,32 @@
+{
+  "artifactType": "ImplementReviewFixesArtifact",
+  "schemaVersion": "1.0",
+  "identifier": "pr-58-issue-46-review-fixes",
+  "pr": 58,
+  "issue": 46,
+  "branch": "feat/issue-46-create-workbridge-projects-board",
+  "status": "implemented",
+  "planComment": "https://github.com/quantumquirkxyz/WorkBridge/pull/58#issuecomment-6554123416",
+  "completionComment": "https://github.com/quantumquirkxyz/WorkBridge/pull/58#issuecomment-6554216590",
+  "commits": ["1e3d38e", "15c0e2c", "c58f9a5"],
+  "completed": [
+    "Step 1 (Spec): board README Views row, 46.json riskRemaining and 46.md evidence row now say filters are configured and grouping is a pending UI step; the Execution Board is no longer described as grouped by Status.",
+    "Step 2 (Spec + Standards duplication): index.md no longer restates the six Status values or implies an ADR-0021 mandate; it defers to the canonical table in work-item-format.md. 46.json drops the ADR-0021 attribution and records that the citation returns once the ADR lands.",
+    "Step 3 (Standards hard violation): added .agents/skills/platform/tests/validate-implementation.test.mjs covering pass, fail, missing gateCi and legacy gateCI, plus an ARTIFACT_DIR override so fixtures never touch the real artifact directory.",
+    "Step 4 (Standards judgement): work-item-format.md states that a spec's type is its spec label and type/* is additive.",
+    "Step 5 (Standards judgement): 46.json commitSha now points at the review-fix commit 15c0e2c, and 46.md documents what the field means."
+  ],
+  "deferred": [
+    "Grouping the Execution Board by Status is a UI step; the Projects API exposes no grouping or sorting input. Recorded as pending instead of claimed as done.",
+    "The new platform test is a local seam: gate:ci is Vitest-only and .github/workflows/ci.yml does not run check-all.mjs, so wiring the platform harness into CI stays a separate ticket.",
+    "ADR-0021 citation is deferred until chore/governance-index lands; the docs state the six values as the board's definition meanwhile."
+  ],
+  "validation": {
+    "gateCi": "passed (local exit 0; GitHub run 41279104555 success)",
+    "focusedTests": "node --test validate-implementation.test.mjs + docs-links.test.mjs — 7 passed",
+    "artifactValidator": "bash .agents/skills/delivery/implement/scripts/validate-implementation.sh 46 feat/issue-46-create-workbridge-projects-board — all checks passed",
+    "boardReadback": "gh project view 27 README contains the pending-grouping wording; the five view filters are unchanged",
+    "artifactJson": "46.json parses"
+  },
+  "nextConsumer": "review-pr"
+}
