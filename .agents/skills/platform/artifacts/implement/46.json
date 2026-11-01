@@ -23,12 +23,12 @@
       "Automation rules (auto-add, close-to-Done) were not created: GitHub Projects API cannot configure them.",
       "No pull request was opened; this skill stops at the validated branch."
     ],
-    "notes": "Board https://github.com/users/quantumquirkxyz/projects/27 is linked to quantumquirkxyz/WorkBridge with 17 fields and 14 items. Status has exactly the six ADR-0021 values (Backlog, Ready, In Progress, Review, Blocked, Done) and no Phase field exists. Fields are Status, Priority, Size, Sprint, Risk plus native milestone, labels, assignees, reviewers, parent issue, sub-issue progress and linked pull requests. Five views read back with filters: Planning (wayfinder:* and spec), Execution Board (excludes planning artifacts, board layout), Blocked (status:Blocked), Review (status:Review), Roadmap (excludes planning artifacts, roadmap layout). README verification: gh project view returns the rewritten README. Lint, typecheck, 867 tests and coverage thresholds all pass."
+    "notes": "Board https://github.com/users/quantumquirkxyz/projects/27 is linked to quantumquirkxyz/WorkBridge with 17 fields and 14 items. Status has exactly six values (Backlog, Ready, In Progress, Review, Blocked, Done) and no Phase field exists. Fields are Status, Priority, Size, Sprint, Risk plus native milestone, labels, assignees, reviewers, parent issue, sub-issue progress and linked pull requests. Five views read back with filters: Planning (wayfinder:* and spec), Execution Board (excludes planning artifacts, board layout), Blocked (status:Blocked), Review (status:Review), Roadmap (excludes planning artifacts, roadmap layout). README verification: gh project view returns the rewritten README. Lint, typecheck, 867 tests and coverage thresholds all pass."
   },
   "commitSha": "cd7bc54",
   "branch": "feat/issue-46-create-workbridge-projects-board",
   "nextConsumer": "publish-open-pr",
-  "riskRemaining": "The Execution Board groups by Status and the API cannot set grouping or sorting, so a human must confirm the board layout in the GitHub UI; automation rules remain unconfigured by design. The repo docs now point at project 27, but ADR-0021 is still only on the unmerged local branch chore/governance-index, so the docs describe the board without citing that ADR.",
+  "riskRemaining": "The five views have filters, but the Execution Board is not yet grouped by Status: ProjectV2ViewConfigurationInput accepts only visibleFieldIds, so grouping and sort order need a one-time UI step and the board does not render as a Status flow until then. Automation rules remain unconfigured by design. The repo docs now point at project 27 and state the six Status values as the board's definition; ADR-0021 is still only on the unmerged local branch chore/governance-index, so the ADR citation must be restored once that decision lands.",
   "qualityGateResults": {
     "gateIde": "pass",
     "gatePreCommit": "pass",

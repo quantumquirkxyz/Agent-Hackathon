@@ -66,8 +66,9 @@ owns the branch state before review or shipping resumes.
 - Work items live on the **WorkBridge — Professional Pilot Delivery** board
   (https://github.com/users/quantumquirkxyz/projects/27, project number 27).
 - Milestones are releases, not sprints. Sprints live in the project's `Sprint` field.
-- Work-item state lives in the project's `Status` field, not in state labels. `Status` has
-  exactly six values — `Backlog`, `Ready`, `In Progress`, `Review`, `Blocked`, `Done` — and
-  there is no `Phase` field: a planning lifecycle is never a second status.
+- Work-item state lives in the project's `Status` field, not in state labels. There is no
+  `Phase` field: planning artifacts are kept out of execution by label, never by a second
+  status. The canonical field table, including the six `Status` values, lives in
+  [Work item format](work-item-format.md#metadata).
 - Domain invariants in `CONTEXT.md` and `AGENTS.md` are binding for every ticket.
 - Documentation language: product docs in Spanish, governance docs and ADRs in English.

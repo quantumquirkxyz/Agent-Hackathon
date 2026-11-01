@@ -33,8 +33,9 @@ requests, reviewers and assignees. No `Phase`, `Repo Scope`, `Work Type`, `Relea
 
 ## Rules
 
-- A spec is one issue labelled `spec` + `ready-for-agent`, typed by its `type/*` label,
-  and it is the parent of every ticket in its initiative.
+- A spec is one issue labelled `spec` + `ready-for-agent` (the `spec` label is its type; add
+  the relevant `type/*` label only when the spec is also a feature, chore, docs or research
+  effort), and it is the parent of every ticket in its initiative.
 - A ticket is a sub-issue of the spec, labelled `ready-for-agent` plus inherited labels,
   with exactly one milestone and one project item.
 - `blockedBy` is expressed with GitHub's native issue dependency (blocked by) and repeated
