@@ -3,10 +3,11 @@ set -euo pipefail
 
 # validate-implementation.sh — post-implementation validation harness
 # Usage: ./scripts/validate-implementation.sh <issue-id> <branch-name>
+# Set ARTIFACT_DIR to point the harness at another artifact directory (tests use this).
 
 ISSUE_ID="${1:?issue-id required}"
 BRANCH="${2:?branch-name required}"
-ARTIFACT_DIR=".agents/skills/platform/artifacts/implement"
+ARTIFACT_DIR="${ARTIFACT_DIR:-.agents/skills/platform/artifacts/implement}"
 ARTIFACT_FILE="${ARTIFACT_DIR}/${ISSUE_ID}.json"
 
 echo "=== Validate Implementation ==="
@@ -41,8 +42,8 @@ fi
 
 echo "PASS: required fields present"
 
-GATE_CI=$(jq -r '.qualityGateResults.gateCI // "unknown"' "${ARTIFACT_FILE}")
-if [[ "${GATE_CI}" != "passed" ]]; then
+GATE_CI=$(jq -r '.qualityGateResults.gateCi // "unknown"' "${ARTIFACT_FILE}")
+if [[ "${GATE_CI}" != "pass" ]]; then
   echo "FAIL: gate-ci must pass (current: ${GATE_CI})"
   exit 1
 fi

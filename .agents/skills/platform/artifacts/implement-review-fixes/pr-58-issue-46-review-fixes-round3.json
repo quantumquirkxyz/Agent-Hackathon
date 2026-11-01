@@ -1,0 +1,34 @@
+{
+  "artifactType": "ImplementReviewFixesArtifact",
+  "schemaVersion": "1.0",
+  "identifier": "pr-58-issue-46-review-fixes-round3",
+  "pr": 58,
+  "issue": 46,
+  "branch": "feat/issue-46-create-workbridge-projects-board",
+  "head": "69919ce",
+  "status": "implemented",
+  "planComment": "https://github.com/quantumquirkxyz/WorkBridge/pull/58#issuecomment-6563484177",
+  "completionComment": "https://github.com/quantumquirkxyz/WorkBridge/pull/58#issuecomment-6563484177",
+  "fixedPoint": "main (3ef9fd65)",
+  "reviewCommand": "git diff main...HEAD",
+  "specSource": "issue #46",
+  "plan": "Latest `## Review Fix Plan` (Status: planned), superseding the round-1 and round-2 plan comments. Covers the single open finding after rounds 1-2 were reconciled.",
+  "completed": [
+    "Round 1 (plan 6554123416) — steps 1-5 implemented at 1e3d38e / 15c0e2c / c58f9a5 / d59c2c2.",
+    "Round 2 (plan 6554377464) — both findings resolved at d59c2c2: brittle source-text assertion at validate-implementation.test.mjs:110-114 dropped; stale gate-ci reference (c58f9a5 / run 41279104555) replaced with the head that contains the record.",
+    "Round 3 — verified at head 69919ce that every item named in the current plan is already resolved on the branch. No source edits were required: the plan's only remaining item (AC3 Execution Board grouping) is a human UI action, not a code change, so implement-review-fixes has nothing to execute."
+  ],
+  "validation": {
+    "focusedTests": "node --test .agents/skills/platform/tests/validate-implementation.test.mjs .agents/skills/platform/tests/docs-links.test.mjs — 6 passed, 0 failed",
+    "artifactValidator": "bash .agents/skills/delivery/implement/scripts/validate-implementation.sh 46 feat/issue-46-create-workbridge-projects-board — all checks passed (artifact present, valid JSON, required fields, gateCi=pass, branch matches)",
+    "staleReferenceCheck": "grep -rn 41279104555 .agents — no match; stale run reference gone",
+    "diffCheck": "git diff main...HEAD — 8 files, +313/-15; no merge conflict (main is ancestor of HEAD)",
+    "planFilesExist": "all files named in the plan (validate-implementation.test.mjs, 46.md, 46.json, index.md, work-item-format.md) exist on the branch"
+  },
+  "deferred": [
+    "AC3 Execution Board grouping by Status is a UI action — ProjectV2ViewConfigurationInput exposes only visibleFieldIds, so no code path can set grouping or sort order. Recorded as pending in 46.md:47-51 and 46.json riskRemaining, not claimed as done. gh api on project 27 returns 404 for the views endpoint in this environment, so live grouping state could not be re-verified here; the recorded state is that all five views read back groupBy=0 per the round-2/round-3 reviews.",
+    "ADR-0021 citation is deferred until chore/governance-index lands; the docs state the six values as the board's definition meanwhile."
+  ],
+  "blockers": "None for this plan. The sole open Spec finding (AC3 grouping) is a human UI action outside this PR's code scope and is honestly recorded rather than claimed as satisfied.",
+  "nextConsumer": "review-pr (fresh pass against main to confirm AC3 once the human grouping step is done, or to close #46 with the deferral recorded). Not ship-subissue — the PR is not declared clean."
+}
