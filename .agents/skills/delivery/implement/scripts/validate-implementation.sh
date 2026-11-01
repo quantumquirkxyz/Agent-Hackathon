@@ -3,10 +3,11 @@ set -euo pipefail
 
 # validate-implementation.sh — post-implementation validation harness
 # Usage: ./scripts/validate-implementation.sh <issue-id> <branch-name>
+# Set ARTIFACT_DIR to point the harness at another artifact directory (tests use this).
 
 ISSUE_ID="${1:?issue-id required}"
 BRANCH="${2:?branch-name required}"
-ARTIFACT_DIR=".agents/skills/platform/artifacts/implement"
+ARTIFACT_DIR="${ARTIFACT_DIR:-.agents/skills/platform/artifacts/implement}"
 ARTIFACT_FILE="${ARTIFACT_DIR}/${ISSUE_ID}.json"
 
 echo "=== Validate Implementation ==="
