@@ -1,33 +1,32 @@
-# Documentación de la entrega — WorkBridge
+# Documentación — WorkBridge
 
-Reto 3 · Empleabilidad · Hackathon FISC AI Agents 2026 (evaluación final en CONTECS 2026).
+WorkBridge es un producto en despliegue: un sistema multiagente de empleabilidad juvenil
+para Panamá. Esta carpeta documenta el sistema vivo, no una entrega cerrada.
 
-Esta carpeta contiene **solo** los documentos de la entrega. La documentación anterior del
-repositorio (método quirk Skills, gobernanza de issues, guías, tutoriales, referencia de
-frontend, galería de previews y la primera versión de la entrega) se conserva en
-[`old/`](old/README.md) (los movimientos son renombres; solo cambian un banner de archivo en `old/README.md` y las rutas de los scripts de `old/design/previews`).
+## Documentos
 
-## Entregables oficiales
-
-| Entregable | Documento | Qué responde |
-|---|---|---|
-| README | [`../README.md`](../README.md) | Problema, arquitectura de agentes, tecnologías, fuentes de datos, instalación, ejecución y credenciales de demo |
-| Diagrama de arquitectura | [`arquitectura.md`](arquitectura.md) | Agentes, herramientas, flujos y puntos de intervención humana |
-| Evals | [`evals.md`](evals.md) | Casos de prueba, métrica y resultados |
-| Bitácora de IA | [`bitacora-ia.md`](bitacora-ia.md) | Qué se hizo con IA, con qué herramienta y qué se modificó a mano |
-| Documento de metodología | [`metodologia.md`](metodologia.md) | Despliegue, funcionamiento y arquitectura |
-| Video demo (≤ 3 min) | [`runbook-demo.md`](runbook-demo.md) | Guion minuto a minuto y checklist del congelamiento |
-| Tag de congelamiento | `final-24h` | Creado y publicado; marca el último commit válido (ver README) |
+| Documento | Responde |
+|---|---|
+| [`../README.md`](../README.md) | Qué es WorkBridge, qué hace, cómo ejecutarlo y cuál es su estado |
+| [`../CONTEXT.md`](../CONTEXT.md) | Propósito, usuarios, alcance de v1, vocabulario, invariantes y stack |
+| [`arquitectura.md`](arquitectura.md) | Agentes, herramientas, flujos y puntos de intervención humana |
+| [`despliegue.md`](despliegue.md) | Entornos, migraciones, variables, salud, observabilidad y seguridad |
+| [`producto.md`](producto.md) | Qué es, para quién, capacidades y criterios de aceptación |
+| [`stack.md`](stack.md) | Stack objetivo, integraciones y plan de migración |
+| [`runbook-piloto.md`](runbook-piloto.md) | Preparar y operar una sesión de piloto, con riesgos conocidos |
+| [`reference/agents/`](reference/agents/) | Reglas para agentes: tracker, etiquetas de triaje y dominio |
+| [`reference/assumed-contracts.md`](reference/assumed-contracts.md) | Contratos asumidos entre dominio y consumidores; lo verifica `assumed-contracts.test.ts` |
+| [`../.agents/adr/`](../.agents/adr/README.md) | Decisiones durables, incluida la de que esto es un producto (ADR-0011) |
 
 ## Lectura recomendada (10 minutos)
 
-1. [`../README.md`](../README.md): qué problema resuelve y cómo ejecutarlo.
-2. [`arquitectura.md`](arquitectura.md): cómo se reparten los roles los agentes y dónde interviene una persona.
-3. [`evals.md`](evals.md): cómo sabemos que funciona y dónde falla.
-4. [`bitacora-ia.md`](bitacora-ia.md): cómo se usó la IA para construirlo.
+1. [`../CONTEXT.md`](../CONTEXT.md): qué es el producto y qué no es.
+2. [`../README.md`](../README.md): cómo se ejecuta y qué falta para desplegarlo.
+3. [`arquitectura.md`](arquitectura.md): dónde decide el código, dónde el modelo y dónde
+   una persona.
 
-## Archivo
+## Historia
 
-Todo lo anterior vive en [`old/`](old/README.md): `old/competition`, `old/explanation`,
-`old/how-to`, `old/reference`, `old/tutorial` y `old/design`. Sus enlaces internos entre sí
-siguen funcionando porque el árbol se movió completo.
+La entrega original de hackathon (metodología, evals, bitácora de IA, guion de demo y el
+árbol `old/`) se eliminó del árbol actual. Sigue disponible en el historial de git y en el
+tag anotado `final-24h`. No se cita como documentación vigente.

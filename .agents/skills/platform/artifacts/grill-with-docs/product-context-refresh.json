@@ -1,0 +1,79 @@
+{
+  "identifier": "product-context-refresh",
+  "status": "refined",
+  "date": "2026-10-30",
+  "sourceOfTruth": [
+    "User decisions in this grill session",
+    "CONTEXT.md",
+    "README.md",
+    "docs/arquitectura.md",
+    "package.json, migrations/, Dockerfile, compose.yaml, vercel.json",
+    "git remote and existing ADR set 0001-0010"
+  ],
+  "decisions": [
+    "WorkBridge is a product in deployment, not a hackathon deliverable; the submission is history (tag final-24h, git history).",
+    "The issue tracker is GitHub Issues in quantumquirkxyz/WorkBridge; ADR-0009's tracker pointer is superseded.",
+    "v1 covers all of Panama and a broader occupation taxonomy than the original three families.",
+    "Vacancy supply has two sources: employer-published (full internal lifecycle) and curated (exploration, aptitude and draft, application through the external link).",
+    "v1 notifications use transactional email driven by the SQL outbox; no SMS or WhatsApp.",
+    "Seven production blockers are required in order: persistence, national transfer data, real credential verification, bias auditor on the web path, email, paid models, privacy and retention.",
+    "One root CONTEXT.md replaces the eight-context map; no per-package context until a package earns a seam.",
+    "Hackathon artifacts are deleted from the tree, not archived in it; git history and the final-24h tag preserve them.",
+    "Product documentation is written in Spanish; governance documents remain in English.",
+    "Fairness claims are only valid where the counterfactual auditor actually runs."
+  ],
+  "documentationChanges": {
+    "rewritten": [
+      "CONTEXT.md",
+      "README.md",
+      "docs/README.md",
+      "docs/arquitectura.md",
+      "docs/reference/agents/domain.md"
+    ],
+    "created": [
+      "docs/despliegue.md",
+      "docs/runbook-piloto.md",
+      "docs/reference/assumed-contracts.md (rescued from docs/old; a test reads it)",
+      ".agents/adr/0011-product-not-hackathon-deliverable.md",
+      ".agents/adr/0012-tracker-quantumquirkxyz-workbridge.md",
+      ".agents/adr/0013-v1-scope-national-and-dual-supply.md",
+      ".agents/adr/0014-production-readiness-blockers.md",
+      ".agents/adr/0015-single-root-context-and-docs-surface.md"
+    ],
+    "removed": [
+      "CONTEXT-MAP.md",
+      "docs/metodologia.md",
+      "docs/evals.md",
+      "docs/bitacora-ia.md",
+      "docs/runbook-demo.md",
+      "docs/old/"
+    ],
+    "amended": [
+      ".agents/adr/README.md (index plus historical-link note)",
+      ".agents/adr/0002-employability-system-boundaries.md (status)",
+      ".agents/adr/0009-name-workbridge-and-equipo-02-tracker.md (status)",
+      "AGENTS.md (docs surface, single context, known state, gate description)",
+      "packages/domain/src/__tests__/assumed-contracts.test.ts (path after rescuing the file)"
+    ]
+  },
+  "vocabularyAdded": [
+    "Employer-published vacancy",
+    "Curated vacancy",
+    "Submission",
+    "Human gate",
+    "Production blocker"
+  ],
+  "unresolved": [
+    "Which organization model backs curated vacancies operationally (operator role) is not specified beyond 'external link'.",
+    "The occupation taxonomy expansion and its per-family fairness validation have no owner or ticket yet.",
+    "Email provider selection and delivery guarantees are not chosen.",
+    "Privacy and retention policy must satisfy Panamanian data-protection law; legal review is pending.",
+    "The leaked-credential rotation and history purge remain an owner action."
+  ],
+  "validation": {
+    "markdownLinks": "checked with a local parser: 0 broken relative links across tracked .md files",
+    "tests": "not run: node_modules is absent in this working tree; only a test path was updated",
+    "lint": "not run for the same reason"
+  },
+  "nextConsumer": "to-spec (publish ADR-0014 blockers as issues) or implement (start blocker 1)"
+}

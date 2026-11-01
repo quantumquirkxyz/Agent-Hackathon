@@ -1,1 +1,0 @@
-../../adr/ADR-001-artifact-first-design.md

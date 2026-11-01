@@ -1,0 +1,71 @@
+{
+  "identifier": "product-stack-decision",
+  "status": "refined",
+  "date": "2026-10-30",
+  "sourceOfTruth": [
+    "User decisions in this grill session",
+    "CONTEXT.md",
+    "docs/producto.md",
+    "docs/stack.md",
+    "package.json, apps/agent-runtime/package.json, vitest.config.ts, vercel.json, Dockerfile, compose.yaml",
+    "ADR-0011 to ADR-0014 (previous round)"
+  ],
+  "decisions": [
+    "Operating model: an anchor organization (NGO, employment center or program) licenses WorkBridge and provides counselors; employers publish free; candidates arrive through the organization; one anchor organization in v1.",
+    "v1 modules: candidate, employer, counselor plus an operator panel, a training-center portal and a simulated-interview UI; analytics is deferred to v1.1 and answered with SQL.",
+    "Supply: employers publish directly plus operator-uploaded curated vacancies (CSV or internal API); no scraping in v1; training centers publish their own courses.",
+    "Credential verification: Accredible then Credly; Certo is an optional adapter; the mock is development-only.",
+    "Email: Resend behind an in-repo adapter with SMTP fallback; the SQL outbox remains the source of truth.",
+    "Observability: Sentry for errors, OpenTelemetry across web/runtime/worker, Langfuse for agent spans, on top of the internal audit log.",
+    "Bun is the package manager, workspace resolver and script runner; production stays on Node.js 22 and tests stay on Vitest.",
+    "Hono replaces the hand-written node:http router.",
+    "Drizzle ORM with drizzle-kit becomes the schema source, baselined from migrations/001..004.",
+    "Ajv + JSON Schema for domain contracts; Zod for HTTP input, forms and environment.",
+    "Web data: React Server Components and Server Actions; TanStack Query only for live data.",
+    "Deployment: containers for web, runtime and worker on one PaaS with Neon; the Vercel function is retired.",
+    "Kept: Next.js 16, React 19, Mastra, Better Auth, Tailwind v4 + shadcn/ui, Google Maps, OpenRouter, Vitest, Playwright, Spanish-only product, single-anchor tenancy."
+  ],
+  "documentationChanges": {
+    "created": [
+      "docs/producto.md",
+      "docs/stack.md",
+      ".agents/adr/0016-stack-modernization.md",
+      ".agents/adr/0017-v1-modules.md",
+      ".agents/adr/0018-integration-providers.md",
+      ".agents/adr/0019-container-paas-deployment.md",
+      ".agents/adr/0020-anchor-organization-operating-model.md"
+    ],
+    "updated": [
+      "CONTEXT.md (operating model, roles, modules, target stack, docs surface)",
+      "README.md (modules table, target stack, supply sources, Bun migration note)",
+      "docs/README.md",
+      "docs/despliegue.md (Vercel marked as retiring; container PaaS target; new env names)",
+      "docs/arquitectura.md (note separating implemented system from target stack)",
+      "AGENTS.md (stack table, web surfaces, docs surface)",
+      ".agents/adr/README.md (index)"
+    ]
+  },
+  "migrationPhases": [
+    "0 Bun: bun install/run, bun.lock, Dockerfile and CI; exit when bun run gate:ci is green",
+    "1 Hono: wrap the service and port runtime routes; exit with contract tests equivalent to today's",
+    "2 Drizzle: baseline from 001..004 and migrate modules one by one; exit when generated schema matches the database",
+    "3 Web: RSC + Server Actions replace manual fetch; exit with candidate/employer/counselor e2e green",
+    "4 PaaS: containers for web/runtime/worker, retire vercel.json; exit with a reproducible end-to-end deploy",
+    "5 Integrations: Resend, Sentry/OTel, Accredible/Credly; exit with a delivered email, a Sentry event and a verified credential"
+  ],
+  "unresolved": [
+    "Object storage for CV files is undecided; recommended Cloudflare R2 or S3 with signed URLs and a retention rule.",
+    "PaaS vendor (Fly.io, Railway or Render) is an operational choice, not yet made.",
+    "Email sending domain and bounce handling are not defined.",
+    "Taxonomy expansion and per-family fairness validation still have no owner or ticket.",
+    "Analytics v1.1 data model and owner are undefined.",
+    "Privacy and retention policy still needs legal review under Panamanian law.",
+    "package.json of apps/agent-runtime declares @mastra/pg twice; harmless at parse time but a real defect to clean up."
+  ],
+  "validation": {
+    "markdownLinks": "checked with a local parser: 0 broken relative links",
+    "tests": "not run: node_modules is absent in this working tree",
+    "lint": "not run for the same reason"
+  },
+  "nextConsumer": "to-spec (publish migration phases and v1 modules as tickets) or implement (phase 0: Bun)"
+}

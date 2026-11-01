@@ -16,33 +16,40 @@ It evaluates readiness for a specific job, recognises formal and informal
 experience, verifies credentials, identifies skill gaps, recommends a constrained
 learning roadmap, and prepares a job application for human approval.
 
-- Domain vocabulary and boundaries: `CONTEXT.md` (keep it domain-only).
+- Domain vocabulary and boundaries: `CONTEXT.md` (single root context; keep it domain-only).
 - Architecture of record: `docs/arquitectura.md` (agents, tools, human gates, and a
   "Limitaciones conocidas" section that is kept honest on purpose).
-- Method: `docs/metodologia.md`. AI log: `docs/bitacora-ia.md`. Evals: `docs/evals.md`.
-- Demo runbook: `docs/runbook-demo.md`.
+- Product definition and v1 modules: `docs/producto.md`.
+- Stack target, integrations and migration plan: `docs/stack.md`.
+- Deployment and operations: `docs/despliegue.md`. Pilot runbook: `docs/runbook-piloto.md`.
+- Production blockers and scope: ADR-0013 and ADR-0014. WorkBridge is a deployed product,
+  not a hackathon deliverable (ADR-0011).
 
 ## Stack and layout
 
 | Concern | Value |
 |---|---|
-| Language / runtime | TypeScript on Node.js >= 22 (`"type": "module"`) |
-| Package manager | npm workspaces (`packages/*`, `apps/*`) |
-| Web surface | Next.js app router, `apps/web` |
+| Language / runtime | TypeScript strict on Node.js >= 22 (`"type": "module"`) |
+| Package manager | Bun workspaces — target; npm is the current tree until the migration lands (ADR-0016) |
+| Web surface | Next.js 16 app router, `apps/web` |
+| Runtime API | Hono — target; `node:http` is the current tree |
 | Agent runtime | Node service, `apps/agent-runtime` (Mastra agent graph + deterministic services) |
-| Database | Neon Postgres; SQL migrations in `migrations/001..004` |
+| Database | Neon Postgres; Drizzle ORM target over `migrations/001..004` |
+| Validation | Ajv + JSON Schema for domain contracts; Zod at HTTP, form and env edges |
 | Styling | Tailwind CSS v4 + shadcn/ui (ADR-0007) |
 | Tests | Vitest (node + jsdom projects), Playwright for e2e |
+| Integrations | Resend, Accredible/Credly (Certo adapter), Google Maps, OpenRouter, Sentry/OTel/Langfuse |
+| Delivery | Containers for web, runtime and worker on one PaaS (ADR-0019) |
 | Issue tracker | GitHub Issues in `quantumquirkxyz/WorkBridge` (historical clone name: `Agent-Hackathon`) |
 | ADRs | `.agents/adr/` — note: **not** `docs/adr/` |
 | Assessments | `.reports/` (e.g. a project-viability report) |
 
 ```
-apps/web/            Next.js surfaces (candidate, empresa, orientador) + BFF handlers
+apps/web/            Next.js surfaces (candidate, empresa, orientador, operador, centro) + BFF handlers
 apps/agent-runtime/  Agent graph (workflow/), matching, vacancy, verification, application service
 packages/            domain, profile, catalog, solver, training, ingestion
 migrations/          SQL schema
-docs/                current docs; docs/old/ is superseded and kept for history
+docs/                current docs (product, architecture, deployment, pilot runbook)
 .agents/             canonical skills bundle, ADRs, platform tooling
 .reports/            assessment artifacts (viability, audits)
 ```
@@ -58,7 +65,7 @@ docs/                current docs; docs/old/ is superseded and kept for history
 | `npm run test:coverage` | Vitest + v8 coverage (gate thresholds) |
 | `npm run test:e2e` | Playwright (needs the web + runtime running) |
 | `npm run lint` | ESLint |
-| `npm run gate:ci` | `typecheck && test:coverage` — the blocking gate |
+| `npm run gate:ci` | `lint && typecheck && test:coverage` — the blocking gate |
 | `npm run verify` | `lint && typecheck && test` |
 | `npm run db:migrate` | Apply SQL migrations (needs `neon` CLI + env) |
 | `npm run seed:roles` / `npm run seed:demo` | Seed roles and demo data |
@@ -126,11 +133,11 @@ published artifacts. Tickets produced by `to-tickets` are already agent-ready.
 
 ### Domain docs
 
-Multi-context layout: read `CONTEXT-MAP.md` first, then the relevant context's
-`CONTEXT.md`; the root `CONTEXT.md` holds system-wide vocabulary and boundaries.
-Durable design decisions are ADRs under `.agents/adr/`. Add or change terminology
-only through `grill-with-docs` / `domain-modeling`, recording an ADR when the
-decision is hard to reverse.
+Single-context layout: read the root `CONTEXT.md`; it holds the product's purpose, scope,
+vocabulary, invariants and stack. Do not create per-package context documents unless a
+package earns a seam of its own (ADR-0015). Durable design decisions are ADRs under
+`.agents/adr/`. Add or change terminology only through `grill-with-docs` /
+`domain-modeling`, recording an ADR when the decision is hard to reverse.
 
 ## Domain rules that must not be broken
 
@@ -165,15 +172,15 @@ than trust; fix the list when you fix the cause.
   gate:ci` on every pull request and on `main`, with least-privilege
   `permissions: contents: read` and a cancelling concurrency group. The gate
   includes lint, typecheck and coverage.
-- **`docs/old/` is superseded.** Do not cite it as current; current docs are the
-  ones under `docs/` listed above. Some ADRs still reference the old
-  `@puente/*` package namespace — the packages are `@workbridge/*`.
-- **`CONTEXT.md` stack table is stale** (it still says "to confirm"). The current
-  tracker and domain defaults live under `docs/reference/agents/`; correcting the
-  stack table is a separate `docs-management` change.
+- **Production blockers are open.** ADR-0014 lists seven, in order: persist drafts and
+  submissions, national transfer data, real credential verification, bias auditor on the
+  web path, email notifications, paid models, and privacy/retention. Do not present the
+  product as deployable while any of them is open.
 - **The five-agent orchestrator is not on the web path.** It is exercised by tests;
   the web reuses the deterministic pieces through `intake`/`explore`/`match`/`roadmap`
-  handlers. See `docs/arquitectura.md` §7.
+  handlers. See `docs/arquitectura.md` §7 and ADR-0014 blocker 4.
+- **Curated vacancies have no owning organization.** They support exploration, aptitude
+  and a draft; the application continues through the original external link (ADR-0013).
 - **Committed coverage report is narrow.** `apps/agent-runtime/coverage` instruments
   only a subset of files; trust a fresh `npm run test:coverage` instead.
 - **No `CONTRIBUTING.md` / `CODE_OF_CONDUCT.md`.** Open-source onboarding surface is

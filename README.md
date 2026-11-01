@@ -1,46 +1,69 @@
 # WorkBridge
 
-<!-- Cambia el 0 por el número de su reto y deja la línea tal cual ("Reto: N"):
-       1 = Agua · 2 = Educación · 3 = Empleabilidad
-     No cambien de reto sin autorización de los organizadores. -->
-Reto: 3
+Sistema multiagente de empleabilidad juvenil para Panamá. Evalúa la preparación de una
+persona para una vacante concreta, reconoce experiencia formal e informal, verifica
+credenciales, identifica brechas, propone una ruta de formación acotada y prepara una
+postulación que **una persona aprueba antes de enviarse**.
 
-## Equipo
-
-- Querube Ariza (@KerubeDev)
-- Mateo Del Giudice (@MateoDG2006)
-- Jhoumar Barria (@quantumquirkxyz)
+> Los agentes proponen, el solver calcula, las personas deciden.
 
 ## Problema
 
-La transición de los estudios al primer empleo es difícil para los jóvenes panameños, y el
-problema es de información en tres lados. Los jóvenes no saben traducir su experiencia
-informal (ayudar en el negocio familiar, un voluntariado) al lenguaje de una empresa ni qué
-curso cierra su brecha. Las empresas reciben postulaciones que no encajan y publican ofertas
-con requisitos vagos o discriminatorios. Los centros de formación ofrecen cursos que no
-siempre llegan a quien más los necesita. A esto se suma la geografía: una oferta en Tocumen
-puede ser inviable para alguien de La Chorrera por traslado y costo de transporte.
-
-WorkBridge conecta perfiles, vacantes y rutas de formación considerando habilidades técnicas
-y blandas, experiencia informal, certificaciones, transporte, horario, salario y equidad, con
-una persona orientadora que aprueba las decisiones sensibles.
+La transición de los estudios al primer empleo es difícil para los jóvenes panameños, y
+el problema es de información en tres lados. Los jóvenes no saben traducir su
+experiencia informal (ayudar en el negocio familiar, un voluntariado) al lenguaje de una
+empresa ni qué curso cierra su brecha. Las empresas reciben postulaciones que no encajan
+y publican ofertas con requisitos vagos o discriminatorios. Los centros de formación
+ofrecen cursos que no siempre llegan a quien más los necesita. A esto se suma la
+geografía: una oferta en Tocumen puede ser inviable para alguien de La Chorrera por
+traslado y costo de transporte.
 
 ## Qué hace
 
-1. **Intake conversacional**: la persona joven cuenta lo que sabe hacer (o sube un CV en PDF o
+1. **Intake conversacional**: la persona cuenta lo que sabe hacer (o sube un CV en PDF o
    foto) y el sistema arma un perfil con evidencia, incluida la experiencia informal.
-2. **Matching explicable**: un solver determinista decide *apta*, *apta con brechas* o *no apta
-   por ahora* para cada vacante, con las brechas, el traslado y las restricciones duras.
+2. **Matching explicable**: un solver determinista decide *apta*, *apta con brechas* o
+   *no apta por ahora* para cada vacante, con las brechas, el traslado y las
+   restricciones duras.
 3. **Ruta de formación**: convierte las brechas en un plan ordenado de cursos.
-4. **Postulación asistida**: genera el borrador (CV, carta y evidencia) que la persona revisa,
-   corrige y aprueba.
+4. **Postulación asistida**: genera el borrador (CV, carta y evidencia) que la persona
+   revisa, corrige y aprueba.
 5. **Aprobaciones humanas**: orientador y empresa deciden con la explicación a la vista.
+
+## Alcance
+
+La v1 cubre **todo Panamá** y una taxonomía ocupacional más amplia que el foco inicial
+de soporte técnico, atención al cliente y administración. El catálogo de vacantes se
+llena por dos vías (ADR-0013):
+
+| Origen | Ciclo |
+|---|---|
+| **Vacante publicada por empresa** (texto, PDF o imagen) | Ciclo completo dentro de WorkBridge: borrador, aprobaciones, envío y decisión de entrevista |
+| **Vacante curada** (cargada por el operador desde un portal externo) | Exploración, decisión de aptitud y borrador; la postulación continúa por el enlace original |
+
+Fuera de alcance en v1: mercado laboral general (pagos, contratos, planillas),
+entrevistas por voz, notificaciones por SMS o WhatsApp, y cualquier agente que envíe
+postulaciones o mensajes. Detalle en [`CONTEXT.md`](CONTEXT.md) y
+[`docs/producto.md`](docs/producto.md).
+
+### Módulos de v1
+
+| Módulo | Para quién | Qué resuelve |
+|---|---|---|
+| Candidato | Persona joven | Perfil con evidencia, exploración, decisión explicable, ruta, borrador, envío y entrevista simulada |
+| Empresa | Empresa | Publicar vacante, preselección explicable y decisión de entrevista |
+| Orientador | Organización ancla | Cola de casos sensibles con evidencia y motivo auditado |
+| Operador | Organización ancla | Organizaciones, vacantes curadas, catálogo, outbox, incidentes y métricas mínimas |
+| Centro de formación | Centro | Cursos con cupos, modalidad, costo y vigencia |
+
+La analítica como pantalla llega en v1.1; en v1 se responde con SQL y consultas guardadas
+(ADR-0017).
 
 ## Arquitectura de agentes
 
 Cinco agentes con roles distintos, coordinados por un grafo de Mastra, más un coach de
-entrevista simulada fuera del grafo. El detalle, con diagrama, herramientas y puntos de
-aprobación humana, está en **[docs/arquitectura.md](docs/arquitectura.md)**.
+entrevista simulada fuera del grafo. El diagrama, las herramientas y los puntos de
+aprobación humana están en **[docs/arquitectura.md](docs/arquitectura.md)**.
 
 | Agente | Rol |
 |---|---|
@@ -50,72 +73,69 @@ aprobación humana, está en **[docs/arquitectura.md](docs/arquitectura.md)**.
 | Bias Auditor | Repite el matching cambiando nombre, género o corregimiento y bloquea ofertas discriminatorias |
 | Training | Convierte brechas en una ruta de formación |
 
-- **Herramientas que actúan**: escritura en base de datos, solver de asignación, verificación
-  de credenciales y registro de notificaciones salientes en un outbox SQL.
-- **Componente determinista**: matching, restricciones, puntaje, rutas y verificaciones son
-  código; el modelo de lenguaje no decide restricciones duras.
-- **Humano en el ciclo**: la persona candidata aprueba su postulación, el orientador revisa
-  los casos con brechas críticas, credenciales sin verificar, alertas de sesgo o traslado
-  inviable, y la empresa decide el avance a entrevista. Ningún agente envía postulaciones.
-- **Trazabilidad**: envelopes por decisión, ingesta opcional a Langfuse y un registro de
+- **Herramientas que actúan**: escritura en base de datos, solver de asignación,
+  verificación de credenciales y registro de notificaciones salientes en un outbox SQL.
+- **Componente determinista**: matching, restricciones, puntaje, rutas y verificaciones
+  son código; el modelo de lenguaje no decide restricciones duras.
+- **Humano en el ciclo**: la persona candidata aprueba su postulación, el orientador
+  revisa los casos con brechas críticas, credenciales sin verificar, alertas de sesgo o
+  traslado inviable, y la empresa decide el avance a entrevista. Ningún agente envía
+  postulaciones.
+- **Trazabilidad**: envelopes por decisión, ingesta a Langfuse y un registro de
   auditoría append-only.
 
 ## Tecnologías
 
-TypeScript (Node.js ≥ 22), Next.js 16 y React 19, Mastra, OpenRouter (modelos de lenguaje),
-PostgreSQL con Neon, Better Auth, JSON Schema 2020-12 con Ajv, HiGHS (solver MILP), Google
-Maps (geocodificación y traslados), Langfuse (trazas), Tesseract y unpdf (OCR y PDF), Vitest y
-Playwright. Certo es un verificador de credenciales que se despliega por separado; con
-Accredible, Credly y un mock transparente como respaldo.
+El stack objetivo está en **[docs/stack.md](docs/stack.md)**; varias piezas están
+decididas y su migración pendiente, no implementadas.
+
+TypeScript estricto sobre Node.js ≥ 22, Bun como gestor de paquetes y runner de scripts,
+Next.js 16 y React 19, Hono para la API del runtime, Mastra para el grafo de agentes,
+PostgreSQL con Neon y Drizzle ORM, Better Auth, JSON Schema 2020-12 con Ajv y Zod en los
+bordes, HiGHS (solver MILP), Google Maps, OpenRouter, Resend, Sentry + OpenTelemetry +
+Langfuse, Tesseract y unpdf (OCR y PDF), Vitest y Playwright. El despliegue son
+contenedores de web, runtime y worker en un PaaS. Certo es un verificador de credenciales
+opcional que se despliega por separado; Accredible y Credly son los proveedores
+principales.
 
 ## Fuentes de datos
 
-- **Vacantes**: catálogo propio cargado desde ofertas de portales (extracción con el scraper de
-  LinkedIn Jobs de Apify) y *fixtures* documentados en el repositorio (`packages/catalog`).
-- **Formación**: catálogo de cursos del repositorio (`packages/training`).
-- **Traslados**: Google Maps cuando hay clave; si no, datos deterministas de demostración.
-- **Credenciales**: Certo, Accredible y Credly, con fallbacks documentados.
-
-Fuentes externas que sustentan el problema: **pendientes de completar** (no se inventan cifras).
-
-| Dato | Fuente | Fecha de consulta | Uso |
-|---|---|---|---|
-| Desempleo juvenil | Pendiente: fuente oficial panameña | — | Justificación del problema |
-| Transporte y tiempos de traslado | Pendiente | — | Restricción de matching |
-| Cursos y cupos | Pendiente: INADEH u otra fuente verificable | — | Ruta de formación |
-| Vacantes | Catálogo y *fixtures* del repositorio (`packages/catalog`) | — | Demo y evals |
+- **Vacantes**: publicación directa de empresas y catálogo curado cargado por el operador
+  (CSV o API interna), con fuente y frescura (`packages/catalog`).
+- **Formación**: cursos publicados por los centros de formación; el catálogo del
+  repositorio es la semilla de desarrollo (`packages/training`).
+- **Traslados**: Google Maps en producción; en desarrollo, datos deterministas.
+- **Credenciales**: Accredible y Credly como proveedores principales; Certo como adaptador
+  opcional.
 
 ## Instalación y ejecución
 
-Requiere Node.js ≥ 22. Es un monorepo de npm workspaces (`packages/*`, `apps/*`).
+Requiere Node.js ≥ 22. Es un monorepo de workspaces. **El objetivo es Bun** (ADR-0016);
+hasta completar esa migración, los comandos siguientes usan npm.
 
 ```bash
 npm ci
-cp .env.example .env                       # servicio de postulación y semillas
+cp .env.example .env                           # servicio de postulación y semillas
 cp apps/web/.env.example apps/web/.env.local   # aplicación web
-npm run db:migrate                         # esquema en Postgres (requiere el CLI de Neon)
-npm run seed:roles                         # cuentas de orientador y empresa
-npm run seed:demo                          # datos de demostración
-npm run dev                                # web en http://localhost:3001
-npm start                                  # servicio de postulación (agent-runtime)
-npm run start:worker                       # worker del chat asíncrono
+npm run db:migrate                             # esquema en Postgres (requiere el CLI de Neon)
+npm run seed:roles                             # cuentas de orientador y empresa
+npm run seed:demo                              # datos sintéticos de piloto
+npm run dev                                    # web en http://localhost:3001
+npm start                                      # servicio de postulación (agent-runtime)
+npm run start:worker                           # worker del chat asíncrono
 ```
 
 Sin `OPENROUTER_API_KEY` el sistema usa el extractor heurístico y los *fallbacks*
 deterministas: sigue produciendo perfiles y decisiones válidos. Sin `DATABASE_URL` no hay
-sesiones, chat ni persistencia. Los detalles de despliegue (Docker, Vercel, variables) están
-en **[docs/metodologia.md](docs/metodologia.md)**.
+sesiones, chat ni persistencia. Variables, migraciones, contenedores y salud del
+servicio: **[docs/despliegue.md](docs/despliegue.md)**.
 
-### Credenciales de demo
+### Cuentas sintéticas de piloto
 
-No hay claves reales en el repositorio: copia siempre los `.env.example`. Las cuentas de
-demostración (personas jóvenes, orientadores y empresas) y su contraseña compartida se crean
-con `npm run seed:demo` a partir de `scripts/seed/demo-data.ts`; son datos de demostración, no
-credenciales de ningún servicio real. Las claves de OpenRouter, Google Maps, Langfuse y Certo
-son opcionales y se configuran solo por variables de entorno.
-
-Todas las cuentas de `seed:demo` usan la contraseña `Semilla2026!`. Las postulaciones no
-quedan guardadas en la base: se arman al usar la cuenta.
+No hay claves reales en el repositorio: copia siempre los `.env.example`. `npm run
+seed:demo` crea las cuentas a partir de `scripts/seed/demo-data.ts`; son datos
+sintéticos, no credenciales de ningún servicio real. La contraseña compartida está en
+`DEMO_PASSWORD` y la imprime el propio seed.
 
 Empresas con vacante publicada en el catálogo (`packages/catalog/fixtures/vacancy-catalog.json`):
 
@@ -128,9 +148,7 @@ Empresas con vacante publicada en el catálogo (`packages/catalog/fixtures/vacan
 | andres.cedeno@seed.workbridge.test | Grupo Mar |
 | miriam.batista@seed.workbridge.test | Ferretería El Tornillo |
 
-El resto de empresas del seed no tiene vacante en el catálogo.
-
-Estudiantes con perfil completo (experiencia y estudios) y una vacante del catálogo con la que coinciden:
+Estudiantes con perfil completo y una vacante del catálogo con la que coinciden:
 
 | Usuario | Vacante |
 |---|---|
@@ -141,90 +159,57 @@ Estudiantes con perfil completo (experiencia y estudios) y una vacante del catá
 | sofia.herrera@seed.workbridge.test | Pasantía de ventas |
 | elena.castillo@seed.workbridge.test | Atención al cliente, con búsquedas guardadas |
 
-### Pruebas
+## Pruebas
 
 ```bash
 npm test               # Vitest: unitarias y de componentes
 npm run typecheck
-npm run gate:ci        # lint + typecheck + cobertura
+npm run gate:ci        # lint + typecheck + cobertura (compuerta bloqueante)
 npm run test:e2e       # Playwright
 ```
 
-The runtime project uses a legacy memory-only fixture for its service lifecycle tests;
-the ownership project uses the trusted runtime and requires persisted profile/preferences.
-
-The seeded UI-to-employer ownership regression uses a trusted runtime with
-`DATABASE_URL` configured for persisted profile/preferences, plus
-`E2E_CANDIDATE_STORAGE_STATE`,
-`E2E_EMPLOYER_STORAGE_STATE`, `E2E_FOREIGN_EMPLOYER_STORAGE_STATE`,
-`E2E_CATALOG_VACANCY_ID`, and `E2E_OTHER_ORG_SUBMISSION_ID` after `npm run seed:demo`; run it with
-`npx playwright test --project=ownership ui-to-employer-ownership.spec.ts`.
-
-## Evals
-
-Catálogo de **99 casos** en 7 temas (verificación de credenciales, matching, perfil y
-experiencia informal, equidad y sesgo, guardrails de entrada, autorización y aprobación
-humana, robustez), cada uno enlazado a un test existente. Ejecución del 2026-10-17: **855
-pruebas, 844 aprobadas, 1 fallida y 10 omitidas**. La fallida es
-`apps/web/tests/chat-worker.test.ts` y también falla en `main`. Las 8 evals con LLM en vivo
-están omitidas por defecto, así que los comportamientos que solo ellas cubren (rechazo de
-"postúlame a esa", entradas abusivas, no inventar salarios) no están verificados en esa
-corrida. En credenciales, la matriz de confusión de 15 estados da precisión y recall 1.
-Detalle, métricas, comandos y límites en **[docs/evals.md](docs/evals.md)**.
-
-## Bitácora de IA
-
-Se usó IA a lo largo de todo el proyecto: Cursor (49 commits con coautoría en `main`), Claude (8
-commits con coautoría en `main`, 9 contando el de archivo de documentación de esta rama, y la
-sesión de refactorización visual y cierre), OpenCode, Codex y otros modelos, con
-revisión y decisiones del equipo. Qué se hizo con IA, con qué herramienta, qué no se puede
-determinar y qué incidentes hubo: **[docs/bitacora-ia.md](docs/bitacora-ia.md)**.
-
-## Demo
-
-Guion de **menos de 3 minutos** (intake, matching, ruta, postulación y aprobaciones humanas),
-preparación, plan B y checklist de entrega: **[docs/runbook-demo.md](docs/runbook-demo.md)**.
-Estado: es un guion; el video aún **no está grabado ni enlazado** y el ensayo cronometrado
-de punta a punta **no se ha hecho** (el tiempo del guion, 2:52, es un presupuesto).
-Enlace al video: _pendiente_.
+El proyecto `runtime` usa un fixture en memoria para sus pruebas de ciclo de vida; el
+proyecto `ownership` usa el runtime confiable y exige perfil y preferencias persistidos.
+La regresión de propiedad entre interfaz y empresa necesita `DATABASE_URL`, los estados
+sembrados y las variables `E2E_CANDIDATE_STORAGE_STATE`, `E2E_EMPLOYER_STORAGE_STATE`,
+`E2E_FOREIGN_EMPLOYER_STORAGE_STATE`, `E2E_CATALOG_VACANCY_ID` y
+`E2E_OTHER_ORG_SUBMISSION_ID` después de `npm run seed:demo`.
 
 ## Estado y límites conocidos
 
-- La aplicación web no se ha ejecutado de punta a punta en un entorno limpio desde la
-  refactorización visual; la verificación se apoya en tests y en lectura de código.
-- La web no pasa por el grafo de cinco agentes (`WorkflowRuntime`): llama a los agentes de
-  perfil y exploración, al servicio de matching y a la ruta de formación por separado, y el
-  auditor de sesgo contrafactual no corre en ese flujo. Detalle en
-  [docs/arquitectura.md](docs/arquitectura.md#7-limitaciones-conocidas).
-- Un borrador creado desde la interfaz no lleva la organización de la empresa, así que la
-  empresa podría no verlo; no se ha ensayado (ver el runbook, sección 6.3).
-- Borradores y envíos de postulación viven en memoria en `agent-runtime`; solo la
-  idempotencia y el outbox usan SQL.
-- Hay pruebas y chequeos rojos en `main` que no son de la entrega: `chat-worker.test.ts`, errores de
-  tipos en `service.ts` y `server.test.ts`, y `check-all.mjs` falla por un archivo de política
-  ausente (`policy/tool-risk-budget.json`).
-- Las credenciales que estuvieron versionadas en `apps/web/.env.local` siguen expuestas en el
-  historial: **hay que rotarlas** y purgar el historial (`scripts/purge-leaked-env.sh`).
-  Quitar el archivo del repositorio (PR #106) solo evita nuevas filtraciones.
-- Sin integraciones reales de WhatsApp ni notas de voz de salida.
+WorkBridge es un producto en despliegue, no un entregable cerrado. Los bloqueantes de v1
+están registrados en [ADR-0014](.agents/adr/0014-production-readiness-blockers.md), en
+este orden:
 
-## Congelamiento
+1. Persistir borradores, envíos y estado de entrevista (hoy viven en memoria del proceso).
+2. Traslado nacional con datos reales; el respaldo local ya no alcanza para todo Panamá.
+3. Verificación de credenciales real en producción; el mock queda para desarrollo.
+4. Llevar el auditor de sesgo a la ruta que realmente usa la web.
+5. Notificaciones por correo desde el outbox.
+6. Modelos de pago con presupuesto; nada de modelos `:free` en producción.
+7. Política de privacidad, retención y borrado de datos.
 
-**Estado: el tag `final-24h` está creado y publicado.** Es un tag anotado sobre el último
-commit válido de la entrega: el commit que incluye esta sección. Lo que se commitee después
-del tag no cuenta para la evaluación. Para comprobarlo:
+Otros límites vigentes:
 
-```bash
-git tag -l final-24h
-git rev-parse final-24h^{commit}    # hash del commit congelado
-git show --stat final-24h
-```
+- La web no pasa por el grafo de cinco agentes (`WorkflowRuntime`): llama a los agentes
+  de perfil y exploración, al servicio de matching y a la ruta de formación por separado.
+  Hasta cerrar el bloqueante 4, la equidad solo está garantizada donde el auditor corre.
+- Las notificaciones son filas `in_app` en el outbox; el correo es trabajo de v1.
+- Certo es un servicio aparte (AGPL-3.0, no incluido en este árbol); sin él la
+  verificación cae en Accredible, Credly o el mock.
+- Los guardrails se basan en patrones; no sustituyen a un clasificador entrenado.
 
 ## Documentación
 
-Todo el material de la entrega está en [`docs/`](docs/README.md). La documentación anterior
-(método quirk Skills, gobernanza de issues, guías, referencias de frontend y la galería de
-previews) se conserva en [`docs/old/`](docs/old/README.md).
+| Documento | Contenido |
+|---|---|
+| [`CONTEXT.md`](CONTEXT.md) | Propósito, alcance, vocabulario, invariantes y stack |
+| [`docs/producto.md`](docs/producto.md) | Usuarios, capacidades, flujos, criterios de aceptación y métricas |
+| [`docs/stack.md`](docs/stack.md) | Stack objetivo, integraciones, plan de migración y opciones descartadas |
+| [`docs/arquitectura.md`](docs/arquitectura.md) | Diagrama de agentes, herramientas, flujos y compuertas humanas |
+| [`docs/despliegue.md`](docs/despliegue.md) | Entornos, migraciones, variables, observabilidad y seguridad |
+| [`docs/runbook-piloto.md`](docs/runbook-piloto.md) | Operación del piloto: preparación, cuentas, riesgos |
+| [`.agents/adr/`](.agents/adr/README.md) | Decisiones durables |
 
 ## Licencia
 
