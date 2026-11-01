@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted
+Accepted. Amended 2026-10-30: the competition framing and the market scope are superseded
+by ADR-0011 and ADR-0013. The end-to-end flow and the boundary against a general job
+marketplace in this ADR still hold.
 
 ## Context
 

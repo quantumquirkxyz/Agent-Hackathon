@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted — 2026-10-17. Review if the product name or the repository owner changes.
+Accepted — 2026-10-17. Partially superseded 2026-10-30 by ADR-0012: the tracker is now
+`quantumquirkxyz/WorkBridge`. The product name decision stands. Review if the product
+name changes.
 
 ## Context
 
