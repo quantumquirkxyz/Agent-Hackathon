@@ -63,7 +63,11 @@ owns the branch state before review or shipping resumes.
 ## Project rules that override defaults
 
 - The issue tracker is GitHub Issues in `quantumquirkxyz/WorkBridge` (ADR-0012).
-- Milestones are releases, not sprints. Sprints live in the project's `Iteration` field.
-- Work-item state lives in the project's `Phase` field, not in state labels.
+- Work items live on the **WorkBridge — Professional Pilot Delivery** board
+  (https://github.com/users/quantumquirkxyz/projects/27, project number 27).
+- Milestones are releases, not sprints. Sprints live in the project's `Sprint` field.
+- Work-item state lives in the project's `Status` field, not in state labels. `Status` has
+  exactly six values — `Backlog`, `Ready`, `In Progress`, `Review`, `Blocked`, `Done` — and
+  there is no `Phase` field: a planning lifecycle is never a second status.
 - Domain invariants in `CONTEXT.md` and `AGENTS.md` are binding for every ticket.
 - Documentation language: product docs in Spanish, governance docs and ADRs in English.
