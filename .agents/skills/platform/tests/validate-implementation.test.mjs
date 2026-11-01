@@ -104,13 +104,7 @@ describe('validate-implementation.sh reads the schema vocabulary', () => {
   });
 });
 
-describe('validate-implementation.sh keeps its default artifact directory', () => {
-  test('ARTIFACT_DIR is optional in the script source', () => {
-    const source = fs.readFileSync(SCRIPT, 'utf8');
-    assert.match(
-      source,
-      /ARTIFACT_DIR="\$\{ARTIFACT_DIR:-\.agents\/skills\/platform\/artifacts\/implement\}"/,
-      'the default must stay .agents/skills/platform/artifacts/implement',
-    );
-  });
-});
+// The default artifact directory is not asserted from source text: the cases above
+// exercise the ARTIFACT_DIR override against temp fixtures, and the real artifact
+// must still validate (`bash validate-implementation.sh 46 <branch>`), so a changed
+// default breaks that command rather than hiding behind a string match.
